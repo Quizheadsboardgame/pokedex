@@ -13,25 +13,25 @@ import {
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b-4 border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-20 items-center justify-between px-4">
-        {/* Logo Section - No Name */}
-        <div className="flex items-center flex-1">
-          <Link href="/" className="flex items-center group">
+      <div className="container relative flex h-20 items-center px-4">
+        {/* Logo Section - Maximized width */}
+        <div className="flex-1 flex items-center justify-center md:justify-start overflow-hidden">
+          <Link href="/" className="flex items-center group w-full">
             <img 
               src="https://i.ibb.co/p6kVgS58/Untitled.png" 
               alt="Newton's Rarefinds Logo" 
-              className="h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
+              className="h-14 md:h-16 w-auto max-w-full object-contain transition-transform group-hover:scale-105"
             />
           </Link>
         </div>
 
-        {/* Navigation & Action Section */}
-        <div className="flex items-center gap-4">
+        {/* Navigation Dropdown - Positioned to sit 'over' the logo area on the right */}
+        <div className="absolute right-4 z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="outline" 
-                className="font-black uppercase italic border-4 border-primary text-primary hover:bg-primary/10 rounded-2xl h-12 px-6 shadow-[0_4px_0_0_rgba(180,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
+                className="font-black uppercase italic border-4 border-primary text-primary bg-background/80 backdrop-blur hover:bg-primary/10 rounded-2xl h-12 px-6 shadow-[0_4px_0_0_rgba(180,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
               >
                 Explore
                 <ChevronDown className="ml-2 h-5 w-5" />
@@ -63,12 +63,6 @@ export function Header() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Link href="/visit" className="hidden md:block">
-            <Button className="bg-secondary hover:bg-secondary/90 text-white font-black rounded-full uppercase italic px-8 h-12 shadow-[0_4px_0_0_rgba(20,60,120,1)] active:translate-y-0.5 active:shadow-none transition-all">
-              Visit Stall
-            </Button>
-          </Link>
         </div>
       </div>
     </header>
