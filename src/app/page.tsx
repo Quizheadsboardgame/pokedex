@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
   MapPin, 
   Clock, 
@@ -16,16 +15,19 @@ import {
   ChevronUp,
   ChevronDown,
   Database,
-  Star,
   Zap,
-  Flame,
-  Search
+  Star,
+  Camera,
+  Save,
+  Lock,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { generateCardShowcaseDescription } from "@/ai/flows/ai-card-showcase-descriptions-flow";
+import { useFirestore, useCollection } from '@/firebase';
+import { collection, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 
 interface TradeCard {
   id: string;
@@ -33,62 +35,94 @@ interface TradeCard {
   value: number;
 }
 
-interface GrailCard {
-  name: string;
-  type: string;
-  description: string;
-  image: string;
-}
-
-type Mode = 'find-us' | 'trade-in' | 'grails';
-
-const FEATURED_GRAILS = [
-  { name: "Vintage Charizard", type: "Base Set Holo", image: "https://picsum.photos/seed/zard/400/400" },
-  { name: "Mewtwo Gold Star", type: "EX Holon Phantoms", image: "https://picsum.photos/seed/mewtwo/400/400" },
-  { name: "Pikachu VMAX", type: "Rainbow Rare", image: "https://picsum.photos/seed/pika/400/400" },
-];
+type Mode = 'find-us' | 'trade-in' | 'new-cards' | 'edit-mode';
 
 export default function PokedexApp() {
-  const [mode, setMode] = useState<Mode>('trade-in');
+  const [mode, setMode] = useState<Mode>('new-cards');
   const [mounted, setMounted] = useState(false);
-  const [grailDescriptions, setGrailDescriptions] = useState<Record<string, string>>({});
+  const [editMode, setEditMode] = useState(false);
   
+  // Firebase
+  const db = useFirestore();
+  const cardsRef = db ? collection(db, 'new-cards') : null;
+  const cardsQuery = cardsRef ? query(cardsRef, orderBy('createdAt', 'desc')) : null;
+  const { data: remoteCards, loading: cardsLoading } = useCollection(cardsQuery);
+
+  // New Card Form State
+  const [newCardName, setNewCardName] = useState("");
+  const [newCardPrice, setNewCardPrice] = useState("");
+  const [newCardImage, setNewCardImage] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   // Trade-In State
-  const [cards, setCards] = useState<TradeCard[]>([
+  const [tradeCards, setTradeCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
   ]);
 
   useEffect(() => {
     setMounted(true);
-    // Prefetch AI descriptions for the Grails
-    FEATURED_GRAILS.forEach(async (g) => {
-      try {
-        const result = await generateCardShowcaseDescription({ category: g.name });
-        setGrailDescriptions(prev => ({ ...prev, [g.name]: result.description }));
-      } catch (e) {
-        setGrailDescriptions(prev => ({ ...prev, [g.name]: "A legendary artifact from the Newton's archive." }));
-      }
-    });
   }, []);
 
-  const addCard = () => {
+  const addTradeCard = () => {
     const newId = `card-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-    setCards([...cards, { id: newId, name: "", value: 0 }]);
+    setTradeCards([...tradeCards, { id: newId, name: "", value: 0 }]);
   };
 
-  const removeCard = (id: string) => {
-    if (cards.length > 1) {
-      setCards(cards.filter(c => c.id !== id));
+  const removeTradeCard = (id: string) => {
+    if (tradeCards.length > 1) {
+      setTradeCards(tradeCards.filter(c => c.id !== id));
     } else {
-      setCards([{ id: "initial-1", name: "", value: 0 }]);
+      setTradeCards([{ id: "initial-1", name: "", value: 0 }]);
     }
   };
 
-  const updateCard = (id: string, field: keyof TradeCard, val: string | number) => {
-    setCards(cards.map(c => c.id === id ? { ...c, [field]: val } : c));
+  const updateTradeCard = (id: string, field: keyof TradeCard, val: string | number) => {
+    setTradeCards(tradeCards.map(c => c.id === id ? { ...c, [field]: val } : c));
   };
 
-  const totalValue = cards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
+  const totalValue = tradeCards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewCardImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const saveNewCard = async () => {
+    if (!cardsRef || !newCardName || !newCardPrice || !newCardImage) return;
+    setIsSaving(true);
+    try {
+      await addDoc(cardsRef, {
+        name: newCardName,
+        price: newCardPrice,
+        imageUrl: newCardImage,
+        createdAt: serverTimestamp(),
+      });
+      setNewCardName("");
+      setNewCardPrice("");
+      setNewCardImage(null);
+      setMode('new-cards');
+    } catch (e) {
+      console.error("Error saving card:", e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const deleteCard = async (id: string) => {
+    if (!db) return;
+    try {
+      await deleteDoc(doc(db, 'new-cards', id));
+    } catch (e) {
+      console.error("Error deleting card:", e);
+    }
+  };
 
   if (!mounted) return null;
 
@@ -116,28 +150,221 @@ export default function PokedexApp() {
           {/* Main Display Area */}
           <div className="lg:col-span-9">
             <div className="pokedex-screen-container group h-full flex flex-col min-h-[600px] relative bg-[#2d3436]">
-              {/* Screen Overlays (Static for performance on calculator) */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
               
-              {/* Digital Status Header */}
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className="text-primary" />
+                  <Activity size={12} className={cn("text-primary", cardsLoading && "animate-spin")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    Signal: LINKED
+                    {cardsLoading ? "SCANNING..." : "STALL LINK: ACTIVE"}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary w-2/3" />
+                    <div className="h-full bg-primary w-full" />
                   </div>
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">ARCHIVE v2.6.0</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v3.0.0_STALL_CMS</span>
                 </div>
               </div>
 
-              {/* Internal Screen Content */}
               <div className="relative z-10 p-4 md:p-10 pt-16 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
+                {mode === 'new-cards' && (
+                  <div className="flex-1 space-y-8 animate-in fade-in duration-500">
+                    <div className="text-center space-y-2">
+                      <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
+                        New <span className="text-primary">Cards</span>
+                      </h2>
+                      <p className="text-accent digital-text text-xs uppercase italic tracking-[0.2em]">Live Stall Inventory</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-6">
+                      {remoteCards?.map((card) => (
+                        <div key={card.id} className="bg-black/60 border-2 border-white/5 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 group hover:border-primary/50 transition-all overflow-hidden relative">
+                           <div className="w-full md:w-40 h-56 md:h-40 relative rounded-2xl overflow-hidden border-4 border-slate-700/50 shrink-0">
+                              <img src={card.imageUrl} alt={card.name} className="object-cover w-full h-full" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                              <Badge className="absolute bottom-2 left-2 bg-primary text-[10px] uppercase font-black tracking-widest">£{card.price}</Badge>
+                           </div>
+
+                           <div className="space-y-3 flex-1">
+                              <div className="flex items-center justify-between">
+                                <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{card.name}</h3>
+                                {editMode && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="icon" 
+                                    onClick={() => deleteCard(card.id)}
+                                    className="text-white/30 hover:text-destructive"
+                                  >
+                                    <Trash2 size={16} />
+                                  </Button>
+                                )}
+                              </div>
+                              <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary/40 w-full" />
+                              </div>
+                              <p className="text-[10px] font-black text-white/40 uppercase tracking-widest digital-text">Subject: STALL_INVENTORY_SLOT</p>
+                           </div>
+                        </div>
+                      ))}
+
+                      {(!remoteCards || remoteCards.length === 0) && !cardsLoading && (
+                        <div className="text-center py-20 border-2 border-dashed border-white/10 rounded-3xl">
+                          <p className="text-white/20 font-black uppercase italic digital-text">Archive Empty. Visit us at the stall!</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {mode === 'edit-mode' && (
+                  <div className="flex-1 space-y-8 animate-in slide-in-from-bottom-8 duration-500">
+                    <div className="text-center space-y-2">
+                      <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
+                        Inventory <span className="text-accent">Manager</span>
+                      </h2>
+                    </div>
+
+                    <div className="bg-black/40 border-2 border-white/10 p-8 rounded-[2.5rem] space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase italic text-primary digital-text">Card Name</label>
+                            <Input 
+                              placeholder="e.g. Charizard GX..."
+                              value={newCardName}
+                              onChange={(e) => setNewCardName(e.target.value)}
+                              className="bg-black/60 border-2 border-white/10 text-white h-14 rounded-2xl font-bold"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-black uppercase italic text-primary digital-text">Price (£)</label>
+                            <Input 
+                              placeholder="0.00"
+                              value={newCardPrice}
+                              onChange={(e) => setNewCardPrice(e.target.value)}
+                              className="bg-black/60 border-2 border-white/10 text-white h-14 rounded-2xl font-bold"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-center justify-center border-4 border-dashed border-white/10 rounded-3xl p-4 relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                          {newCardImage ? (
+                            <img src={newCardImage} className="w-full h-full object-cover rounded-xl" />
+                          ) : (
+                            <div className="text-center space-y-2">
+                              <Camera className="mx-auto text-white/20 h-10 w-10" />
+                              <p className="text-[10px] font-black text-white/20 uppercase digital-text">Upload Scan</p>
+                            </div>
+                          )}
+                          <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            onChange={handleImageUpload} 
+                            className="hidden" 
+                            accept="image/*"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 pt-4">
+                        <Button 
+                          className="flex-1 bg-accent text-accent-foreground h-16 rounded-2xl font-black uppercase italic text-lg hover:bg-accent/80 transition-all pokedex-button-hardware"
+                          onClick={saveNewCard}
+                          disabled={isSaving || !newCardName || !newCardPrice || !newCardImage}
+                        >
+                          {isSaving ? <Loader2 className="animate-spin" /> : <Save className="mr-2" />}
+                          Commit to DB
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          className="h-16 px-8 rounded-2xl text-white/50 font-black uppercase italic border-2 border-white/10"
+                          onClick={() => setMode('new-cards')}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {mode === 'trade-in' && (
+                  <div className="flex-1 space-y-8">
+                    <div className="text-center space-y-2">
+                      <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
+                        Trade-In <span className="text-primary">Calculator</span>
+                      </h2>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
+                          <Calculator size={18} />
+                          Data Entry
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          onClick={addTradeCard}
+                          className="bg-primary/10 border-primary border-4 text-primary font-black uppercase italic rounded-xl hover:bg-primary hover:text-white"
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add Card
+                        </Button>
+                      </div>
+
+                      <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+                        {tradeCards.map((card) => (
+                          <div key={card.id} className="flex gap-3 items-end">
+                            <div className="flex-1 space-y-1">
+                              <label className="text-[10px] font-black uppercase italic text-slate-400">Card Name/Set</label>
+                              <Input 
+                                placeholder="Base Set Charizard..."
+                                value={card.name}
+                                onChange={(e) => updateTradeCard(card.id, 'name', e.target.value)}
+                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
+                              />
+                            </div>
+                            <div className="w-24 md:w-32 space-y-1">
+                              <label className="text-[10px] font-black uppercase italic text-slate-400">Value (£)</label>
+                              <Input 
+                                type="number"
+                                placeholder="0"
+                                value={card.value || ''}
+                                onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)}
+                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
+                              />
+                            </div>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => removeTradeCard(card.id)}
+                              className="h-12 w-12 text-slate-500 hover:text-destructive transition-colors"
+                            >
+                              <Trash2 size={20} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                        <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-green-400 uppercase tracking-widest digital-text">Cash (70%)</p>
+                          <p className="text-2xl font-black text-green-400 italic">£{(totalValue * 0.7).toFixed(2)}</p>
+                        </div>
+                        <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest digital-text">Trade (80%)</p>
+                          <p className="text-2xl font-black text-blue-400 italic">£{(totalValue * 0.8).toFixed(2)}</p>
+                        </div>
+                        <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest digital-text">Consign (85%)</p>
+                          <p className="text-2xl font-black text-purple-400 italic">£{(totalValue * 0.85).toFixed(2)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {mode === 'find-us' && (
                   <div className="flex-1 space-y-10 animate-in fade-in duration-500">
                     <div className="text-center space-y-4">
@@ -191,138 +418,6 @@ export default function PokedexApp() {
                     </div>
                   </div>
                 )}
-
-                {mode === 'trade-in' && (
-                  <div className="flex-1 space-y-8">
-                    <div className="text-center space-y-2">
-                      <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
-                        Trade-In <span className="text-primary">Calculator</span>
-                      </h2>
-                      <p className="text-accent digital-text text-xs uppercase italic tracking-[0.2em]">trade in price guide</p>
-                    </div>
-
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
-                          <Calculator size={18} />
-                          Data Entry
-                        </div>
-                        <Button 
-                          variant="outline" 
-                          onClick={addCard}
-                          className="bg-primary/10 border-primary border-4 text-primary font-black uppercase italic rounded-xl hover:bg-primary hover:text-white"
-                        >
-                          <Plus className="mr-2 h-4 w-4" />
-                          Add Card
-                        </Button>
-                      </div>
-
-                      <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
-                        {cards.map((card) => (
-                          <div key={card.id} className="flex gap-3 items-end">
-                            <div className="flex-1 space-y-1">
-                              <label className="text-[10px] font-black uppercase italic text-slate-400">Card Name/Set</label>
-                              <Input 
-                                placeholder="Base Set Charizard..."
-                                value={card.name}
-                                onChange={(e) => updateCard(card.id, 'name', e.target.value)}
-                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
-                              />
-                            </div>
-                            <div className="w-24 md:w-32 space-y-1">
-                              <label className="text-[10px] font-black uppercase italic text-slate-400">Value (£)</label>
-                              <Input 
-                                type="number"
-                                placeholder="0"
-                                value={card.value || ''}
-                                onChange={(e) => updateCard(card.id, 'value', e.target.value)}
-                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
-                              />
-                            </div>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              onClick={() => removeCard(card.id)}
-                              className="h-12 w-12 text-slate-500 hover:text-destructive transition-colors"
-                            >
-                              <Trash2 size={20} />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
-                        <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
-                          <p className="text-[10px] font-black text-green-400 uppercase tracking-widest digital-text">Cash (70%)</p>
-                          <p className="text-2xl font-black text-green-400 italic">£{(totalValue * 0.7).toFixed(2)}</p>
-                        </div>
-                        <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl">
-                          <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest digital-text">Trade (80%)</p>
-                          <p className="text-2xl font-black text-blue-400 italic">£{(totalValue * 0.8).toFixed(2)}</p>
-                        </div>
-                        <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-2xl">
-                          <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest digital-text">Consign (85%)</p>
-                          <p className="text-2xl font-black text-purple-400 italic">£{(totalValue * 0.85).toFixed(2)}</p>
-                        </div>
-                      </div>
-
-                      <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex gap-3 items-start">
-                        <ShieldAlert className="text-amber-500 h-5 w-5 shrink-0 mt-0.5" />
-                        <p className="text-[11px] text-amber-200 font-medium italic">
-                          Please use the table as an example, prices can be discussed with us via email, WhatsApp or by text
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {mode === 'grails' && (
-                  <div className="flex-1 space-y-10 animate-in fade-in duration-500">
-                    <div className="text-center space-y-4">
-                      <Badge className="bg-primary text-white font-black italic tracking-widest px-4 py-1 animate-pulse">LIVE DATA FEED</Badge>
-                      <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
-                        Grail <span className="text-accent">Archive</span>
-                      </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-8">
-                      {FEATURED_GRAILS.map((grail, index) => (
-                        <div key={index} className="bg-black/60 border-2 border-white/5 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 group hover:border-primary/50 transition-all overflow-hidden relative">
-                           <div className="absolute top-0 right-0 p-4 opacity-10">
-                              <Star className="h-16 w-16 text-white" />
-                           </div>
-                           
-                           <div className="w-full md:w-48 h-64 md:h-48 relative rounded-2xl overflow-hidden border-4 border-slate-700/50 shrink-0">
-                              <img src={grail.image} alt={grail.name} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700" />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                              <Badge className="absolute bottom-2 left-2 bg-primary text-[8px] uppercase">{grail.type}</Badge>
-                           </div>
-
-                           <div className="space-y-3 flex-1">
-                              <div className="flex items-center gap-2 text-primary">
-                                 <Zap size={14} />
-                                 <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{grail.name}</h3>
-                              </div>
-                              <p className="text-sm leading-relaxed text-white/70 italic font-medium digital-text">
-                                "{grailDescriptions[grail.name] || 'Scanning file...'}"
-                              </p>
-                              <div className="pt-2 flex gap-2">
-                                 <div className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden">
-                                    <div className="h-full bg-accent w-full" />
-                                 </div>
-                                 <div className="h-1 w-8 bg-white/10 rounded-full" />
-                              </div>
-                           </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="p-8 bg-accent/5 border border-accent/20 rounded-3xl text-center space-y-2">
-                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.3em] digital-text">Subject: STALL INVENTORY</p>
-                       <p className="text-sm text-accent/80 font-bold italic">Stock rotates weekly at our Bury St Edmunds stall. Visit us early to catch 'em all!</p>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -333,6 +428,16 @@ export default function PokedexApp() {
               <div className="space-y-4">
                 <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center">Modules</p>
                 <div className="flex flex-col gap-4">
+                  <button 
+                    onClick={() => setMode('new-cards')}
+                    className={cn(
+                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
+                      mode === 'new-cards' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
+                  >
+                    <Star size={18} />
+                    New Cards
+                  </button>
                   <button 
                     onClick={() => setMode('trade-in')}
                     className={cn(
@@ -353,17 +458,29 @@ export default function PokedexApp() {
                     <MapPin size={18} />
                     GPS Map
                   </button>
-                  <button 
-                    onClick={() => setMode('grails')}
-                    className={cn(
-                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
-                      mode === 'grails' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
-                    )}
-                  >
-                    <Database size={18} />
-                    Archives
-                  </button>
                 </div>
+              </div>
+
+              {/* Edit Mode Toggle */}
+              <div className="px-4">
+                <button 
+                  onClick={() => {
+                    if (mode === 'edit-mode') {
+                      setMode('new-cards');
+                      setEditMode(false);
+                    } else {
+                      setMode('edit-mode');
+                      setEditMode(true);
+                    }
+                  }}
+                  className={cn(
+                    "pokedex-button-hardware w-full py-4 flex items-center justify-center gap-3 font-black uppercase italic text-[10px] digital-text border-2 border-white/10",
+                    editMode ? "bg-red-500 text-white" : "bg-black/20 text-white/40"
+                  )}
+                >
+                  <Lock size={12} />
+                  {editMode ? "ADMIN: LOCKED" : "ADMIN: UNLOCK"}
+                </button>
               </div>
 
               {/* D-Pad Simulation */}
@@ -372,21 +489,13 @@ export default function PokedexApp() {
                 <div className="absolute h-24 w-8 bg-slate-800 rounded-md shadow-lg" />
                 <div className="h-6 w-6 rounded-full bg-slate-900 z-10" />
                 <button 
-                  onClick={() => {
-                    if (mode === 'trade-in') setMode('find-us');
-                    else if (mode === 'find-us') setMode('grails');
-                    else setMode('trade-in');
-                  }}
+                  onClick={() => setMode('new-cards')}
                   className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors flex items-center justify-center"
                 >
                   <ChevronUp size={14} className="text-white/20" />
                 </button>
                 <button 
-                  onClick={() => {
-                    if (mode === 'trade-in') setMode('grails');
-                    else if (mode === 'grails') setMode('find-us');
-                    else setMode('trade-in');
-                  }}
+                  onClick={() => setMode('trade-in')}
                   className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors flex items-center justify-center"
                 >
                    <ChevronDown size={14} className="text-white/20" />

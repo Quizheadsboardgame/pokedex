@@ -1,7 +1,7 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
   title: "Newton's Collectables | Bury St Edmunds Pokemon Stall",
@@ -25,8 +25,10 @@ export default function RootLayout({
         <link rel="icon" href="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" />
       </head>
       <body className="antialiased min-h-screen bg-[#121212] py-8 md:py-16">
-        {children}
-        <Toaster />
+        <FirebaseClientProvider>
+          {children}
+          <Toaster />
+        </FirebaseClientProvider>
       </body>
     </html>
   );
