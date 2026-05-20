@@ -1,6 +1,7 @@
 
 import type {Metadata} from 'next';
 import './globals.css';
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Newton's Collectables | Bury St Edmunds Pokemon Stall",
@@ -25,6 +26,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen bg-[#121212] py-8 md:py-16">
         {children}
+        <Toaster />
       </body>
     </html>
   );

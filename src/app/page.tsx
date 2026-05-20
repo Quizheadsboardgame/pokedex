@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,11 +16,13 @@ import {
   Activity,
   Sparkles,
   Loader2,
-  Library
+  Library,
+  AlertCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { getPokemonInfo, type PokemonInfoOutput } from "@/ai/flows/pokemon-info-flow";
 import { generatePokemonImage } from "@/ai/flows/pokemon-image-flow";
@@ -35,6 +38,7 @@ type Mode = 'find-us' | 'trade-in' | 'search';
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
+  const { toast } = useToast();
   
   // Trade-In State
   const [cards, setCards] = useState<TradeCard[]>([
@@ -71,24 +75,39 @@ export default function PokedexApp() {
 
   const handlePokemonSearch = async () => {
     if (!searchQuery.trim()) return;
+    
     setIsSearching(true);
     setSearchResult(null);
     setPokemonImageUrl(null);
     
     try {
       const info = await getPokemonInfo({ pokemonName: searchQuery });
+      if (!info) throw new Error("Could not find data for this Pokémon.");
+      
       setSearchResult(info);
       setIsSearching(false);
       
       // Kick off image generation in background
       setIsGeneratingImage(true);
-      const imageResult = await generatePokemonImage({ prompt: info.imagePrompt });
-      setPokemonImageUrl(imageResult.url);
-    } catch (error) {
+      try {
+        const imageResult = await generatePokemonImage({ prompt: info.imagePrompt });
+        if (imageResult?.url) {
+          setPokemonImageUrl(imageResult.url);
+        }
+      } catch (imgError) {
+        console.warn("Image generation failed:", imgError);
+        // We don't throw here so the user still sees the text info
+      } finally {
+        setIsGeneratingImage(false);
+      }
+    } catch (error: any) {
       console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Search Failed",
+        description: error.message || "Connection to the Pokedex network interrupted. Please try again.",
+      });
       setIsSearching(false);
-    } finally {
-      setIsGeneratingImage(false);
     }
   };
 
@@ -135,12 +154,12 @@ export default function PokedexApp() {
                 <div className="flex items-center gap-2">
                   <Activity size={12} className={cn("text-primary", mode === 'find-us' && "animate-pulse")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    Signal: Stable
+                    Signal: {isSearching ? 'Transmitting...' : 'Stable'}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
-                    <div className={cn("h-full w-2/3 bg-primary", mode === 'find-us' && "animate-pulse")} />
+                    <div className={cn("h-full w-2/3 bg-primary", (mode === 'find-us' || isSearching) && "animate-pulse")} />
                   </div>
                   <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.1.0-AI</span>
                 </div>
@@ -346,13 +365,18 @@ export default function PokedexApp() {
                             ) : pokemonImageUrl ? (
                               <img src={pokemonImageUrl} alt={searchResult.name} className="w-full h-full object-cover" />
                             ) : (
-                              <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="absolute inset-0 flex items-center justify-center flex-col gap-2">
                                 <Activity className="text-white/5 h-20 w-20" />
+                                {isSearching === false && !isGeneratingImage && !pokemonImageUrl && (
+                                  <span className="text-[8px] text-white/10 font-black digital-text">No Visual Data</span>
+                                )}
                               </div>
                             )}
-                            <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
-                               <Badge className="bg-primary/80 text-white font-black italic text-[9px]">AI GENERATED</Badge>
-                            </div>
+                            {pokemonImageUrl && (
+                              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center z-20">
+                                 <Badge className="bg-primary/80 text-white font-black italic text-[9px]">AI GENERATED</Badge>
+                              </div>
+                            )}
                           </div>
 
                           <div className="p-6 bg-accent/10 border-2 border-accent/20 rounded-3xl">
@@ -367,8 +391,22 @@ export default function PokedexApp() {
                     )}
 
                     {!searchResult && !isSearching && (
-                      <div className="flex-1 flex items-center justify-center opacity-20 py-20">
+                      <div className="flex-1 flex flex-col items-center justify-center opacity-20 py-20 gap-4">
                          <Search size={80} className="text-white" />
+                         <p className="text-xs font-black digital-text uppercase tracking-widest">Waiting for Signal Input</p>
+                      </div>
+                    )}
+                    
+                    {isSearching && !searchResult && (
+                      <div className="flex-1 flex flex-col items-center justify-center py-20 gap-6">
+                         <div className="relative">
+                            <Loader2 size={80} className="text-primary animate-spin" />
+                            <Activity className="absolute inset-0 m-auto h-8 w-8 text-accent animate-pulse" />
+                         </div>
+                         <div className="text-center space-y-2">
+                           <p className="text-sm font-black digital-text text-white uppercase tracking-[0.3em] animate-pulse">Scanning Neural Network</p>
+                           <p className="text-[10px] font-black digital-text text-white/40 uppercase">Connecting to Poke-Satellite Alpha...</p>
+                         </div>
                       </div>
                     )}
                   </div>
