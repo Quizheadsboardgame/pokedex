@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,7 +14,9 @@ import {
   ExternalLink,
   TrendingUp,
   Search,
-  Layout
+  Layout,
+  ShieldAlert,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -141,52 +144,58 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'tcg-db' && (
-                  <div className="flex-1 flex flex-col h-full bg-white relative">
+                  <div className="flex-1 flex flex-col h-full bg-slate-900 relative">
                     <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
                       <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Official TCG Database</span>
-                      <div className="flex gap-4 items-center">
-                        <a 
-                          href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
-                        >
-                          <ExternalLink size={10} /> Open Site
-                        </a>
-                      </div>
                     </div>
-                    <iframe 
-                      src="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" 
-                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
-                      title="TCG Database"
-                      allow="fullscreen"
-                      loading="lazy"
-                    />
+                    
+                    <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-6">
+                      <div className="h-20 w-20 rounded-full bg-primary/20 flex items-center justify-center text-primary border-4 border-primary animate-pulse">
+                        <ShieldAlert size={40} />
+                      </div>
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter">Connection Restricted</h3>
+                        <p className="text-slate-400 text-sm max-w-xs mx-auto italic font-medium leading-relaxed">
+                          Official TCG servers prevent direct handheld embedding for security. Launch the Data Link Protocol below.
+                        </p>
+                      </div>
+                      <a 
+                        href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="pokedex-button-hardware bg-accent text-accent-foreground px-8 py-4 font-black uppercase italic flex items-center gap-3 transition-transform hover:scale-105 active:scale-95"
+                      >
+                        <ExternalLink size={20} /> Launch Data Link
+                      </a>
+                    </div>
                   </div>
                 )}
 
                 {mode === 'price-check' && (
-                  <div className="flex-1 flex flex-col h-full bg-white relative">
+                  <div className="flex-1 flex flex-col h-full bg-slate-900 relative">
                     <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
-                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">TCG Price Benchmarking</span>
-                      <div className="flex gap-4 items-center">
-                        <a 
-                          href="https://www.pricecharting.com/category/pokemon-cards" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
-                        >
-                          <ExternalLink size={10} /> Open PriceCharting
-                        </a>
-                      </div>
+                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Market Value Benchmarking</span>
                     </div>
-                    <iframe 
-                      src="https://www.pricecharting.com/category/pokemon-cards" 
-                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
-                      title="Price Check"
-                      allow="fullscreen"
-                      loading="lazy"
-                    />
+                    
+                    <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-6">
+                      <div className="h-20 w-20 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 border-4 border-blue-500 animate-pulse">
+                        <Globe size={40} />
+                      </div>
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter">External Node Required</h3>
+                        <p className="text-slate-400 text-sm max-w-xs mx-auto italic font-medium leading-relaxed">
+                          PriceCharting data requires a secure external connection for full market analysis.
+                        </p>
+                      </div>
+                      <a 
+                        href="https://www.pricecharting.com/category/pokemon-cards" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="pokedex-button-hardware bg-blue-500 text-white px-8 py-4 font-black uppercase italic flex items-center gap-3 transition-transform hover:scale-105 active:scale-95 shadow-[0_4px_0_0_#1e40af]"
+                      >
+                        <TrendingUp size={20} /> Open PriceCharting
+                      </a>
+                    </div>
                   </div>
                 )}
 
