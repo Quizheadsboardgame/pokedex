@@ -13,10 +13,10 @@ import {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full bg-primary border-b-[6px] border-black/10 shadow-lg">
-      <div className="container flex h-24 items-center px-4">
-        {/* Navigation Dropdown - Far Left */}
-        <div className="flex-none">
+    <header className="sticky top-0 z-50 w-full bg-primary border-b-[6px] border-black/10 shadow-lg h-24">
+      <div className="container h-full flex items-center px-4 relative">
+        {/* Navigation Dropdown - Far Left & Higher Z-Index */}
+        <div className="relative z-20">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button 
@@ -45,19 +45,16 @@ export function Header() {
           </DropdownMenu>
         </div>
 
-        {/* Logo Section - Centered and Full Length */}
-        <div className="flex-1 flex items-center justify-center overflow-hidden ml-4">
-          <Link href="/" className="flex items-center group w-full max-w-md justify-center">
+        {/* Logo Section - Centered and Full Width using Absolute Positioning */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <Link href="/" className="flex items-center justify-center w-full h-full px-4 group">
             <img 
               src="https://i.ibb.co/p6kVgS58/Untitled.png" 
               alt="Newton's Collectables Logo" 
-              className="h-16 md:h-20 w-auto max-w-full object-contain transition-transform group-hover:scale-105"
+              className="h-16 md:h-20 w-auto max-w-[80%] object-contain transition-transform group-hover:scale-105"
             />
           </Link>
         </div>
-
-        {/* Balance spacer for desktop to keep logo perfectly centered */}
-        <div className="hidden sm:block flex-none w-[70px] md:w-[136px]" />
       </div>
     </header>
   );
