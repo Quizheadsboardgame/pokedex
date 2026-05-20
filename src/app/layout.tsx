@@ -1,10 +1,9 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Newton's Rarefinds | Bury St Edmunds Pokemon Stall",
-  description: 'Bury St Edmunds most friendly Pokemon market stall. Vintage, Modern, and Rare singles.',
+  title: "Newton's Vintage Vinyls | Rare Records in Bury St Edmunds",
+  description: 'Curating the finest analog sound. Jazz, Rock, and Soul records from the heart of Bury St Edmunds market.',
 };
 
 export default function RootLayout({
@@ -13,11 +12,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">{children}</body>
     </html>

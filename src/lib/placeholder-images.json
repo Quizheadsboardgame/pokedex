@@ -1,34 +1,28 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-pokemon",
-      "description": "A collection of colorful Pokémon cards fanned out",
-      "imageUrl": "https://picsum.photos/seed/pokemon-hero/1200/600",
-      "imageHint": "pokemon cards"
+      "id": "hero-vinyl",
+      "description": "A close up of a record player needle on a black vinyl",
+      "imageUrl": "https://picsum.photos/seed/vinyl-hero/1200/600",
+      "imageHint": "record player"
     },
     {
-      "id": "market-stall",
-      "description": "A busy local market stall with collectibles",
-      "imageUrl": "https://picsum.photos/seed/market-stall/800/600",
-      "imageHint": "market stall"
+      "id": "jazz-section",
+      "description": "Classic jazz records in a crate",
+      "imageUrl": "https://picsum.photos/seed/jazz-vinyl/600/400",
+      "imageHint": "jazz vinyl"
     },
     {
-      "id": "vintage-charizard",
-      "description": "A vintage style fire dragon card",
-      "imageUrl": "https://picsum.photos/seed/vintage-card/400/600",
-      "imageHint": "vintage card"
+      "id": "rock-classic",
+      "description": "Iconic rock album covers",
+      "imageUrl": "https://picsum.photos/seed/rock-vinyl/600/400",
+      "imageHint": "rock album"
     },
     {
-      "id": "modern-rare",
-      "description": "A shiny modern full art card",
-      "imageUrl": "https://picsum.photos/seed/modern-card/400/600",
-      "imageHint": "rare card"
-    },
-    {
-      "id": "bury-st-edmunds",
-      "description": "Bury St Edmunds town center",
-      "imageUrl": "https://picsum.photos/seed/bury-market/800/400",
-      "imageHint": "market square"
+      "id": "stall-vinyl",
+      "description": "A boutique record stall at a market",
+      "imageUrl": "https://picsum.photos/seed/vinyl-stall/800/600",
+      "imageHint": "record store"
     }
   ]
 }

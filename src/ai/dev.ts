@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/poke-lore-generator.ts';
-import '@/ai/flows/ai-card-showcase-descriptions-flow.ts';
+import '@/ai/flows/vinyl-story-generator.ts';
+import '@/ai/flows/vinyl-category-descriptions-flow.ts';
