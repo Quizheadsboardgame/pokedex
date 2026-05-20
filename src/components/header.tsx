@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Music2, Menu, Disc } from "lucide-react";
+import { Menu, Disc } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
@@ -20,10 +20,10 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <Link href="#showcase" className="text-sm font-medium hover:text-primary transition-colors">Browse</Link>
-          <Link href="#story" className="text-sm font-medium hover:text-primary transition-colors">Story Lab</Link>
-          <Link href="#about" className="text-sm font-medium hover:text-primary transition-colors">Roots</Link>
-          <Link href="#visit" className="text-sm font-medium hover:text-primary transition-colors">Visit</Link>
+          <Link href="/browse" className="text-sm font-medium hover:text-primary transition-colors">Browse</Link>
+          <Link href="/story-lab" className="text-sm font-medium hover:text-primary transition-colors">Story Lab</Link>
+          <Link href="/roots" className="text-sm font-medium hover:text-primary transition-colors">Roots</Link>
+          <Link href="/visit" className="text-sm font-medium hover:text-primary transition-colors">Visit</Link>
         </nav>
 
         <div className="flex items-center gap-2">

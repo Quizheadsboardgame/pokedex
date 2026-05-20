@@ -1,5 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Newton's Vintage Vinyls | Rare Records in Bury St Edmunds",
@@ -18,7 +20,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }
