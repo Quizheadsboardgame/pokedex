@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -49,6 +48,11 @@ export function Header() {
               className="w-64 bg-slate-50 border-[6px] border-primary rounded-[2.5rem] shadow-2xl p-4 mt-2 overflow-hidden animate-in fade-in zoom-in duration-200"
             >
               <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">
+                <Link href="/" className="w-full font-black uppercase italic p-4 text-xl text-primary block hover:bg-primary/5">
+                  Find Stall
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">
                 <Link href="/browse" className="w-full font-black uppercase italic p-4 text-xl text-primary block hover:bg-primary/5">
                   Trade In Cards
                 </Link>
@@ -58,15 +62,10 @@ export function Header() {
                   Lore Lab
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">
-                <Link href="/roots" className="w-full font-black uppercase italic p-4 text-xl text-primary block hover:bg-primary/5">
-                  Our Story
-                </Link>
-              </DropdownMenuItem>
               <div className="h-1 bg-primary/10 mx-2 my-2 rounded-full" />
               <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer outline-none p-0 overflow-hidden">
-                <Link href="/visit" className="w-full font-black uppercase italic p-4 text-xl text-secondary block hover:bg-secondary/5">
-                  Find Stall
+                <Link href="/roots" className="w-full font-black uppercase italic p-4 text-xl text-secondary block hover:bg-secondary/5">
+                  Our Story
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
