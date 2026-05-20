@@ -12,9 +12,8 @@ import {
   BookOpen,
   ExternalLink,
   TrendingUp,
-  Coins,
-  RefreshCw,
-  Briefcase
+  Search,
+  Layout
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +26,7 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check';
+type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check' | 'tcg-db';
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
@@ -135,6 +134,31 @@ export default function PokedexApp() {
                       src="https://pokedex.org/" 
                       className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
                       title="Pokemon Database"
+                      allow="fullscreen"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
+                {mode === 'tcg-db' && (
+                  <div className="flex-1 flex flex-col h-full bg-white relative">
+                    <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
+                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Official TCG Database</span>
+                      <div className="flex gap-4 items-center">
+                        <a 
+                          href="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
+                        >
+                          <ExternalLink size={10} /> Open Site
+                        </a>
+                      </div>
+                    </div>
+                    <iframe 
+                      src="https://www.pokemon.com/uk/pokemon-tcg/pokemon-cards" 
+                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
+                      title="TCG Database"
                       allow="fullscreen"
                       loading="lazy"
                     />
@@ -292,6 +316,15 @@ export default function PokedexApp() {
                     )}
                   >
                     <BookOpen size={16} /> PokéDex
+                  </button>
+                  <button 
+                    onClick={() => setMode('tcg-db')}
+                    className={cn(
+                      "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-xs transition-all",
+                      mode === 'tcg-db' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
+                  >
+                    <Layout size={16} /> TCG Database
                   </button>
                   <button 
                     onClick={() => setMode('price-check')}
