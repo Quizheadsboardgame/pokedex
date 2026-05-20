@@ -14,12 +14,18 @@ import {
   ShieldAlert, 
   Activity,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  Database,
+  Star,
+  Zap,
+  Flame,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { generateCardShowcaseDescription } from "@/ai/flows/ai-card-showcase-descriptions-flow";
 
 interface TradeCard {
   id: string;
@@ -27,11 +33,25 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'trade-in';
+interface GrailCard {
+  name: string;
+  type: string;
+  description: string;
+  image: string;
+}
+
+type Mode = 'find-us' | 'trade-in' | 'grails';
+
+const FEATURED_GRAILS = [
+  { name: "Vintage Charizard", type: "Base Set Holo", image: "https://picsum.photos/seed/zard/400/400" },
+  { name: "Mewtwo Gold Star", type: "EX Holon Phantoms", image: "https://picsum.photos/seed/mewtwo/400/400" },
+  { name: "Pikachu VMAX", type: "Rainbow Rare", image: "https://picsum.photos/seed/pika/400/400" },
+];
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('trade-in');
   const [mounted, setMounted] = useState(false);
+  const [grailDescriptions, setGrailDescriptions] = useState<Record<string, string>>({});
   
   // Trade-In State
   const [cards, setCards] = useState<TradeCard[]>([
@@ -40,6 +60,15 @@ export default function PokedexApp() {
 
   useEffect(() => {
     setMounted(true);
+    // Prefetch AI descriptions for the Grails
+    FEATURED_GRAILS.forEach(async (g) => {
+      try {
+        const result = await generateCardShowcaseDescription({ category: g.name });
+        setGrailDescriptions(prev => ({ ...prev, [g.name]: result.description }));
+      } catch (e) {
+        setGrailDescriptions(prev => ({ ...prev, [g.name]: "A legendary artifact from the Newton's archive." }));
+      }
+    });
   }, []);
 
   const addCard = () => {
@@ -86,12 +115,9 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Display Area */}
           <div className="lg:col-span-9">
-            <div className="pokedex-screen-container group h-full flex flex-col min-h-[600px] relative">
-              {/* Scanline Animation */}
-              <div className="scanner-line" />
-              
-              {/* Screen Overlays */}
-              <div className="pokedex-screen-overlay" />
+            <div className="pokedex-screen-container group h-full flex flex-col min-h-[600px] relative bg-[#2d3436]">
+              {/* Screen Overlays (Static for performance on calculator) */}
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
               
               {/* Digital Status Header */}
@@ -106,7 +132,7 @@ export default function PokedexApp() {
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
                     <div className="h-full bg-primary w-2/3" />
                   </div>
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">ARCHIVE v2.5.0</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">ARCHIVE v2.6.0</span>
                 </div>
               </div>
 
@@ -249,6 +275,54 @@ export default function PokedexApp() {
                     </div>
                   </div>
                 )}
+
+                {mode === 'grails' && (
+                  <div className="flex-1 space-y-10 animate-in fade-in duration-500">
+                    <div className="text-center space-y-4">
+                      <Badge className="bg-primary text-white font-black italic tracking-widest px-4 py-1 animate-pulse">LIVE DATA FEED</Badge>
+                      <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
+                        Grail <span className="text-accent">Archive</span>
+                      </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-8">
+                      {FEATURED_GRAILS.map((grail, index) => (
+                        <div key={index} className="bg-black/60 border-2 border-white/5 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 group hover:border-primary/50 transition-all overflow-hidden relative">
+                           <div className="absolute top-0 right-0 p-4 opacity-10">
+                              <Star className="h-16 w-16 text-white" />
+                           </div>
+                           
+                           <div className="w-full md:w-48 h-64 md:h-48 relative rounded-2xl overflow-hidden border-4 border-slate-700/50 shrink-0">
+                              <img src={grail.image} alt={grail.name} className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                              <Badge className="absolute bottom-2 left-2 bg-primary text-[8px] uppercase">{grail.type}</Badge>
+                           </div>
+
+                           <div className="space-y-3 flex-1">
+                              <div className="flex items-center gap-2 text-primary">
+                                 <Zap size={14} />
+                                 <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{grail.name}</h3>
+                              </div>
+                              <p className="text-sm leading-relaxed text-white/70 italic font-medium digital-text">
+                                "{grailDescriptions[grail.name] || 'Scanning file...'}"
+                              </p>
+                              <div className="pt-2 flex gap-2">
+                                 <div className="h-1 flex-1 bg-white/10 rounded-full overflow-hidden">
+                                    <div className="h-full bg-accent w-full" />
+                                 </div>
+                                 <div className="h-1 w-8 bg-white/10 rounded-full" />
+                              </div>
+                           </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-8 bg-accent/5 border border-accent/20 rounded-3xl text-center space-y-2">
+                       <p className="text-[10px] font-black text-accent uppercase tracking-[0.3em] digital-text">Subject: STALL INVENTORY</p>
+                       <p className="text-sm text-accent/80 font-bold italic">Stock rotates weekly at our Bury St Edmunds stall. Visit us early to catch 'em all!</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -279,6 +353,16 @@ export default function PokedexApp() {
                     <MapPin size={18} />
                     GPS Map
                   </button>
+                  <button 
+                    onClick={() => setMode('grails')}
+                    className={cn(
+                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
+                      mode === 'grails' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
+                  >
+                    <Database size={18} />
+                    Archives
+                  </button>
                 </div>
               </div>
 
@@ -288,13 +372,21 @@ export default function PokedexApp() {
                 <div className="absolute h-24 w-8 bg-slate-800 rounded-md shadow-lg" />
                 <div className="h-6 w-6 rounded-full bg-slate-900 z-10" />
                 <button 
-                  onClick={() => setMode(mode === 'trade-in' ? 'find-us' : 'trade-in')}
+                  onClick={() => {
+                    if (mode === 'trade-in') setMode('find-us');
+                    else if (mode === 'find-us') setMode('grails');
+                    else setMode('trade-in');
+                  }}
                   className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors flex items-center justify-center"
                 >
                   <ChevronUp size={14} className="text-white/20" />
                 </button>
                 <button 
-                  onClick={() => setMode(mode === 'trade-in' ? 'find-us' : 'trade-in')}
+                  onClick={() => {
+                    if (mode === 'trade-in') setMode('grails');
+                    else if (mode === 'grails') setMode('find-us');
+                    else setMode('trade-in');
+                  }}
                   className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors flex items-center justify-center"
                 >
                    <ChevronDown size={14} className="text-white/20" />
