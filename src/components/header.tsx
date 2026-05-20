@@ -1,38 +1,74 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Zap } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center h-10 w-10 bg-primary rounded-full border-2 border-white shadow-sm overflow-hidden">
-            <Zap className="text-accent h-6 w-6" />
-          </div>
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl tracking-tight text-primary uppercase italic">
-              Newton's <span className="text-secondary">Rarefinds</span>
-            </span>
+    <header className="sticky top-0 z-50 w-full border-b-4 border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-20 items-center justify-between px-4">
+        {/* Logo Section - No Name */}
+        <div className="flex items-center flex-1">
+          <Link href="/" className="flex items-center group">
+            <img 
+              src="https://i.ibb.co/p6kVgS58/Untitled.png" 
+              alt="Newton's Rarefinds Logo" 
+              className="h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
+            />
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link href="/browse" className="text-sm font-bold hover:text-primary transition-colors uppercase tracking-tight">Crates</Link>
-          <Link href="/story-lab" className="text-sm font-bold hover:text-primary transition-colors uppercase tracking-tight">Lore Lab</Link>
-          <Link href="/roots" className="text-sm font-bold hover:text-primary transition-colors uppercase tracking-tight">Our Story</Link>
-          <Link href="/visit" className="text-sm font-bold hover:text-primary transition-colors uppercase tracking-tight">Find Us</Link>
-        </nav>
+        {/* Navigation & Action Section */}
+        <div className="flex items-center gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                className="font-black uppercase italic border-4 border-primary text-primary hover:bg-primary/10 rounded-2xl h-12 px-6 shadow-[0_4px_0_0_rgba(180,0,0,1)] active:translate-y-0.5 active:shadow-none transition-all"
+              >
+                Explore
+                <ChevronDown className="ml-2 h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end" 
+              className="w-56 bg-white border-4 border-primary rounded-[2rem] shadow-2xl p-3 mt-2 overflow-hidden animate-in fade-in zoom-in duration-200"
+            >
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-primary/10 cursor-pointer mb-1 outline-none">
+                <Link href="/browse" className="w-full font-black uppercase italic p-3 text-lg text-primary block">
+                  Crates
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-primary/10 cursor-pointer mb-1 outline-none">
+                <Link href="/story-lab" className="w-full font-black uppercase italic p-3 text-lg text-primary block">
+                  Lore Lab
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-primary/10 cursor-pointer mb-1 outline-none">
+                <Link href="/roots" className="w-full font-black uppercase italic p-3 text-lg text-primary block">
+                  Our Story
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-xl focus:bg-primary/10 cursor-pointer outline-none">
+                <Link href="/visit" className="w-full font-black uppercase italic p-3 text-lg text-primary block border-t-2 border-primary/10 pt-4 mt-2">
+                  Find Us
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
-          <Button size="sm" className="hidden sm:flex bg-primary hover:bg-primary/90 text-white font-bold rounded-full">
-            Visit Stall
-          </Button>
+          <Link href="/visit" className="hidden md:block">
+            <Button className="bg-secondary hover:bg-secondary/90 text-white font-black rounded-full uppercase italic px-8 h-12 shadow-[0_4px_0_0_rgba(20,60,120,1)] active:translate-y-0.5 active:shadow-none transition-all">
+              Visit Stall
+            </Button>
+          </Link>
         </div>
       </div>
     </header>
