@@ -14,14 +14,14 @@ import {
 
 export function Header() {
   return (
-    <header className="w-full z-50 py-4 relative">
+    <header className="w-full z-50 py-4 relative bg-primary shadow-lg border-b-8 border-black/10">
       <div className="container px-4 flex items-center h-20 md:h-32">
         {/* Menu Button - Far Left */}
         <div className="z-20">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-12 w-12 hover:bg-slate-100 rounded-xl border-4 border-slate-200">
-                <Menu className="h-8 w-8 text-foreground" />
+              <Button variant="ghost" size="icon" className="h-12 w-12 hover:bg-white/20 rounded-xl border-4 border-white/30 text-white">
+                <Menu className="h-8 w-8" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="bg-slate-50 border-r-8 border-primary">
@@ -50,7 +50,7 @@ export function Header() {
         <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
           <Link href="/" className="w-full max-w-5xl pointer-events-auto flex justify-center">
             <img 
-              src="https://i.ibb.co/p6kVgS58/Untitled.png" 
+              src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
               alt="Newton's Collectables Logo" 
               className="w-full h-auto max-h-16 md:max-h-28 object-contain"
             />
