@@ -57,17 +57,6 @@ export function Header() {
                   Trade In Cards
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">
-                <Link href="/story-lab" className="w-full font-black uppercase italic p-4 text-xl text-primary block hover:bg-primary/5">
-                  Lore Lab
-                </Link>
-              </DropdownMenuItem>
-              <div className="h-1 bg-primary/10 mx-2 my-2 rounded-full" />
-              <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer outline-none p-0 overflow-hidden">
-                <Link href="/roots" className="w-full font-black uppercase italic p-4 text-xl text-secondary block hover:bg-secondary/5">
-                  Our Story
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
