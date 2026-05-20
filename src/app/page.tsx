@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -83,9 +84,12 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Display Area */}
           <div className="lg:col-span-9">
-            <div className="pokedex-screen-container screen-flicker group">
-              {/* Animated Scan Line */}
-              <div className="scanner-line" />
+            <div className={cn(
+              "pokedex-screen-container group",
+              mode === 'find-us' && "screen-flicker"
+            )}>
+              {/* Animated Scan Line - Only in Find Us mode */}
+              {mode === 'find-us' && <div className="scanner-line" />}
               
               {/* Screen Overlays */}
               <div className="pokedex-screen-overlay" />
@@ -94,14 +98,14 @@ export default function PokedexApp() {
               {/* Digital Status Header */}
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className="text-primary animate-pulse" />
+                  <Activity size={12} className={cn("text-primary", mode === 'find-us' && "animate-pulse")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
                     Signal: Stable
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full w-2/3 animate-pulse bg-primary" />
+                    <div className={cn("h-full w-2/3 bg-primary", mode === 'find-us' && "animate-pulse")} />
                   </div>
                   <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.0.4-LIVE</span>
                 </div>
@@ -162,7 +166,7 @@ export default function PokedexApp() {
                     </div>
                   </div>
                 ) : (
-                  <div className="animate-in fade-in slide-in-from-left-10 duration-500 flex-1 space-y-8">
+                  <div className="flex-1 space-y-8">
                     <div className="text-center space-y-2">
                       <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
                         Trade-In <span className="text-primary">Calculator</span>
@@ -188,7 +192,7 @@ export default function PokedexApp() {
 
                       <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                         {cards.map((card) => (
-                          <div key={card.id} className="flex gap-3 items-end group animate-in slide-in-from-left-2 duration-200">
+                          <div key={card.id} className="flex gap-3 items-end group">
                             <div className="flex-1 space-y-1">
                               <label className="text-[10px] font-black uppercase italic text-slate-400">Card Name/Set</label>
                               <Input 
