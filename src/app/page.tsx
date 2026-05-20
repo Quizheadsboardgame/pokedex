@@ -14,9 +14,9 @@ import {
   ExternalLink,
   TrendingUp,
   Search,
-  Layout,
-  ShieldAlert,
-  Globe
+  Instagram,
+  Mail,
+  Phone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -271,29 +271,66 @@ export default function PokedexApp() {
                 {mode === 'find-us' && (
                   <div className="p-4 md:p-10 pt-16 flex-1 flex flex-col space-y-10 overflow-y-auto custom-scrollbar">
                     <div className="text-center space-y-4">
-                      <Badge className="bg-accent text-accent-foreground font-black italic tracking-widest px-4 py-1">GPS LINK: ACTIVE</Badge>
+                      <Badge className="bg-accent text-accent-foreground font-black italic tracking-widest px-4 py-1 uppercase">Signal: Located</Badge>
                       <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
                         Find <span className="text-primary">Us</span>
                       </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative overflow-hidden">
-                        <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
-                          <MapPin size={16} /> Saturdays
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative overflow-hidden">
+                          <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
+                            <MapPin size={16} /> Saturdays
+                          </div>
+                          <p className="text-2xl text-white font-black italic uppercase leading-tight">
+                            Outside Timpsons <br /> Market Square <br /> IP33 1BT
+                          </p>
                         </div>
-                        <p className="text-2xl text-white font-black italic uppercase leading-tight">
-                          Outside Timpsons <br /> Market Square <br /> IP33 1BT
-                        </p>
+
+                        <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative overflow-hidden">
+                          <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
+                            <Activity size={16} /> Wednesdays
+                          </div>
+                          <p className="text-2xl text-white font-black italic uppercase leading-tight">
+                            Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative overflow-hidden">
-                        <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
-                          <Activity size={16} /> Wednesdays
+                      <div className="pt-8 border-t border-white/10">
+                        <div className="text-[10px] font-black text-primary uppercase tracking-[0.4em] digital-text mb-6">Contact Channels</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-12">
+                          <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-5 bg-black/40 rounded-3xl border-2 border-white/5 hover:border-primary transition-all group">
+                            <div className="h-10 w-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                              <Instagram size={20} />
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-black uppercase text-white/40 digital-text">Insta</p>
+                              <p className="font-bold text-xs text-white italic truncate">@newtons_collectables</p>
+                            </div>
+                          </a>
+
+                          <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-4 p-5 bg-black/40 rounded-3xl border-2 border-white/5 hover:border-secondary transition-all group">
+                            <div className="h-10 w-10 bg-secondary/20 rounded-xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                              <Mail size={20} />
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-black uppercase text-white/40 digital-text">Email</p>
+                              <p className="font-bold text-xs text-white italic truncate">Hello@tradeintcg.com</p>
+                            </div>
+                          </a>
+
+                          <a href="tel:07340407375" className="flex items-center gap-4 p-5 bg-black/40 rounded-3xl border-2 border-white/5 hover:border-accent transition-all group">
+                            <div className="h-10 w-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                              <Phone size={20} />
+                            </div>
+                            <div>
+                              <p className="text-[8px] font-black uppercase text-white/40 digital-text">Comms</p>
+                              <p className="font-bold text-xs text-white italic truncate">07340407375</p>
+                            </div>
+                          </a>
                         </div>
-                        <p className="text-2xl text-white font-black italic uppercase leading-tight">
-                          Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM
-                        </p>
                       </div>
                     </div>
 
@@ -354,7 +391,7 @@ export default function PokedexApp() {
                       mode === 'find-us' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
                     )}
                   >
-                    <MapPin size={16} /> GPS Map
+                    <MapPin size={16} /> Find Us
                   </button>
                 </div>
               </div>
