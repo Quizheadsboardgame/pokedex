@@ -13,7 +13,7 @@ export default function VisitPage() {
                 <div className="pokedex-camera scale-75" />
                 <Badge className="bg-secondary text-white font-black uppercase italic px-4 py-1">Location Data</Badge>
               </div>
-              <h2 className="text-5xl font-black uppercase italic text-foreground tracking-tighter leading-[0.85]">Find the <span className="text-primary">Red & Yellow</span> Gazebo</h2>
+              <h2 className="text-5xl font-black uppercase italic text-foreground tracking-tighter leading-[0.85]">Where to <span className="text-primary">Find Us</span></h2>
               <p className="text-xl text-muted-foreground mt-8 font-medium italic">
                 "We set up with tables featuring 6 display cases of rare singles and 10 binders full of classics."
               </p>
