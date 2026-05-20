@@ -1,50 +1,10 @@
 
 {
-  "entities": {
-    "NewCard": {
-      "title": "NewCard",
-      "description": "A Pokémon card inventory item for the shop.",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name and set of the card."
-        },
-        "price": {
-          "type": "string",
-          "description": "The price of the card in GBP."
-        },
-        "imageUrl": {
-          "type": "string",
-          "description": "Data URI or URL of the card image."
-        },
-        "sold": {
-          "type": "boolean",
-          "description": "Whether the card has been sold."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp of when the card was added."
-        }
-      },
-      "required": [
-        "name",
-        "price",
-        "imageUrl",
-        "sold"
-      ]
-    }
-  },
+  "entities": {},
   "auth": {
     "providers": [
       "google.com"
     ]
   },
-  "firestore": {
-    "/new-cards/{cardId}": {
-      "schema": "NewCard",
-      "description": "Public collection of cards for sale at the stall."
-    }
-  }
+  "firestore": {}
 }

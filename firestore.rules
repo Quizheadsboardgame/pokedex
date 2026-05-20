@@ -2,15 +2,6 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow public read access to the inventory
-    match /new-cards/{cardId} {
-      allow read: if true;
-      // Allow create, update, delete for the prototype
-      // In a production app, you would restrict this to authenticated admins
-      allow create, update, delete: if true;
-    }
-    
-    // Default deny for everything else
     match /{document=**} {
       allow read, write: if false;
     }
