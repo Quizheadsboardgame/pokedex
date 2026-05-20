@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Trash2, ShieldAlert, Calculator, Coins, RefreshCw, Briefcase } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface TradeCard {
@@ -40,12 +39,11 @@ export default function TradeInPage() {
     <div className="bg-slate-100 min-h-screen py-12 md:py-20">
       <section className="container px-4 max-w-5xl mx-auto">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-primary text-white font-black uppercase italic px-6 py-1">Trade-In Protocol Alpha</Badge>
           <h1 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-foreground">
             Trade-In <span className="text-primary">Calculator</span>
           </h1>
           <p className="text-xl text-muted-foreground mt-4 font-medium italic">
-            "Estimate your collection value for Bury Market trading..."
+            trade in price guide
           </p>
         </div>
 
