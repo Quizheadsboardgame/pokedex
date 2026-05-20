@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { 
   MapPin, 
   Clock, 
@@ -15,13 +15,12 @@ import {
   ChevronUp,
   ChevronDown,
   Star,
-  Camera,
+  Link as LinkIcon,
   Save,
   Lock,
   Unlock,
   Loader2,
-  CheckCircle2,
-  XCircle
+  Image as ImageIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,9 +57,8 @@ export default function PokedexApp() {
 
   const [newCardName, setNewCardName] = useState("");
   const [newCardPrice, setNewCardPrice] = useState("");
-  const [newCardImage, setNewCardImage] = useState<string | null>(null);
+  const [newCardImageUrl, setNewCardImageUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [tradeCards, setTradeCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
@@ -89,35 +87,15 @@ export default function PokedexApp() {
 
   const totalValue = tradeCards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Basic size check to prevent massive Firestore docs
-      if (file.size > 800000) {
-        toast({
-          variant: "destructive",
-          title: "File Too Large",
-          description: "Please use an image under 800KB for the cloud archive.",
-        });
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewCardImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const saveNewCard = () => {
-    if (!db || !newCardName || !newCardPrice || !newCardImage) return;
+    if (!db || !newCardName || !newCardPrice || !newCardImageUrl) return;
     setIsSaving(true);
     
     const cardsRef = collection(db, 'new-cards');
     const data = {
       name: newCardName,
       price: newCardPrice,
-      imageUrl: newCardImage,
+      imageUrl: newCardImageUrl,
       sold: false,
       createdAt: serverTimestamp(),
     };
@@ -126,12 +104,12 @@ export default function PokedexApp() {
       .then(() => {
         setNewCardName("");
         setNewCardPrice("");
-        setNewCardImage(null);
+        setNewCardImageUrl("");
         setMode('new-cards');
         setIsSaving(false);
         toast({
-          title: "Upload Successful",
-          description: `${data.name} synced to global stall.`,
+          title: "Update Successful",
+          description: `${data.name} synced across all devices.`,
         });
       })
       .catch(async (serverError) => {
@@ -181,7 +159,7 @@ export default function PokedexApp() {
       setAdminPassword("");
       toast({
         title: "Admin Access Granted",
-        description: "Inventory editing unlocked.",
+        description: "Live inventory management unlocked.",
       });
     } else {
       toast({
@@ -223,11 +201,11 @@ export default function PokedexApp() {
                 <div className="flex items-center gap-2">
                   <Activity size={12} className={cn("text-primary", (cardsLoading || isSaving) && "animate-spin")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    {cardsLoading || isSaving ? "UPLOADING TO SATELLITE..." : "CLOUD LINK: SECURE"}
+                    {cardsLoading || isSaving ? "LINKING TO SATELLITE..." : "CLOUD SYNC: ACTIVE"}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v4.0.1_STABLE</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">GLOBAL FEED</span>
                 </div>
               </div>
 
@@ -240,7 +218,7 @@ export default function PokedexApp() {
                       </h2>
                       <div className="flex items-center justify-center gap-2">
                         <Badge variant="outline" className="border-accent text-accent font-black digital-text text-[10px] uppercase italic tracking-widest">
-                          Live Stall Feed
+                          Live Feed
                         </Badge>
                         {editMode && (
                           <Button 
@@ -249,7 +227,7 @@ export default function PokedexApp() {
                             onClick={() => setMode('admin-login')} 
                             className="h-6 bg-accent text-accent-foreground text-[8px] font-black uppercase px-2"
                           >
-                            <Plus size={10} className="mr-1" /> Add Entry
+                            <Plus size={10} className="mr-1" /> Add Card
                           </Button>
                         )}
                       </div>
@@ -309,14 +287,14 @@ export default function PokedexApp() {
                               <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
                                 <div className={cn("h-full w-full", card.sold ? "bg-slate-700" : "bg-primary/40")} />
                               </div>
-                              <p className="text-[10px] font-black text-white/40 uppercase tracking-widest digital-text">SLOT: {card.id.slice(-6).toUpperCase()}</p>
+                              <p className="text-[10px] font-black text-white/40 uppercase tracking-widest digital-text">ID: {card.id.slice(-6).toUpperCase()}</p>
                            </div>
                         </div>
                       ))}
 
                       {(!remoteCards || remoteCards.length === 0) && !cardsLoading && (
                         <div className="text-center py-20 border-2 border-dashed border-white/10 rounded-3xl">
-                          <p className="text-white/20 font-black uppercase italic digital-text">Crate empty. Waiting for market arrivals...</p>
+                          <p className="text-white/20 font-black uppercase italic digital-text">Scanning for arrivals...</p>
                         </div>
                       )}
                     </div>
@@ -334,7 +312,7 @@ export default function PokedexApp() {
                             </div>
                           </div>
                           <div className="space-y-2">
-                            <h3 className="text-xl font-black text-white uppercase italic">Admin Protocol</h3>
+                            <h3 className="text-xl font-black text-white uppercase italic">Admin Portal</h3>
                             <p className="text-[10px] digital-text text-white/40 uppercase">Enter Passcode</p>
                           </div>
                           <Input 
@@ -349,7 +327,7 @@ export default function PokedexApp() {
                             className="w-full h-14 bg-primary text-white rounded-2xl font-black uppercase italic pokedex-button-hardware"
                             onClick={handleAdminLogin}
                           >
-                            Access Device
+                            Sync Identity
                           </Button>
                         </div>
                       </div>
@@ -357,7 +335,7 @@ export default function PokedexApp() {
                       <div className="w-full space-y-8">
                         <div className="text-center">
                           <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
-                            New <span className="text-accent">Entry</span>
+                            Card <span className="text-accent">Entry</span>
                           </h2>
                         </div>
 
@@ -384,22 +362,26 @@ export default function PokedexApp() {
                               </div>
                             </div>
 
-                            <div className="flex flex-col items-center justify-center border-4 border-dashed border-white/10 rounded-3xl p-4 relative group cursor-pointer h-56" onClick={() => fileInputRef.current?.click()}>
-                              {newCardImage ? (
-                                <img src={newCardImage} className="w-full h-full object-contain rounded-xl" />
-                              ) : (
-                                <div className="text-center space-y-2">
-                                  <Camera className="mx-auto text-white/20 h-10 w-10" />
-                                  <p className="text-[10px] font-black text-white/20 uppercase digital-text">Upload Scan</p>
-                                </div>
-                              )}
-                              <input 
-                                type="file" 
-                                ref={fileInputRef} 
-                                onChange={handleImageUpload} 
-                                className="hidden" 
-                                accept="image/*"
-                              />
+                            <div className="space-y-4">
+                              <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase italic text-primary digital-text">Image Link</label>
+                                <Input 
+                                  placeholder="https://i.ibb.co/..."
+                                  value={newCardImageUrl}
+                                  onChange={(e) => setNewCardImageUrl(e.target.value)}
+                                  className="bg-black/60 border-2 border-white/10 text-white h-14 rounded-2xl font-bold"
+                                />
+                              </div>
+                              <div className="h-28 border-2 border-dashed border-white/10 rounded-2xl flex items-center justify-center overflow-hidden">
+                                {newCardImageUrl ? (
+                                  <img src={newCardImageUrl} alt="Preview" className="h-full w-full object-contain" />
+                                ) : (
+                                  <div className="flex flex-col items-center gap-1 opacity-20">
+                                    <ImageIcon size={24} />
+                                    <span className="text-[8px] font-black uppercase italic digital-text">Preview</span>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
 
@@ -407,10 +389,10 @@ export default function PokedexApp() {
                             <Button 
                               className="flex-1 bg-accent text-accent-foreground h-16 rounded-2xl font-black uppercase italic text-lg hover:bg-accent/80 transition-all pokedex-button-hardware"
                               onClick={saveNewCard}
-                              disabled={isSaving || !newCardName || !newCardPrice || !newCardImage}
+                              disabled={isSaving || !newCardName || !newCardPrice || !newCardImageUrl}
                             >
                               {isSaving ? <Loader2 className="animate-spin" /> : <Save className="mr-2" />}
-                              Upload to Cloud
+                              Broadcast to App
                             </Button>
                             <Button 
                               variant="ghost" 
@@ -438,7 +420,7 @@ export default function PokedexApp() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
                           <Calculator size={18} />
-                          Session
+                          Active Session
                         </div>
                         <Button 
                           variant="outline" 
