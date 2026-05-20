@@ -1,28 +1,28 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-vinyl",
-      "description": "A close up of a record player needle on a black vinyl",
-      "imageUrl": "https://picsum.photos/seed/vinyl-hero/1200/600",
-      "imageHint": "record player"
+      "id": "hero-cards",
+      "description": "A pile of vintage holographic pokemon cards",
+      "imageUrl": "https://picsum.photos/seed/pokes-1/1200/600",
+      "imageHint": "pokemon cards"
     },
     {
-      "id": "jazz-section",
-      "description": "Classic jazz records in a crate",
-      "imageUrl": "https://picsum.photos/seed/jazz-vinyl/600/400",
-      "imageHint": "jazz vinyl"
+      "id": "bulk-bins",
+      "description": "Boxes full of thousands of common cards for digging",
+      "imageUrl": "https://picsum.photos/seed/pokes-2/600/400",
+      "imageHint": "card collection"
     },
     {
-      "id": "rock-classic",
-      "description": "Iconic rock album covers",
-      "imageUrl": "https://picsum.photos/seed/rock-vinyl/600/400",
-      "imageHint": "rock album"
+      "id": "rare-singles",
+      "description": "Rare cards in protective plastic slabs",
+      "imageUrl": "https://picsum.photos/seed/pokes-3/600/400",
+      "imageHint": "graded cards"
     },
     {
-      "id": "stall-vinyl",
-      "description": "A boutique record stall at a market",
-      "imageUrl": "https://picsum.photos/seed/vinyl-stall/800/600",
-      "imageHint": "record store"
+      "id": "market-stall",
+      "description": "A friendly local market stall with pokemon banners",
+      "imageUrl": "https://picsum.photos/seed/pokes-4/800/600",
+      "imageHint": "market stall"
     }
   ]
 }

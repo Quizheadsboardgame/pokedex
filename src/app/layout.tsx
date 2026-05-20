@@ -4,8 +4,8 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Newton's Vintage Vinyls | Rare Records in Bury St Edmunds",
-  description: 'Curating the finest analog sound. Jazz, Rock, and Soul records from the heart of Bury St Edmunds market.',
+  title: "Newton's Rarefinds | Bury St Edmunds Pokemon Stall",
+  description: 'The friendliest Pokemon stall in Bury St Edmunds. Vintage singles, 10p bulk, and graded grails.',
 };
 
 export default function RootLayout({
@@ -14,11 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
         <Header />
