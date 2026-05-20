@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -119,9 +118,8 @@ export default function TradeInPage() {
                 <CardContent className="p-6 flex gap-4 items-start">
                   <ShieldAlert className="text-amber-500 h-8 w-8 shrink-0 mt-1" />
                   <div className="space-y-2">
-                    <p className="font-black uppercase italic text-amber-700 text-sm">Lab Disclaimer</p>
                     <p className="text-amber-800 text-sm font-medium leading-relaxed italic">
-                      Condition is final and Newton's Collectables determines the ultimate price if you choose to sell us the cards. Estimates provided here are for guidance only.
+                      Please use the table as an example, prices can be discussed with us via email, WhatsApp or by text
                     </p>
                   </div>
                 </CardContent>
