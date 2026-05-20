@@ -1,4 +1,4 @@
-import { MapPin, Clock, Mail, Instagram, Zap, Tag, ShoppingBag, Navigation } from "lucide-react";
+import { MapPin, Clock, Mail, Instagram, Phone, Zap, Tag, ShoppingBag, Navigation } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -14,9 +14,6 @@ export default function VisitPage() {
                 <Badge className="bg-secondary text-white font-black uppercase italic px-4 py-1">Location Data</Badge>
               </div>
               <h2 className="text-5xl font-black uppercase italic text-foreground tracking-tighter leading-[0.85]">Where to <span className="text-primary">Find Us</span></h2>
-              <p className="text-xl text-muted-foreground mt-8 font-medium italic">
-                "We set up with tables featuring 6 display cases of rare singles and 10 binders full of classics."
-              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -37,30 +34,39 @@ export default function VisitPage() {
               </div>
             </div>
 
-            <div className="p-6 bg-slate-200 rounded-3xl border-4 border-slate-300">
-              <h3 className="text-primary font-black uppercase italic text-xl flex items-center gap-2 mb-4">
-                <Tag className="h-6 w-6" />
-                Price Summary
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm font-bold uppercase italic">
-                <div className="p-3 bg-white rounded-xl border-2 border-slate-300">
-                  <p className="text-primary text-[10px] mb-1">Singles</p>
-                  <p>£1 to £500+</p>
-                </div>
-                <div className="p-3 bg-white rounded-xl border-2 border-slate-300">
-                  <p className="text-secondary text-[10px] mb-1">Bulk Deals</p>
-                  <p>10p ea / £5 Bag</p>
-                </div>
-              </div>
-            </div>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-black uppercase italic text-primary">Contact the Lab</h3>
+              <div className="grid gap-4">
+                <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-white rounded-2xl border-4 border-slate-200 hover:border-primary transition-all group">
+                  <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                    <Instagram size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase text-slate-400">Instagram</p>
+                    <p className="font-bold">@newtons_collectables</p>
+                  </div>
+                </a>
 
-            <div className="flex gap-4">
-              <Button className="h-16 w-16 bg-white rounded-2xl border-4 border-primary flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-lg p-0">
-                <Instagram size={32} />
-              </Button>
-              <Button className="h-16 w-16 bg-white rounded-2xl border-4 border-secondary flex items-center justify-center text-secondary hover:bg-secondary hover:text-white transition-all shadow-lg p-0">
-                <Mail size={32} />
-              </Button>
+                <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-4 p-4 bg-white rounded-2xl border-4 border-slate-200 hover:border-secondary transition-all group">
+                  <div className="h-12 w-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase text-slate-400">Email</p>
+                    <p className="font-bold">Hello@tradeintcg.com</p>
+                  </div>
+                </a>
+
+                <a href="tel:07340407375" className="flex items-center gap-4 p-4 bg-white rounded-2xl border-4 border-slate-200 hover:border-accent transition-all group">
+                  <div className="h-12 w-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase text-slate-400">Mobile</p>
+                    <p className="font-bold">07340407375</p>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -81,7 +87,6 @@ export default function VisitPage() {
             <div className="absolute -top-8 -right-8 h-32 w-32 bg-accent rounded-full border-[6px] border-primary shadow-2xl flex items-center justify-center font-black text-primary text-sm text-center p-4 transform rotate-12 z-20 uppercase italic leading-none">
               LOOK FOR THE GAZEBO!
             </div>
-            {/* Map Pointer Decoration */}
             <div className="absolute bottom-4 right-4 pokedex-button bg-blue-500 scale-150 shadow-xl" />
           </div>
         </div>
