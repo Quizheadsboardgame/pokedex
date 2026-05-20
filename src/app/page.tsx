@@ -15,7 +15,9 @@ import {
   ChevronUp,
   ChevronDown,
   BookOpen,
-  ExternalLink
+  ExternalLink,
+  TrendingUp,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +30,7 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'trade-in' | 'pokedex';
+type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check';
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
@@ -107,12 +109,12 @@ export default function PokedexApp() {
                       <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Pokedex Digital Archive</span>
                       <div className="flex gap-4 items-center">
                         <a 
-                          href="https://pokemondb.net/pokedex/all" 
+                          href="https://pokedex.org/" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase"
                         >
-                          <ExternalLink size={10} /> Open PokémonDB
+                          <ExternalLink size={10} /> Open Standalone
                         </a>
                       </div>
                     </div>
@@ -120,6 +122,32 @@ export default function PokedexApp() {
                       src="https://pokedex.org/" 
                       className="flex-1 w-full border-none pt-8"
                       title="Pokemon Database"
+                      allow="fullscreen"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
+                {mode === 'price-check' && (
+                  <div className="flex-1 flex flex-col h-full bg-white relative">
+                    <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
+                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">TCG Price Benchmarking</span>
+                      <div className="flex gap-4 items-center">
+                        <a 
+                          href="https://www.pricecharting.com/category/pokemon-cards" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase"
+                        >
+                          <ExternalLink size={10} /> Open PriceCharting
+                        </a>
+                      </div>
+                    </div>
+                    {/* PriceCharting often allows iframing, but we provide the external link as fallback */}
+                    <iframe 
+                      src="https://www.pricecharting.com/category/pokemon-cards" 
+                      className="flex-1 w-full border-none pt-8"
+                      title="Price Check"
                       allow="fullscreen"
                       loading="lazy"
                     />
@@ -265,6 +293,15 @@ export default function PokedexApp() {
                     )}
                   >
                     <BookOpen size={16} /> PokéDex
+                  </button>
+                  <button 
+                    onClick={() => setMode('price-check')}
+                    className={cn(
+                      "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-xs transition-all",
+                      mode === 'price-check' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
+                  >
+                    <TrendingUp size={16} /> Price Check
                   </button>
                   <button 
                     onClick={() => setMode('trade-in')}
