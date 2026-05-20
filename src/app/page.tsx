@@ -17,7 +17,6 @@ import {
   Instagram,
   Mail,
   Phone,
-  Info,
   Store
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check' | 'card-find' | 'about-us';
+type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check' | 'card-find';
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
@@ -192,61 +191,6 @@ export default function PokedexApp() {
                       allow="fullscreen"
                       loading="lazy"
                     />
-                  </div>
-                )}
-
-                {mode === 'about-us' && (
-                  <div className="p-4 md:p-10 pt-16 flex-1 flex flex-col space-y-8 overflow-y-auto custom-scrollbar">
-                    <div className="text-center space-y-4">
-                      <Badge className="bg-accent text-accent-foreground font-black italic tracking-widest px-4 py-1 uppercase">Profile: Newton's</Badge>
-                      <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
-                        About <span className="text-primary">Us</span>
-                      </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                      <div className="space-y-6">
-                        <div className="p-6 bg-black/40 border-2 border-white/5 rounded-3xl relative overflow-hidden group">
-                          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest mb-4">
-                            <Store size={16} /> The Stall
-                          </div>
-                          <p className="text-lg text-white font-medium italic leading-relaxed relative z-10">
-                            We are Newton's Collectables, a family-run business based at the historic <span className="text-primary font-black">Bury St Edmunds Market</span>. 
-                          </p>
-                          <p className="text-lg text-white/80 font-medium italic leading-relaxed mt-4 relative z-10">
-                            We specialize in Pokémon singles, booster packs, and accessories. You'll also find a wide range of other TCGs and rare collectables at our stall.
-                          </p>
-                        </div>
-
-                        <div className="p-6 bg-black/40 border-2 border-white/5 rounded-3xl relative overflow-hidden">
-                          <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest mb-2">
-                            <Activity size={16} /> Inventory Status
-                          </div>
-                          <ul className="space-y-2 text-white/70 digital-text text-xs font-bold uppercase italic">
-                            <li className="flex justify-between"><span>Singles</span> <span className="text-green-400">Archived</span></li>
-                            <li className="flex justify-between"><span>Booster Packs</span> <span className="text-green-400">In Stock</span></li>
-                            <li className="flex justify-between"><span>Accessories</span> <span className="text-green-400">Available</span></li>
-                            <li className="flex justify-between"><span>Collectables</span> <span className="text-yellow-400">Rotating</span></li>
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="relative group">
-                         <div className="pokedex-screen p-1 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group-hover:border-primary/50 transition-all duration-500">
-                            <img 
-                              src="https://i.ibb.co/4n0BQHqp/fd008cb5-fa9d-4964-80e1-780ba2f3a90c.jpg" 
-                              alt="Newton's Market Stand" 
-                              className="w-full h-auto object-cover rounded-2xl"
-                            />
-                            <div className="absolute inset-0 bg-primary/10 mix-blend-overlay pointer-events-none" />
-                            <div className="scanner-line !h-0.5 !opacity-20" />
-                         </div>
-                         <div className="mt-4 text-center">
-                            <span className="text-[10px] font-black digital-text text-white/30 uppercase tracking-[0.3em]">Visual Capture: Bury Market Stall</span>
-                         </div>
-                      </div>
-                    </div>
                   </div>
                 )}
 
@@ -440,15 +384,6 @@ export default function PokedexApp() {
                     )}
                   >
                     <Calculator size={16} /> Trade-In
-                  </button>
-                  <button 
-                    onClick={() => setMode('about-us')}
-                    className={cn(
-                      "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-xs transition-all",
-                      mode === 'about-us' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
-                    )}
-                  >
-                    <Info size={16} /> About Us
                   </button>
                   <button 
                     onClick={() => setMode('find-us')}
