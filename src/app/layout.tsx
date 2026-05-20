@@ -17,14 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="icon" href="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" />
       </head>
-      <body className="antialiased min-h-screen bg-[#121212] py-8 md:py-16">
+      <body className="antialiased h-full w-full bg-[#121212] overflow-hidden">
         <FirebaseClientProvider>
           {children}
           <Toaster />
