@@ -1,96 +1,297 @@
-import { MapPin, Clock, Mail, Instagram, Phone } from "lucide-react";
+
+"use client";
+
+import { useState, useEffect } from "react";
+import { 
+  MapPin, 
+  Clock, 
+  Mail, 
+  Instagram, 
+  Phone, 
+  Calculator, 
+  Plus, 
+  Trash2, 
+  ShieldAlert, 
+  Coins, 
+  RefreshCw, 
+  Briefcase,
+  ChevronRight,
+  ChevronLeft,
+  Circle
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export default function Home() {
+interface TradeCard {
+  id: string;
+  name: string;
+  value: number;
+}
+
+type Mode = 'find-us' | 'trade-in';
+
+export default function PokedexApp() {
+  const [mode, setMode] = useState<Mode>('find-us');
+  const [mounted, setMounted] = useState(false);
+  const [cards, setCards] = useState<TradeCard[]>([
+    { id: "initial-1", name: "", value: 0 }
+  ]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const addCard = () => {
+    const newId = `card-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    setCards([...cards, { id: newId, name: "", value: 0 }]);
+  };
+
+  const removeCard = (id: string) => {
+    if (cards.length > 1) {
+      setCards(cards.filter(c => c.id !== id));
+    } else {
+      setCards([{ id: "initial-1", name: "", value: 0 }]);
+    }
+  };
+
+  const updateCard = (id: string, field: keyof TradeCard, val: string | number) => {
+    setCards(cards.map(c => c.id === id ? { ...c, [field]: val } : c));
+  };
+
+  const totalValue = cards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
+
+  if (!mounted) return null;
+
   return (
-    <div className="bg-slate-50 min-h-screen py-12 md:py-20">
-      <section className="container px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="pokedex-frame p-8 md:p-12 space-y-12">
-            <div className="space-y-8">
-              <div className="flex flex-col items-center text-center space-y-6">
-                <div className="flex items-center gap-4 mb-2">
-                  <div className="pokedex-camera scale-75" />
-                  <Badge className="bg-secondary text-white font-black uppercase italic px-4 py-1">Transmission Active</Badge>
-                </div>
-                <h2 className="text-5xl md:text-7xl font-black uppercase italic text-foreground tracking-tighter leading-[0.85]">
-                  Where to <span className="text-primary">Find Us</span>
-                </h2>
-                <p className="text-xl text-muted-foreground mt-4 font-medium italic">
-                  "Locating Stall #42 in the Bury St Edmunds Market Grid..."
-                </p>
+    <main className="container px-4 max-w-6xl mx-auto">
+      <div className="pokedex-shell">
+        {/* Hardware Top Bar */}
+        <div className="bg-[#c0392b] p-8 flex items-center gap-6 border-b-8 border-black/10">
+          <div className="pokedex-camera-lens" />
+          <div className="flex gap-4">
+            <div className="h-4 w-4 rounded-full bg-red-600 border-2 border-black/20 shadow-inner animate-pulse" />
+            <div className="h-4 w-4 rounded-full bg-yellow-400 border-2 border-black/20 shadow-inner" />
+            <div className="h-4 w-4 rounded-full bg-green-500 border-2 border-black/20 shadow-inner" />
+          </div>
+          <div className="ml-auto">
+            <img 
+              src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+              alt="Newton's Collectables" 
+              className="h-12 md:h-20 object-contain drop-shadow-lg"
+            />
+          </div>
+        </div>
+
+        <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Main Display Area */}
+          <div className="lg:col-span-9">
+            <div className="pokedex-screen-container">
+              <div className="pokedex-screen-overlay" />
+              
+              {/* Internal Screen Content */}
+              <div className="relative z-10 p-6 md:p-10 flex-1 flex flex-col custom-scrollbar overflow-y-auto">
+                {mode === 'find-us' ? (
+                  <div className="animate-in fade-in slide-in-from-right-10 duration-500 flex-1 space-y-10">
+                    <div className="text-center space-y-4">
+                      <Badge className="bg-accent text-accent-foreground font-black italic tracking-widest px-4 py-1">GPS LINK: ACTIVE</Badge>
+                      <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
+                        Where to <span className="text-primary">Find Us</span>
+                      </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative group overflow-hidden">
+                        <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
+                          <MapPin size={16} className="animate-bounce" />
+                          Saturdays
+                        </div>
+                        <p className="text-2xl text-white font-black italic uppercase leading-tight">
+                          Outside Timpsons <br /> Market Square <br /> IP33 1BT
+                        </p>
+                      </div>
+
+                      <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative group overflow-hidden">
+                        <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
+                          <Clock size={16} />
+                          Wednesdays
+                        </div>
+                        <p className="text-2xl text-white font-black italic uppercase leading-tight">
+                          Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-8 border-t border-white/10">
+                      <h3 className="text-xl font-black uppercase italic text-primary mb-6">Social Transmission</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <a href="https://instagram.com/newtons_collectables" target="_blank" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/20 transition-all">
+                          <Instagram size={20} className="text-primary" />
+                          <span className="text-xs font-bold uppercase italic digital-text">@newtons_collectables</span>
+                        </a>
+                        <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-secondary/20 transition-all">
+                          <Mail size={20} className="text-secondary" />
+                          <span className="text-xs font-bold uppercase italic digital-text">Hello@tradeintcg.com</span>
+                        </a>
+                        <a href="tel:07340407375" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-accent/20 transition-all">
+                          <Phone size={20} className="text-accent" />
+                          <span className="text-xs font-bold uppercase italic digital-text">07340407375</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="animate-in fade-in slide-in-from-left-10 duration-500 flex-1 space-y-8">
+                    <div className="text-center space-y-2">
+                      <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
+                        Trade-In <span className="text-primary">Calculator</span>
+                      </h2>
+                      <p className="text-accent digital-text text-xs uppercase italic tracking-[0.2em]">trade in price guide</p>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
+                          <Calculator size={18} />
+                          Data Entry
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          onClick={addCard}
+                          className="bg-primary/10 border-primary border-4 text-primary font-black uppercase italic rounded-xl hover:bg-primary hover:text-white"
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add Card
+                        </Button>
+                      </div>
+
+                      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                        {cards.map((card) => (
+                          <div key={card.id} className="flex gap-3 items-end group animate-in slide-in-from-left-2 duration-200">
+                            <div className="flex-1 space-y-1">
+                              <label className="text-[10px] font-black uppercase italic text-slate-400">Card Name/Set</label>
+                              <Input 
+                                placeholder="Base Set Charizard..."
+                                value={card.name}
+                                onChange={(e) => updateCard(card.id, 'name', e.target.value)}
+                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
+                              />
+                            </div>
+                            <div className="w-24 md:w-32 space-y-1">
+                              <label className="text-[10px] font-black uppercase italic text-slate-400">Value (£)</label>
+                              <Input 
+                                type="number"
+                                placeholder="0"
+                                value={card.value || ''}
+                                onChange={(e) => updateCard(card.id, 'value', e.target.value)}
+                                className="bg-black/40 border-2 border-white/10 text-white focus-visible:ring-primary h-12 rounded-xl italic font-bold"
+                              />
+                            </div>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => removeCard(card.id)}
+                              className="h-12 w-12 text-slate-500 hover:text-destructive transition-colors"
+                            >
+                              <Trash2 size={20} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                        <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-green-400 uppercase tracking-widest digital-text">Cash (70%)</p>
+                          <p className="text-2xl font-black text-green-400 italic">£{(totalValue * 0.7).toFixed(2)}</p>
+                        </div>
+                        <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest digital-text">Trade (80%)</p>
+                          <p className="text-2xl font-black text-blue-400 italic">£{(totalValue * 0.8).toFixed(2)}</p>
+                        </div>
+                        <div className="p-4 bg-purple-500/10 border border-purple-500/20 rounded-2xl">
+                          <p className="text-[10px] font-black text-purple-400 uppercase tracking-widest digital-text">Consign (85%)</p>
+                          <p className="text-2xl font-black text-purple-400 italic">£{(totalValue * 0.85).toFixed(2)}</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl flex gap-3 items-start">
+                        <ShieldAlert className="text-amber-500 h-5 w-5 shrink-0 mt-0.5" />
+                        <p className="text-[11px] text-amber-200 font-medium italic">
+                          Please use the table as an example, prices can be discussed with us via email, WhatsApp or by text
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="space-y-4 pokedex-screen p-6 relative group overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
-                    <MapPin size={14} className="animate-bounce" />
-                    Saturdays
-                  </div>
-                  <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Outside Timpsons <br /> Market Square <br /> IP33 1BT</p>
-                </div>
+              {/* Screen Static / Scan Line */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-white/20 scanline-anim z-20" />
+            </div>
+          </div>
 
-                <div className="space-y-4 pokedex-screen p-6 group overflow-hidden">
-                  <div className="absolute inset-0 bg-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
-                    <Clock size={14} />
-                    Wednesdays
-                  </div>
-                  <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM</p>
+          {/* Side Hardware Controls */}
+          <div className="lg:col-span-3 flex flex-col justify-between py-6">
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center">Module Select</p>
+                <div className="flex flex-col gap-4">
+                  <button 
+                    onClick={() => setMode('find-us')}
+                    className={`pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all ${
+                      mode === 'find-us' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    }`}
+                  >
+                    <MapPin size={18} />
+                    Location
+                  </button>
+                  <button 
+                    onClick={() => setMode('trade-in')}
+                    className={`pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all ${
+                      mode === 'trade-in' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    }`}
+                  >
+                    <Calculator size={18} />
+                    Trade In
+                  </button>
                 </div>
+              </div>
+
+              {/* D-Pad Simulation */}
+              <div className="relative mx-auto w-32 h-32 flex items-center justify-center">
+                <div className="absolute w-24 h-8 bg-slate-800 rounded-md shadow-lg" />
+                <div className="absolute h-24 w-8 bg-slate-800 rounded-md shadow-lg" />
+                <div className="h-6 w-6 rounded-full bg-slate-900 z-10" />
+                <button 
+                  onClick={() => setMode(mode === 'find-us' ? 'trade-in' : 'find-us')}
+                  className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors"
+                />
+                <button 
+                  onClick={() => setMode(mode === 'find-us' ? 'trade-in' : 'find-us')}
+                  className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors"
+                />
+                <button 
+                  onClick={() => setMode(mode === 'find-us' ? 'trade-in' : 'find-us')}
+                  className="absolute left-0 h-8 w-8 rounded-l-md hover:bg-slate-700 transition-colors"
+                />
+                <button 
+                  onClick={() => setMode(mode === 'find-us' ? 'trade-in' : 'find-us')}
+                  className="absolute right-0 h-8 w-8 rounded-r-md hover:bg-slate-700 transition-colors"
+                />
               </div>
             </div>
 
-            <div className="space-y-6 pt-8 border-t border-slate-200">
-              <h3 className="text-3xl font-black uppercase italic text-primary text-center">Contact Us</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-5 bg-white rounded-3xl border-4 border-slate-200 hover:border-primary transition-all group shadow-sm">
-                  <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                    <Instagram size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[8px] font-black uppercase text-slate-400">Instagram</p>
-                    <p className="font-bold text-sm truncate">newtons_collectables</p>
-                  </div>
-                </a>
-
-                <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-4 p-5 bg-white rounded-3xl border-4 border-slate-200 hover:border-secondary transition-all group shadow-sm">
-                  <div className="h-10 w-10 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
-                    <Mail size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[8px] font-black uppercase text-slate-400">Email</p>
-                    <p className="font-bold text-sm truncate">Hello@tradeintcg.com</p>
-                  </div>
-                </a>
-
-                <a href="tel:07340407375" className="flex items-center gap-4 p-5 bg-white rounded-3xl border-4 border-slate-200 hover:border-accent transition-all group shadow-sm">
-                  <div className="h-10 w-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
-                    <Phone size={20} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[8px] font-black uppercase text-slate-400">Mobile</p>
-                    <p className="font-bold text-sm truncate">07340407375</p>
-                  </div>
-                </a>
+            <div className="space-y-4 pt-10">
+              <div className="flex justify-center gap-3">
+                <div className="h-10 w-10 bg-slate-800 rounded-full pokedex-button-hardware border-4 border-black/20" />
+                <div className="h-10 w-10 bg-slate-800 rounded-full pokedex-button-hardware border-4 border-black/20" />
               </div>
-            </div>
-            
-            <div className="flex justify-between items-center pt-8 border-t border-slate-100">
-               <div className="flex gap-3">
-                 <div className="h-5 w-5 rounded-full bg-red-500 shadow-inner animate-pulse duration-700" />
-                 <div className="h-5 w-5 rounded-full bg-yellow-400 shadow-inner animate-pulse duration-1000 delay-150" />
-                 <div className="h-5 w-5 rounded-full bg-green-500 shadow-inner animate-pulse duration-500 delay-300" />
-               </div>
-               <div className="h-4 w-48 bg-slate-200 rounded-full overflow-hidden relative">
-                 <div className="absolute inset-0 bg-primary/20 animate-pulse" />
-                 <div className="h-full bg-primary w-2/3 shadow-[0_0_10px_rgba(255,0,0,0.5)] transition-all duration-1000 animate-[scan_2s_linear_infinite]" />
-               </div>
+              <p className="text-[9px] font-black text-white/30 uppercase text-center italic tracking-widest">© 2024 Newton's Collectables</p>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </main>
   );
 }
