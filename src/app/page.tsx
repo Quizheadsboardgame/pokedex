@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -26,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useFirestore, useCollection } from '@/firebase';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 
 interface TradeCard {
@@ -44,8 +45,14 @@ export default function PokedexApp() {
   
   // Firebase
   const db = useFirestore();
-  const cardsRef = db ? collection(db, 'new-cards') : null;
-  const cardsQuery = cardsRef ? query(cardsRef, orderBy('createdAt', 'desc')) : null;
+  
+  // Stabilize the query to prevent infinite render loops
+  const cardsQuery = useMemoFirebase(() => {
+    if (!db) return null;
+    const cardsRef = collection(db, 'new-cards');
+    return query(cardsRef, orderBy('createdAt', 'desc'));
+  }, [db]);
+
   const { data: remoteCards, loading: cardsLoading } = useCollection(cardsQuery);
 
   // New Card Form State
@@ -95,9 +102,10 @@ export default function PokedexApp() {
   };
 
   const saveNewCard = async () => {
-    if (!cardsRef || !newCardName || !newCardPrice || !newCardImage) return;
+    if (!db || !newCardName || !newCardPrice || !newCardImage) return;
     setIsSaving(true);
     try {
+      const cardsRef = collection(db, 'new-cards');
       await addDoc(cardsRef, {
         name: newCardName,
         price: newCardPrice,
