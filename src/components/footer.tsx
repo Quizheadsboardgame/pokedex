@@ -1,4 +1,5 @@
 import { Zap } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -6,12 +7,14 @@ export function Footer() {
       <div className="container px-4 text-center md:text-left">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-12 mb-12">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center border-2 border-white">
+            <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center border-2 border-white overflow-hidden">
               <Zap className="text-accent" size={20} />
             </div>
-            <span className="font-bold text-2xl tracking-tighter uppercase italic">
-              NEWTON'S COLLECTABLES
-            </span>
+            <img 
+              src="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" 
+              alt="Newton's Collectables" 
+              className="h-12 w-auto"
+            />
           </div>
           
           <nav className="flex flex-wrap justify-center gap-8 text-sm font-bold uppercase">

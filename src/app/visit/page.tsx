@@ -74,7 +74,7 @@ export default function VisitPage() {
             <div className="pokedex-frame p-2 bg-primary">
                <div className="aspect-square relative rounded-2xl overflow-hidden border-4 border-black/10">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2442.228511674312!2d0.7107297771746977!3d52.24831645620958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d84f880f089c93%3A0xc07a827725838089!2sBury%20St%20Edmunds%20Market!5e0!3m2!1sen!2suk!4v1715456789123!5m2!1sen!2suk" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d305.2891106297388!2d0.7132924409384555!3d52.24357416347318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d84f236e761617%3A0x6336e792c3a5f979!2sTimpson!5e0!3m2!1sen!2suk!4v1715456789123!5m2!1sen!2suk" 
                     width="100%" 
                     height="100%" 
                     style={{ border: 0, filter: 'contrast(1.1)' }} 
@@ -85,7 +85,7 @@ export default function VisitPage() {
                </div>
             </div>
             <div className="absolute -top-8 -right-8 h-32 w-32 bg-accent rounded-full border-[6px] border-primary shadow-2xl flex items-center justify-center font-black text-primary text-sm text-center p-4 transform rotate-12 z-20 uppercase italic leading-none">
-              LOOK FOR THE GAZEBO!
+              WEATHER DEPENDENT
             </div>
             <div className="absolute bottom-4 right-4 pokedex-button bg-blue-500 scale-150 shadow-xl" />
           </div>
