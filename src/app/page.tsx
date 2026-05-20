@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,14 +15,13 @@ import {
   ChevronUp,
   ChevronDown,
   Star,
-  Link as LinkIcon,
   Save,
   Lock,
   Unlock,
   Loader2,
   Image as ImageIcon,
   BookOpen,
-  Search
+  ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,8 +109,8 @@ export default function PokedexApp() {
         setMode('new-cards');
         setIsSaving(false);
         toast({
-          title: "Update Successful",
-          description: `${data.name} synced across all devices.`,
+          title: "Broadcast Successful",
+          description: `${data.name} has been added to the global feed.`,
         });
       })
       .catch(async (serverError) => {
@@ -160,13 +160,13 @@ export default function PokedexApp() {
       setAdminPassword("");
       toast({
         title: "Admin Access Granted",
-        description: "Live inventory management unlocked.",
+        description: "Protocol Unlocked: Card Entry Mode.",
       });
     } else {
       toast({
         variant: "destructive",
         title: "Access Denied",
-        description: "Incorrect Passcode.",
+        description: "Invalid Admin Passcode.",
       });
     }
   };
@@ -202,11 +202,11 @@ export default function PokedexApp() {
                 <div className="flex items-center gap-2">
                   <Activity size={12} className={cn("text-primary", (cardsLoading || isSaving) && "animate-spin")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    {cardsLoading || isSaving ? "LINKING TO SATELLITE..." : "CLOUD SYNC: ACTIVE"}
+                    {cardsLoading || isSaving ? "SYNCING..." : "LIVE FEED"}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">GLOBAL FEED</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">STATION 01</span>
                 </div>
               </div>
 
@@ -220,7 +220,7 @@ export default function PokedexApp() {
                         </h2>
                         <div className="flex items-center justify-center gap-2">
                           <Badge variant="outline" className="border-accent text-accent font-black digital-text text-[10px] uppercase italic tracking-widest">
-                            Live Feed
+                            Live Inventory
                           </Badge>
                           {editMode && (
                             <Button 
@@ -229,7 +229,7 @@ export default function PokedexApp() {
                               onClick={() => setMode('admin-login')} 
                               className="h-6 bg-accent text-accent-foreground text-[8px] font-black uppercase px-2"
                             >
-                              <Plus size={10} className="mr-1" /> Add Card
+                              <Plus size={10} className="mr-1" /> Add Entry
                             </Button>
                           )}
                         </div>
@@ -296,7 +296,7 @@ export default function PokedexApp() {
 
                         {(!remoteCards || remoteCards.length === 0) && !cardsLoading && (
                           <div className="text-center py-20 border-2 border-dashed border-white/10 rounded-3xl">
-                            <p className="text-white/20 font-black uppercase italic digital-text">Scanning for arrivals...</p>
+                            <p className="text-white/20 font-black uppercase italic digital-text">Scanning for new arrivals...</p>
                           </div>
                         )}
                       </div>
@@ -305,18 +305,27 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'pokedex' && (
-                  <div className="flex-1 flex flex-col h-full bg-white relative">
-                    <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-20 flex items-center px-4 justify-between border-b-4 border-black/10">
-                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Global Pokedex Database</span>
-                      <div className="flex gap-1">
-                        <div className="h-2 w-2 rounded-full bg-white/40" />
-                        <div className="h-2 w-2 rounded-full bg-white/40" />
+                  <div className="flex-1 flex flex-col h-full bg-slate-900 relative">
+                    <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
+                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Pokedex Digital Archive</span>
+                      <div className="flex gap-4 items-center">
+                        <a 
+                          href="https://pokemondb.net/pokedex/all" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase"
+                        >
+                          <ExternalLink size={10} /> Open PokémonDB
+                        </a>
                       </div>
                     </div>
+                    {/* pokedex.org is much more likely to allow framing than pokemondb.net */}
                     <iframe 
-                      src="https://pokemondb.net/pokedex/all" 
+                      src="https://pokedex.org/" 
                       className="flex-1 w-full border-none pt-8"
                       title="Pokemon Database"
+                      allow="fullscreen"
+                      loading="lazy"
                     />
                   </div>
                 )}
@@ -332,8 +341,8 @@ export default function PokedexApp() {
                             </div>
                           </div>
                           <div className="space-y-2">
-                            <h3 className="text-xl font-black text-white uppercase italic">Admin Portal</h3>
-                            <p className="text-[10px] digital-text text-white/40 uppercase">Enter Passcode</p>
+                            <h3 className="text-xl font-black text-white uppercase italic">Admin Access</h3>
+                            <p className="text-[10px] digital-text text-white/40 uppercase">Enter Device Passcode</p>
                           </div>
                           <Input 
                             type="password"
@@ -347,7 +356,7 @@ export default function PokedexApp() {
                             className="w-full h-14 bg-primary text-white rounded-2xl font-black uppercase italic pokedex-button-hardware"
                             onClick={handleAdminLogin}
                           >
-                            Sync Identity
+                            Authenticate
                           </Button>
                         </div>
                       </div>
@@ -363,9 +372,9 @@ export default function PokedexApp() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-4">
                               <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase italic text-primary digital-text">Card Name</label>
+                                <label className="text-[10px] font-black uppercase italic text-primary digital-text">Title / Set</label>
                                 <Input 
-                                  placeholder="e.g. Base Set Mewtwo..."
+                                  placeholder="e.g. Base Set Charizard..."
                                   value={newCardName}
                                   onChange={(e) => setNewCardName(e.target.value)}
                                   className="bg-black/60 border-2 border-white/10 text-white h-14 rounded-2xl font-bold"
@@ -384,7 +393,7 @@ export default function PokedexApp() {
 
                             <div className="space-y-4">
                               <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase italic text-primary digital-text">Image Link</label>
+                                <label className="text-[10px] font-black uppercase italic text-primary digital-text">Image URL</label>
                                 <Input 
                                   placeholder="https://i.ibb.co/..."
                                   value={newCardImageUrl}
@@ -398,7 +407,7 @@ export default function PokedexApp() {
                                 ) : (
                                   <div className="flex flex-col items-center gap-1 opacity-20">
                                     <ImageIcon size={24} />
-                                    <span className="text-[8px] font-black uppercase italic digital-text">Preview</span>
+                                    <span className="text-[8px] font-black uppercase italic digital-text">Scan Preview</span>
                                   </div>
                                 )}
                               </div>
@@ -412,7 +421,7 @@ export default function PokedexApp() {
                               disabled={isSaving || !newCardName || !newCardPrice || !newCardImageUrl}
                             >
                               {isSaving ? <Loader2 className="animate-spin" /> : <Save className="mr-2" />}
-                              Broadcast to App
+                              Sync to Feed
                             </Button>
                             <Button 
                               variant="ghost" 
@@ -432,7 +441,7 @@ export default function PokedexApp() {
                   <div className="p-4 md:p-10 pt-16 flex-1 flex flex-col space-y-8 overflow-y-auto custom-scrollbar">
                     <div className="text-center">
                       <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
-                        Trade-In <span className="text-primary">Calculator</span>
+                        Trade-In <span className="text-primary">Calc</span>
                       </h2>
                     </div>
 
@@ -440,7 +449,7 @@ export default function PokedexApp() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-primary font-black uppercase italic tracking-widest text-sm">
                           <Calculator size={18} />
-                          Active Session
+                          Price Guide
                         </div>
                         <Button 
                           variant="outline" 
@@ -575,7 +584,7 @@ export default function PokedexApp() {
                       mode === 'pokedex' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
                     )}
                   >
-                    <BookOpen size={16} /> Pokédex
+                    <BookOpen size={16} /> PokéDex
                   </button>
                   <button 
                     onClick={() => setMode('trade-in')}
@@ -614,7 +623,7 @@ export default function PokedexApp() {
                   )}
                 >
                   {editMode ? <Unlock size={12} /> : <Lock size={12} />}
-                  {editMode ? "ADMIN: OPEN" : "ADMIN: LOCK"}
+                  {editMode ? "ADMIN: ACTIVE" : "ADMIN: LOCK"}
                 </button>
               </div>
 
