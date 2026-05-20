@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Header } from "@/components/header";
@@ -21,10 +22,10 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="icon" href="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" />
       </head>
-      <body className="font-body antialiased flex flex-col min-h-screen">
+      <body className="antialiased flex flex-col min-h-screen">
         <Header />
         <main className="flex-1">
           {children}

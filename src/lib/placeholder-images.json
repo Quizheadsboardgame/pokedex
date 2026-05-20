@@ -1,12 +1,6 @@
 {
   "placeholderImages": [
     {
-      "id": "stall-logo",
-      "description": "Newton's Collectables Official Logo",
-      "imageUrl": "https://i.ibb.co/cSGJN4Cm/IMG-2551.png",
-      "imageHint": "pokemon logo"
-    },
-    {
       "id": "collection-1",
       "description": "Pokemon card singles collection",
       "imageUrl": "https://i.ibb.co/nNfFqFGB/IMG-2603.webp",

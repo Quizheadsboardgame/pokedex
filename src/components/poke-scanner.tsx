@@ -16,22 +16,19 @@ export function PokeScanner({ className, interval = 3000, aspectRatio = "square"
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlashing, setIsFlashing] = useState(false);
 
-  // Filter out the logo if we want purely collection images for scanning
-  const scannerImages = PlaceHolderImages.filter(img => img.id !== "stall-logo");
-
   useEffect(() => {
     const timer = setInterval(() => {
       setIsFlashing(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % scannerImages.length);
+        setCurrentIndex((prev) => (prev + 1) % PlaceHolderImages.length);
         setIsFlashing(false);
       }, 150); // Fast flash effect
     }, interval);
 
     return () => clearInterval(timer);
-  }, [scannerImages.length, interval]);
+  }, [interval]);
 
-  if (scannerImages.length === 0) return null;
+  if (PlaceHolderImages.length === 0) return null;
 
   return (
     <div className={cn(
@@ -45,35 +42,28 @@ export function PokeScanner({ className, interval = 3000, aspectRatio = "square"
         isFlashing ? "opacity-0" : "opacity-100"
       )}>
         <Image
-          src={scannerImages[currentIndex].imageUrl}
-          alt={scannerImages[currentIndex].description}
+          src={PlaceHolderImages[currentIndex].imageUrl}
+          alt={PlaceHolderImages[currentIndex].description}
           fill
           className="object-cover"
         />
-        {/* Scanline Effect */}
-        <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
-        
-        {/* Moving Scanner Bar */}
+        <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-[length:100%_2px,3px_100%]" />
         <div className="absolute top-0 left-0 w-full h-1 bg-primary/40 shadow-[0_0_15px_rgba(255,0,0,0.8)] animate-[scan_3s_linear_infinite]" />
       </div>
 
-      {/* Flash overlay */}
       <div className={cn(
         "absolute inset-0 bg-white pointer-events-none transition-opacity duration-150",
         isFlashing ? "opacity-100" : "opacity-0"
       )} />
 
-      {/* Corner Data Decorations */}
       <div className="absolute top-2 left-2 flex gap-1">
         <div className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
         <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
       </div>
       <div className="absolute bottom-2 right-2 flex flex-col items-end">
-        <div className="text-[8px] font-mono text-white/50 leading-none">ID: {scannerImages[currentIndex].id.toUpperCase()}</div>
+        <div className="text-[8px] font-mono text-white/50 leading-none">ID: {PlaceHolderImages[currentIndex].id.toUpperCase()}</div>
         <div className="text-[8px] font-mono text-primary leading-none">LIVE FEED...</div>
       </div>
     </div>
   );
 }
-
-// Add keyframes to globals.css or handle via style tag

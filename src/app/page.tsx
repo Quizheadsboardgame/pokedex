@@ -1,18 +1,18 @@
 
 import { Button } from "@/components/ui/button";
-import { Zap, ChevronRight, Star, Shield, Search, BookOpen } from "lucide-react";
+import { Zap, ChevronRight, Search, BookOpen } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { PokeScanner } from "@/components/poke-scanner";
 
 export default function Home() {
   return (
-    <div className="flex flex-col bg-background">
+    <div className="flex flex-col bg-slate-50">
       {/* Hero Section - The Main Pokedex Screen */}
-      <section className="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32 bg-slate-100">
+      <section className="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32">
         <div className="container px-4">
           <div className="pokedex-frame p-8 md:p-12">
-            {/* Top Pokedex Bar */}
+            {/* Top Pokedex Decoration */}
             <div className="flex items-center gap-6 mb-12 pb-8 border-b-4 border-primary/10">
               <div className="pokedex-camera" />
               <div className="flex gap-3">
@@ -57,7 +57,7 @@ export default function Home() {
                 <div className="pokedex-screen p-2 aspect-square md:aspect-[4/3] rotate-1">
                   <PokeScanner aspectRatio="auto" className="w-full h-full rounded-lg" />
                 </div>
-                {/* D-Pad Decoration */}
+                {/* Hardware Decoration */}
                 <div className="absolute -bottom-6 -left-6 hidden md:block">
                   <div className="relative w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center">
                     <div className="w-16 h-6 bg-slate-700 rounded-sm absolute" />
@@ -70,8 +70,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature Grid - Data Slots */}
-      <section className="py-24 bg-white">
+      {/* Feature Grid */}
+      <section className="py-24 bg-white border-y-8 border-slate-100">
         <div className="container px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="p-8 border-4 border-slate-200 rounded-[2rem] hover:border-primary transition-all group bg-slate-50">
@@ -79,7 +79,7 @@ export default function Home() {
                 <Zap size={32} />
               </div>
               <h3 className="text-2xl font-black mb-4 uppercase italic text-primary">Market Grails</h3>
-              <p className="text-muted-foreground font-medium">Rotating stock of vintage holos and Japanese imports. Freshly picked every week.</p>
+              <p className="text-muted-foreground font-medium">Rotating stock of vintage holos and Japanese imports. Freshly picked every week from our gazebo cases.</p>
             </div>
             
             <div className="p-8 border-4 border-slate-200 rounded-[2rem] hover:border-secondary transition-all group bg-slate-50">
@@ -87,7 +87,7 @@ export default function Home() {
                 <Search size={32} />
               </div>
               <h3 className="text-2xl font-black mb-4 uppercase italic text-secondary">The Hunt</h3>
-              <p className="text-muted-foreground font-medium">Dig through 10,000+ bulk cards. Find that one missing piece for your master set.</p>
+              <p className="text-muted-foreground font-medium">Dig through 10,000+ bulk cards. 10p bins for commons, or fill a whole bag of 60 for just a fiver.</p>
             </div>
             
             <div className="p-8 border-4 border-slate-200 rounded-[2rem] hover:border-accent transition-all group bg-slate-50">
@@ -95,7 +95,7 @@ export default function Home() {
                 <BookOpen size={32} />
               </div>
               <h3 className="text-2xl font-black mb-4 uppercase italic text-accent-foreground">Trainer Lore</h3>
-              <p className="text-muted-foreground font-medium">Use our Lore Lab to scan your favorites and uncover hidden Pokédex details.</p>
+              <p className="text-muted-foreground font-medium">Use our digital lab to decode history. Every card has a story, from base set to the latest modern hits.</p>
             </div>
           </div>
         </div>

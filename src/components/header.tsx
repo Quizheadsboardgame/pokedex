@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -40,7 +41,7 @@ export function Header() {
                 className="font-black uppercase italic border-4 border-black/20 text-primary bg-white hover:bg-slate-100 rounded-2xl h-14 px-8 shadow-[0_6px_0_0_rgba(0,0,0,0.1)] active:translate-y-0.5 active:shadow-none transition-all flex gap-3 text-lg"
               >
                 <Menu className="h-6 w-6" />
-                Menu
+                Explore
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 

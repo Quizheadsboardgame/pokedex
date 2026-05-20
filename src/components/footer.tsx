@@ -1,23 +1,19 @@
-import { Zap } from "lucide-react";
-import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="bg-secondary text-white py-16">
+    <footer className="bg-secondary text-white py-12">
       <div className="container px-4 text-center md:text-left">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-white/10 pb-12 mb-12">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center border-2 border-white overflow-hidden">
-              <Zap className="text-accent" size={20} />
-            </div>
+          <div className="flex items-center gap-4">
             <img 
               src="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" 
               alt="Newton's Collectables" 
-              className="h-12 w-auto"
+              className="h-14 w-auto"
             />
+            <span className="text-xl font-black italic uppercase">Newton's Collectables</span>
           </div>
           
-          <nav className="flex flex-wrap justify-center gap-8 text-sm font-bold uppercase">
+          <nav className="flex flex-wrap justify-center gap-8 text-sm font-bold uppercase italic">
             <a href="/browse" className="hover:text-accent transition-colors">The Bins</a>
             <a href="/story-lab" className="hover:text-accent transition-colors">Lore Lab</a>
             <a href="/roots" className="hover:text-accent transition-colors">Roots</a>

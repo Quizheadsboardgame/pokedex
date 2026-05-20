@@ -5,26 +5,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 210 20% 98%;
     --foreground: 220 10% 10%;
     --card: 0 0% 100%;
     --card-foreground: 220 10% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 10% 10%;
-    --primary: 0 84% 63%;
+    --primary: 0 84% 63%; /* Pokedex Red */
     --primary-foreground: 0 0% 100%;
-    --secondary: 217 51% 44%;
+    --secondary: 217 51% 44%; /* Pokedex Blue */
     --secondary-foreground: 0 0% 100%;
     --muted: 220 10% 95%;
     --muted-foreground: 220 10% 45%;
-    --accent: 48 100% 51%;
+    --accent: 48 100% 51%; /* Electric Yellow */
     --accent-foreground: 220 10% 10%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 10% 90%;
     --input: 220 10% 90%;
     --ring: 0 84% 63%;
-    --radius: 1rem;
+    --radius: 1.5rem;
   }
 
   .dark {
@@ -52,10 +52,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
+/* Custom Pokedex Styling */
 .pokedex-frame {
   @apply border-[6px] border-primary rounded-[3rem] shadow-[0_12px_0_0_rgba(180,0,0,1)] bg-slate-50 overflow-hidden relative;
 }
