@@ -197,7 +197,7 @@ export default function PokedexApp() {
                   <div className="p-4 md:p-10 pt-16 flex-1 flex flex-col space-y-8 overflow-y-auto custom-scrollbar">
                     <div className="text-center">
                       <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
-                        Trade-In <span className="text-primary">Prices</span>
+                        Trade-<span className="text-primary">In</span>
                       </h2>
                     </div>
 
@@ -382,7 +382,7 @@ export default function PokedexApp() {
                       mode === 'trade-in' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
                     )}
                   >
-                    <Calculator size={16} /> Prices
+                    <Calculator size={16} /> Trade-In
                   </button>
                   <button 
                     onClick={() => setMode('find-us')}
