@@ -29,7 +29,7 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check';
+type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check' | 'card-find';
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
@@ -168,6 +168,31 @@ export default function PokedexApp() {
                   </div>
                 )}
 
+                {mode === 'card-find' && (
+                  <div className="flex-1 flex flex-col h-full bg-slate-900 relative">
+                    <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
+                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Advanced Card Search</span>
+                      <div className="flex gap-4 items-center">
+                        <a 
+                          href="https://pkmncards.com/" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
+                        >
+                          <ExternalLink size={10} /> pkmncards.com
+                        </a>
+                      </div>
+                    </div>
+                    <iframe 
+                      src="https://pkmncards.com/?s=charizard" 
+                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
+                      title="Card Find"
+                      allow="fullscreen"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+
                 {mode === 'trade-in' && (
                   <div className="p-4 md:p-10 pt-16 flex-1 flex flex-col space-y-8 overflow-y-auto custom-scrollbar">
                     <div className="text-center">
@@ -294,6 +319,15 @@ export default function PokedexApp() {
                     )}
                   >
                     <BookOpen size={16} /> PokéDex
+                  </button>
+                  <button 
+                    onClick={() => setMode('card-find')}
+                    className={cn(
+                      "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-xs transition-all",
+                      mode === 'card-find' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
+                  >
+                    <Search size={16} /> Card Find
                   </button>
                   <button 
                     onClick={() => setMode('price-check')}
