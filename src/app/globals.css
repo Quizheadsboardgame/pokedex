@@ -32,7 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#1a1a1a] text-foreground font-sans overflow-hidden;
+    @apply bg-[#1a1a1a] text-foreground font-sans;
   }
 }
 

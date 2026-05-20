@@ -6,7 +6,6 @@ import {
   Calculator, 
   Plus, 
   Trash2, 
-  Activity,
   BookOpen,
   ExternalLink,
   TrendingUp,
@@ -17,7 +16,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface TradeCard {
@@ -74,11 +72,11 @@ export default function PokedexApp() {
   if (!mounted) return null;
 
   return (
-    <main className="h-screen w-screen overflow-hidden flex flex-col bg-[#c0392b]">
-      <div className="flex-1 flex flex-col md:flex-row h-full overflow-hidden">
+    <main className="min-h-screen w-full flex flex-col bg-[#c0392b]">
+      <div className="flex-1 flex flex-col md:flex-row min-h-screen">
         
         {/* Main Pokedex Interface */}
-        <div className="flex-1 flex flex-col relative h-full">
+        <div className="flex-1 flex flex-col relative min-h-[500px] md:h-screen">
           
           {/* Top Hardware Banner */}
           <div className="bg-[#c0392b] p-4 md:p-6 flex items-center gap-4 border-b-8 border-black/10 shrink-0">
@@ -98,14 +96,14 @@ export default function PokedexApp() {
           </div>
 
           {/* Inner Screen Container */}
-          <div className="flex-1 p-2 md:p-6 bg-[#c0392b] overflow-hidden">
+          <div className="flex-1 p-2 md:p-6 bg-[#c0392b] min-h-[400px]">
             <div className="pokedex-screen-container h-full w-full bg-[#2d3436] flex flex-col relative">
               
               {isStaticActive && <div className="pokedex-static-glitch z-[100]" />}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
 
-              <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+              <div className="flex-1 flex flex-col relative z-10 overflow-hidden h-full">
                 {mode === 'pokedex' && (
                   <div className="flex-1 flex flex-col h-full relative">
                     <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
@@ -114,7 +112,7 @@ export default function PokedexApp() {
                         <ExternalLink size={10} /> Full Site
                       </a>
                     </div>
-                    <iframe src="https://pokedex.org/" className={cn("flex-1 w-full border-none pt-8", isStaticActive && "opacity-40")} />
+                    <iframe src="https://pokedex.org/" className={cn("flex-1 w-full border-none pt-8 min-h-[300px]", isStaticActive && "opacity-40")} />
                   </div>
                 )}
 
@@ -126,7 +124,7 @@ export default function PokedexApp() {
                         <TrendingUp size={10} /> Full Site
                       </a>
                     </div>
-                    <iframe src="https://www.pricecharting.com/category/pokemon-cards" className={cn("flex-1 w-full border-none pt-8", isStaticActive && "opacity-40")} />
+                    <iframe src="https://www.pricecharting.com/category/pokemon-cards" className={cn("flex-1 w-full border-none pt-8 min-h-[300px]", isStaticActive && "opacity-40")} />
                   </div>
                 )}
 
@@ -138,12 +136,12 @@ export default function PokedexApp() {
                         <ExternalLink size={10} /> Full Site
                       </a>
                     </div>
-                    <iframe src="https://pkmncards.com/?s=charizard" className={cn("flex-1 w-full border-none pt-8", isStaticActive && "opacity-40")} />
+                    <iframe src="https://pkmncards.com/?s=charizard" className={cn("flex-1 w-full border-none pt-8 min-h-[300px]", isStaticActive && "opacity-40")} />
                   </div>
                 )}
 
                 {mode === 'trade-in' && (
-                  <div className="p-4 md:p-8 pt-12 flex-1 overflow-y-auto custom-scrollbar">
+                  <div className="p-4 md:p-8 pt-12 flex-1 overflow-y-auto custom-scrollbar h-full">
                     <div className="text-center mb-6">
                       <h2 className="text-3xl md:text-5xl font-black italic uppercase text-white">Trade-<span className="text-primary">In</span></h2>
                     </div>
@@ -188,7 +186,7 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'find-us' && (
-                  <div className="p-4 md:p-8 pt-12 flex-1 overflow-y-auto custom-scrollbar space-y-8">
+                  <div className="p-4 md:p-8 pt-12 flex-1 overflow-y-auto custom-scrollbar h-full space-y-8">
                     <div className="text-center">
                       <h2 className="text-3xl md:text-5xl font-black italic uppercase text-white">Find <span className="text-primary">Us</span></h2>
                     </div>
@@ -224,7 +222,7 @@ export default function PokedexApp() {
         </div>
 
         {/* Right Sidebar Hardware Controls */}
-        <div className="w-full md:w-64 bg-[#c0392b] p-4 md:p-8 flex flex-col justify-between border-t-8 md:border-t-0 md:border-l-8 border-black/10">
+        <div className="w-full md:w-64 bg-[#c0392b] p-4 md:p-8 flex flex-col justify-start md:justify-between border-t-8 md:border-t-0 md:border-l-8 border-black/10 shrink-0">
           <div className="space-y-4">
             <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center mb-4">Select Module</p>
             <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
