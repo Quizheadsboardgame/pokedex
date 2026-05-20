@@ -13,6 +13,12 @@ export type PokemonInfoInput = z.infer<typeof PokemonInfoInputSchema>;
 
 const PokemonInfoOutputSchema = z.object({
   name: z.string(),
+  pokedexNumber: z.string().describe('The national pokedex number, e.g. #0001.'),
+  types: z.array(z.string()).describe('The primary and secondary types of the Pokemon.'),
+  stats: z.object({
+    height: z.string().describe('Height in meters/centimeters.'),
+    weight: z.string().describe('Weight in kg.'),
+  }),
   facts: z.string().describe('3-4 interesting facts about the Pokemon.'),
   tcgStats: z.object({
     totalCards: z.string().describe('Approximate total number of TCG cards released for this Pokemon.'),
@@ -35,6 +41,7 @@ const pokemonInfoPrompt = ai.definePrompt({
 Provide a comprehensive report on the following Pokemon: {{{pokemonName}}}.
 
 Include specific TCG history, such as which sets it is most famous for and approximately how many different cards exist for it.
+Also provide standard Pokedex data like the National Pokedex Number, Types, and physical stats.
 Keep the facts engaging and suitable for a community collector stall.`,
 });
 
