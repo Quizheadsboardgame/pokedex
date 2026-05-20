@@ -1,9 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Zap, ShoppingBag, Tag, ChevronRight } from "lucide-react";
+import { Zap, ShoppingBag, Tag, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PokeScanner } from "@/components/poke-scanner";
 
 const CRATES = [
   {
@@ -11,7 +12,7 @@ const CRATES = [
     category: "Budget",
     count: "Thousands",
     price: "10p / 50p",
-    image: "https://picsum.photos/seed/bulk-cards/400/400",
+    image: "https://i.ibb.co/qLXkrXW0/IMG-2587.png",
     description: "Our legendary bins. Common & Uncommon cards are just 10p. Shiny Holos and Reverse Holos are 50p each."
   },
   {
@@ -19,7 +20,7 @@ const CRATES = [
     category: "Value",
     count: "60 Cards",
     price: "£5 Bag",
-    image: "https://picsum.photos/seed/bulk-bag/400/400",
+    image: "https://i.ibb.co/ksXqvXPs/IMG-2599.png",
     description: "Fill a bag with up to 60 bulk cards for a fiver. Perfect for building a deck or starting a collection."
   },
   {
@@ -27,7 +28,7 @@ const CRATES = [
     category: "Mid-Range",
     count: "10 Binders",
     price: "£1 - £5",
-    image: "https://picsum.photos/seed/vintage-binder/400/400",
+    image: "https://i.ibb.co/gMQRfMcH/IMG-2598.png",
     description: "Flip through our curated binders featuring classics from base set to modern hits."
   },
   {
@@ -35,7 +36,7 @@ const CRATES = [
     category: "High-End",
     count: "300+ Singles",
     price: "£5+",
-    image: "https://picsum.photos/seed/modern-fullart/400/400",
+    image: "https://i.ibb.co/nqzq2CFX/IMG-2597.png",
     description: "Reserved for the best of the best. Premium singles including vintage holos and secret rares."
   }
 ];
@@ -46,7 +47,7 @@ export default function BrowsePage() {
       <section className="container px-4">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary text-white font-black uppercase italic border-2 border-white">The Market Vault</Badge>
-          <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter">Inventory Analysis</h2>
+          <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-foreground">Inventory Analysis</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 font-medium italic">
             "Analyzing 10,000+ collectibles... Data retrieved for Stall #42."
           </p>
@@ -55,7 +56,7 @@ export default function BrowsePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {CRATES.map((crate, idx) => (
             <div key={idx} className="pokedex-frame p-1">
-              <div className="flex flex-col lg:flex-row bg-white rounded-[2.5rem] overflow-hidden">
+              <div className="flex flex-col lg:flex-row bg-white rounded-[2.5rem] overflow-hidden h-full">
                 <div className="relative w-full lg:w-48 h-48 lg:h-auto pokedex-screen-glass">
                   <Image 
                     src={crate.image} 
@@ -72,7 +73,7 @@ export default function BrowsePage() {
                   <div className="flex justify-between items-start">
                     <div>
                       <Badge variant="secondary" className="mb-2 bg-secondary/10 text-secondary font-bold uppercase">{crate.category}</Badge>
-                      <h3 className="text-2xl font-black uppercase italic leading-none">{crate.title}</h3>
+                      <h3 className="text-2xl font-black uppercase italic leading-none text-foreground">{crate.title}</h3>
                     </div>
                     <div className="text-primary">
                       <Tag size={20} className="fill-current" />
@@ -89,6 +90,14 @@ export default function BrowsePage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Global Scanner Widget */}
+        <div className="mt-16 text-center">
+            <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">Real-time scanner feed</p>
+            <div className="max-w-md mx-auto pokedex-frame p-2">
+                <PokeScanner aspectRatio="video" interval={2000} className="rounded-2xl" />
+            </div>
         </div>
 
         <div className="mt-20 pokedex-frame p-8 md:p-12 bg-secondary text-white border-none">

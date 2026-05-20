@@ -1,28 +1,70 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-cards",
-      "description": "A pile of vintage holographic pokemon cards",
-      "imageUrl": "https://picsum.photos/seed/pokes-1/1200/600",
+      "id": "stall-logo",
+      "description": "Newton's Collectables Official Logo",
+      "imageUrl": "https://i.ibb.co/cSGJN4Cm/IMG-2551.png",
+      "imageHint": "pokemon logo"
+    },
+    {
+      "id": "collection-1",
+      "description": "Pokemon card singles collection",
+      "imageUrl": "https://i.ibb.co/nNfFqFGB/IMG-2603.webp",
       "imageHint": "pokemon cards"
     },
     {
-      "id": "bulk-bins",
-      "description": "Boxes full of thousands of common cards for digging",
-      "imageUrl": "https://picsum.photos/seed/pokes-2/600/400",
-      "imageHint": "card collection"
+      "id": "collection-2",
+      "description": "Graded rare cards",
+      "imageUrl": "https://i.ibb.co/LhXH3hQs/IMG-2602.png",
+      "imageHint": "rare pokemon"
     },
     {
-      "id": "rare-singles",
-      "description": "Rare cards in protective plastic slabs",
-      "imageUrl": "https://picsum.photos/seed/pokes-3/600/400",
-      "imageHint": "graded cards"
+      "id": "collection-3",
+      "description": "Vintage holos",
+      "imageUrl": "https://i.ibb.co/Vprv8vf2/IMG-2552.png",
+      "imageHint": "vintage cards"
     },
     {
-      "id": "market-stall",
-      "description": "A friendly local market stall with pokemon banners",
-      "imageUrl": "https://picsum.photos/seed/pokes-4/800/600",
+      "id": "collection-4",
+      "description": "Modern full arts",
+      "imageUrl": "https://i.ibb.co/G4WGZsbj/IMG-2600.png",
+      "imageHint": "modern cards"
+    },
+    {
+      "id": "collection-5",
+      "description": "Card binders selection",
+      "imageUrl": "https://i.ibb.co/ksXqvXPs/IMG-2599.png",
+      "imageHint": "card binders"
+    },
+    {
+      "id": "collection-6",
+      "description": "Market stall setup",
+      "imageUrl": "https://i.ibb.co/gMQRfMcH/IMG-2598.png",
       "imageHint": "market stall"
+    },
+    {
+      "id": "collection-7",
+      "description": "Close up of rare singles",
+      "imageUrl": "https://i.ibb.co/nqzq2CFX/IMG-2597.png",
+      "imageHint": "card singles"
+    },
+    {
+      "id": "collection-8",
+      "description": "Bulk bins and bags",
+      "imageUrl": "https://i.ibb.co/qLXkrXW0/IMG-2587.png",
+      "imageHint": "bulk boxes"
+    },
+    {
+      "id": "collection-9",
+      "description": "Japanese import cards",
+      "imageUrl": "https://i.ibb.co/cKrK6KhR/IMG-2581.webp",
+      "imageHint": "japanese cards"
+    },
+    {
+      "id": "collection-10",
+      "description": "Sealed product selection",
+      "imageUrl": "https://i.ibb.co/Pvd2nq1Q/IMG-2553.png",
+      "imageHint": "sealed pokemon"
     }
   ]
 }

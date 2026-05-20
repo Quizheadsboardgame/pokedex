@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,4 +78,13 @@
 
 .digital-text {
   font-family: 'Courier New', Courier, monospace;
+}
+
+@keyframes scan {
+  from { top: 0%; }
+  to { top: 100%; }
+}
+
+.animate-scan {
+  animation: scan 3s linear infinite;
 }

@@ -1,8 +1,9 @@
+
 import { Button } from "@/components/ui/button";
 import { Zap, ChevronRight, Star, Shield, Search, BookOpen } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { PokeScanner } from "@/components/poke-scanner";
 
 export default function Home() {
   return (
@@ -54,14 +55,7 @@ export default function Home() {
 
               <div className="relative">
                 <div className="pokedex-screen p-2 aspect-square md:aspect-[4/3] rotate-1">
-                  <div className="relative w-full h-full rounded-lg overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                    <Image 
-                      src="https://picsum.photos/seed/pokedex-art/800/600" 
-                      alt="Pokemon Art" 
-                      fill 
-                      className="object-cover"
-                    />
-                  </div>
+                  <PokeScanner aspectRatio="auto" className="w-full h-full rounded-lg" />
                 </div>
                 {/* D-Pad Decoration */}
                 <div className="absolute -bottom-6 -left-6 hidden md:block">
