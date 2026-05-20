@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,13 +14,14 @@ import {
   ShieldAlert, 
   Search,
   Activity,
-  Sparkles,
   Loader2,
   Library,
   BookOpen,
   Scale,
   Ruler,
-  Info
+  Info,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +40,7 @@ interface TradeCard {
 type Mode = 'find-us' | 'trade-in' | 'pokedex';
 
 export default function PokedexApp() {
-  const [mode, setMode] = useState<Mode>('find-us');
+  const [mode, setMode] = useState<Mode>('pokedex');
   const [mounted, setMounted] = useState(false);
   const { toast } = useToast();
   
@@ -84,7 +86,7 @@ export default function PokedexApp() {
     
     try {
       const info = await getPokemonInfo({ pokemonName: searchQuery });
-      if (!info) throw new Error("Could not find data for this Pokémon.");
+      if (!info) throw new Error("Could not find data for this subject.");
       
       setSearchResult(info);
       setIsSearching(false);
@@ -97,16 +99,20 @@ export default function PokedexApp() {
           setPokemonImageUrl(imageResult.url);
         }
       } catch (imgError) {
-        console.warn("Image generation failed:", imgError);
+        console.warn("Visual reconstruction failed:", imgError);
       } finally {
         setIsGeneratingImage(false);
       }
     } catch (error: any) {
       console.error(error);
+      const isApiKeyError = error.message?.includes("API_KEY") || error.message?.includes("unauthorized");
+      
       toast({
         variant: "destructive",
-        title: "Pokedex Error",
-        description: error.message || "Connection to the Pokedex network interrupted. Please try again.",
+        title: "Pokedex System Error",
+        description: isApiKeyError 
+          ? "Satellite Link Failed: GEMINI_API_KEY is missing or invalid in your .env file." 
+          : error.message || "Connection to the Pokedex network interrupted.",
       });
       setIsSearching(false);
     }
@@ -117,21 +123,21 @@ export default function PokedexApp() {
   if (!mounted) return null;
 
   return (
-    <main className="container px-4 max-w-6xl mx-auto py-8">
-      <div className="pokedex-shell">
+    <main className="container px-4 max-w-6xl mx-auto py-4 md:py-8">
+      <div className="pokedex-shell overflow-hidden">
         {/* Hardware Top Bar */}
-        <div className="bg-[#c0392b] p-8 flex items-center gap-6 border-b-8 border-black/10">
-          <div className="pokedex-camera-lens" />
+        <div className="bg-[#c0392b] p-6 md:p-8 flex items-center gap-6 border-b-8 border-black/10">
+          <div className="pokedex-camera-lens shrink-0" />
           <div className="flex gap-4">
             <div className="h-4 w-4 rounded-full bg-red-600 border-2 border-black/20 shadow-inner animate-pulse" />
             <div className="h-4 w-4 rounded-full bg-yellow-400 border-2 border-black/20 shadow-inner" />
             <div className="h-4 w-4 rounded-full bg-green-500 border-2 border-black/20 shadow-inner" />
           </div>
-          <div className="ml-auto">
+          <div className="ml-auto hidden sm:block">
             <img 
               src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
               alt="Newton's Collectables" 
-              className="h-12 md:h-20 object-contain drop-shadow-lg"
+              className="h-12 md:h-16 object-contain drop-shadow-lg"
             />
           </div>
         </div>
@@ -139,12 +145,9 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Display Area */}
           <div className="lg:col-span-9">
-            <div className={cn(
-              "pokedex-screen-container group h-full flex flex-col min-h-[600px]",
-              mode === 'find-us' && "screen-flicker"
-            )}>
-              {/* Animated Scan Line - Only in specific modes */}
-              {mode !== 'trade-in' && <div className="scanner-line" />}
+            <div className="pokedex-screen-container group h-full flex flex-col min-h-[600px] relative">
+              {/* Scanline Animation */}
+              <div className="scanner-line" />
               
               {/* Screen Overlays */}
               <div className="pokedex-screen-overlay" />
@@ -153,23 +156,23 @@ export default function PokedexApp() {
               {/* Digital Status Header */}
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className={cn("text-primary", mode === 'find-us' && "animate-pulse")} />
+                  <Activity size={12} className={cn("text-primary", isSearching && "animate-pulse")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    Signal: {isSearching ? 'Scanning...' : 'Idle'}
+                    Signal: {isSearching ? 'TRANSMITTING...' : 'LINKED'}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
-                    <div className={cn("h-full w-2/3 bg-primary", (mode === 'find-us' || isSearching) && "animate-pulse")} />
+                    <div className={cn("h-full bg-primary", (isSearching || isGeneratingImage) ? "w-full animate-pulse" : "w-2/3")} />
                   </div>
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.5.0-Pokedex</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">ARCHIVE v2.5.0</span>
                 </div>
               </div>
 
               {/* Internal Screen Content */}
-              <div className="relative z-10 p-6 md:p-10 pt-16 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
+              <div className="relative z-10 p-4 md:p-10 pt-16 flex-1 flex flex-col overflow-y-auto custom-scrollbar">
                 {mode === 'find-us' && (
-                  <div className="flex-1 space-y-10">
+                  <div className="flex-1 space-y-10 animate-in fade-in duration-500">
                     <div className="text-center space-y-4">
                       <Badge className="bg-accent text-accent-foreground font-black italic tracking-widest px-4 py-1">GPS LINK: ACTIVE</Badge>
                       <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-white">
@@ -223,7 +226,7 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'trade-in' && (
-                  <div className="flex-1 space-y-8">
+                  <div className="flex-1 space-y-8 animate-in fade-in duration-300">
                     <div className="text-center space-y-2">
                       <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
                         Trade-In <span className="text-primary">Calculator</span>
@@ -247,7 +250,7 @@ export default function PokedexApp() {
                         </Button>
                       </div>
 
-                      <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
                         {cards.map((card) => (
                           <div key={card.id} className="flex gap-3 items-end">
                             <div className="flex-1 space-y-1">
@@ -307,10 +310,10 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'pokedex' && (
-                  <div className="flex-1 space-y-6">
+                  <div className="flex-1 space-y-6 animate-in fade-in duration-500">
                     <div className="text-center space-y-2">
                       <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
-                        Handheld <span className="text-primary">Pokedex</span>
+                        Archive <span className="text-primary">Search</span>
                       </h2>
                       <p className="text-accent digital-text text-xs uppercase italic tracking-[0.2em]">National Archive Access</p>
                     </div>
@@ -332,8 +335,8 @@ export default function PokedexApp() {
                       </Button>
                     </div>
 
-                    {searchResult && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in duration-500">
+                    {searchResult ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-bottom-4 duration-500">
                         <div className="space-y-6">
                           <div className="p-6 bg-black/40 border-2 border-primary/20 rounded-3xl space-y-3">
                             <div className="flex justify-between items-start">
@@ -364,10 +367,10 @@ export default function PokedexApp() {
                           <div className="p-6 bg-blue-500/10 border-2 border-blue-500/20 rounded-3xl space-y-4">
                             <div className="flex items-center gap-2 text-blue-400 font-black uppercase italic tracking-widest text-xs">
                               <Library size={14} />
-                              TCG Entry
+                              TCG Database
                             </div>
                             <div className="space-y-2">
-                              <p className="text-white font-bold italic">Estimated {searchResult.tcgStats.totalCards} variations</p>
+                              <p className="text-white font-bold italic">Estimated {searchResult.tcgStats.totalCards} cards</p>
                               <div className="flex flex-wrap gap-2 pt-2">
                                 {searchResult.tcgStats.notableSets.map((set, i) => (
                                   <Badge key={i} className="bg-blue-500/20 text-blue-400 border-none uppercase italic text-[10px]">{set}</Badge>
@@ -378,7 +381,7 @@ export default function PokedexApp() {
                         </div>
 
                         <div className="space-y-6">
-                          <div className="relative aspect-square bg-black/40 border-2 border-white/10 rounded-3xl overflow-hidden">
+                          <div className="relative aspect-square bg-black/40 border-2 border-white/10 rounded-3xl overflow-hidden shadow-2xl">
                             {isGeneratingImage ? (
                               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                                 <Loader2 className="animate-spin text-primary h-10 w-10" />
@@ -389,7 +392,7 @@ export default function PokedexApp() {
                             ) : (
                               <div className="absolute inset-0 flex items-center justify-center flex-col gap-2 opacity-10">
                                 <BookOpen className="text-white h-20 w-20" />
-                                <span className="text-[8px] text-white font-black digital-text">Visual Data Corrupt</span>
+                                <span className="text-[8px] text-white font-black digital-text">Visual Feed Offline</span>
                               </div>
                             )}
                             {pokemonImageUrl && (
@@ -402,19 +405,19 @@ export default function PokedexApp() {
                           <div className="p-6 bg-accent/10 border-2 border-accent/20 rounded-3xl">
                             <div className="flex items-center gap-2 text-accent font-black uppercase italic tracking-widest text-xs mb-3">
                               <Info size={14} />
-                              Biological Notes
+                              Field Notes
                             </div>
                             <p className="text-xs text-white/70 leading-relaxed italic whitespace-pre-line">{searchResult.facts}</p>
                           </div>
                         </div>
                       </div>
-                    )}
-
-                    {!searchResult && !isSearching && (
-                      <div className="flex-1 flex flex-col items-center justify-center opacity-20 py-20 gap-4">
-                         <BookOpen size={80} className="text-white" />
-                         <p className="text-xs font-black digital-text uppercase tracking-widest">Input Subject Name for Data Retrieval</p>
-                      </div>
+                    ) : (
+                      !isSearching && (
+                        <div className="flex-1 flex flex-col items-center justify-center opacity-20 py-20 gap-4">
+                           <BookOpen size={80} className="text-white" />
+                           <p className="text-xs font-black digital-text uppercase tracking-widest">Input Name for Data Retrieval</p>
+                        </div>
+                      )
                     )}
                     
                     {isSearching && !searchResult && (
@@ -424,8 +427,8 @@ export default function PokedexApp() {
                             <Activity className="absolute inset-0 m-auto h-8 w-8 text-accent animate-pulse" />
                          </div>
                          <div className="text-center space-y-2">
-                           <p className="text-sm font-black digital-text text-white uppercase tracking-[0.3em] animate-pulse">Querying Database</p>
-                           <p className="text-[10px] font-black digital-text text-white/40 uppercase">Linking to Global Pokedex Network...</p>
+                           <p className="text-sm font-black digital-text text-white uppercase tracking-[0.3em] animate-pulse">Querying Network</p>
+                           <p className="text-[10px] font-black digital-text text-white/40 uppercase">Connecting to Satellite...</p>
                          </div>
                       </div>
                     )}
@@ -439,34 +442,37 @@ export default function PokedexApp() {
           <div className="lg:col-span-3 flex flex-col justify-between py-6">
             <div className="space-y-12">
               <div className="space-y-4">
-                <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center">Software Modules</p>
+                <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center">Modules</p>
                 <div className="flex flex-col gap-4">
                   <button 
-                    onClick={() => setMode('find-us')}
-                    className={`pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all ${
-                      mode === 'find-us' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
-                    }`}
+                    onClick={() => setMode('pokedex')}
+                    className={cn(
+                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
+                      mode === 'pokedex' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
                   >
-                    <MapPin size={18} />
-                    GPS Map
+                    <BookOpen size={18} />
+                    Pokedex
                   </button>
                   <button 
                     onClick={() => setMode('trade-in')}
-                    className={`pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all ${
+                    className={cn(
+                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
                       mode === 'trade-in' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
-                    }`}
+                    )}
                   >
                     <Calculator size={18} />
                     Calculator
                   </button>
                   <button 
-                    onClick={() => setMode('pokedex')}
-                    className={`pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all ${
-                      mode === 'pokedex' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
-                    }`}
+                    onClick={() => setMode('find-us')}
+                    className={cn(
+                      "pokedex-button-hardware h-16 w-full flex items-center justify-center gap-3 font-black uppercase italic tracking-tighter text-sm transition-all",
+                      mode === 'find-us' ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white hover:bg-slate-600'
+                    )}
                   >
-                    <BookOpen size={18} />
-                    Pokedex
+                    <MapPin size={18} />
+                    GPS Map
                   </button>
                 </div>
               </div>
@@ -478,20 +484,24 @@ export default function PokedexApp() {
                 <div className="h-6 w-6 rounded-full bg-slate-900 z-10" />
                 <button 
                   onClick={() => {
-                    if(mode === 'find-us') setMode('trade-in');
-                    else if(mode === 'trade-in') setMode('pokedex');
-                    else setMode('find-us');
+                    if(mode === 'pokedex') setMode('trade-in');
+                    else if(mode === 'trade-in') setMode('find-us');
+                    else setMode('pokedex');
                   }}
-                  className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors"
-                />
+                  className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors flex items-center justify-center"
+                >
+                  <ChevronUp size={14} className="text-white/20" />
+                </button>
                 <button 
                   onClick={() => {
-                    if(mode === 'find-us') setMode('pokedex');
-                    else if(mode === 'pokedex') setMode('trade-in');
-                    else setMode('find-us');
+                    if(mode === 'pokedex') setMode('find-us');
+                    else if(mode === 'find-us') setMode('trade-in');
+                    else setMode('pokedex');
                   }}
-                  className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors"
-                />
+                  className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors flex items-center justify-center"
+                >
+                   <ChevronDown size={14} className="text-white/20" />
+                </button>
               </div>
             </div>
 
