@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Newton's Rarefinds | Bury St Edmunds Pokemon Stall",
+  title: "Newton's Collectables | Bury St Edmunds Pokemon Stall",
   description: 'The friendliest Pokemon stall in Bury St Edmunds. Vintage singles, 10p bulk, and graded grails.',
 };
 

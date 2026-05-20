@@ -10,7 +10,7 @@ export function Footer() {
               <Zap className="text-accent" size={20} />
             </div>
             <span className="font-bold text-2xl tracking-tighter uppercase italic">
-              NEWTON'S RAREFINDS
+              NEWTON'S COLLECTABLES
             </span>
           </div>
           
@@ -22,7 +22,7 @@ export function Footer() {
           </nav>
         </div>
         <div className="text-center text-xs opacity-60">
-          <p>© 2024 Newton's Rarefinds. Locally trading at Bury St Edmunds Market. Not affiliated with Nintendo or TPC.</p>
+          <p>© 2024 Newton's Collectables. Locally trading at Bury St Edmunds Market. Not affiliated with Nintendo or TPC.</p>
         </div>
       </div>
     </footer>

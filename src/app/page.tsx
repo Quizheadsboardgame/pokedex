@@ -28,7 +28,7 @@ export default function Home() {
                 </Badge>
                 
                 <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.85] text-foreground uppercase italic">
-                  CATCH THE <br /> <span className="text-primary">RAREFINDS</span>
+                  CATCH THE <br /> <span className="text-primary">COLLECTABLES</span>
                 </h1>
                 
                 <div className="pokedex-screen pokedex-screen-glass p-6">

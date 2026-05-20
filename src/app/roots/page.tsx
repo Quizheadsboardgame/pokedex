@@ -25,7 +25,7 @@ export default function RootsPage() {
                 </div>
               </div>
               <p className="text-xl font-medium leading-relaxed text-muted-foreground">
-                Newton's Rarefinds didn't start with a storefront or a massive inventory. It started with a single binder of 1999 Base Set cards and a passion for the community in Bury St Edmunds.
+                Newton's Collectables didn't start with a storefront or a massive inventory. It started with a single binder of 1999 Base Set cards and a passion for the community in Bury St Edmunds.
               </p>
             </div>
             

@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { Search, Menu, Zap } from "lucide-react";
+import { Menu, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function PokedexHeader() {
@@ -15,25 +14,27 @@ export function PokedexHeader() {
           </div>
           <Link href="/" className="flex items-center space-x-2">
             <span className="font-headline font-bold text-xl tracking-tight text-primary">
-              NEWTON'S <span className="text-accent-foreground">RAREFINDS</span>
+              NEWTON'S <span className="text-accent-foreground">COLLECTABLES</span>
             </span>
           </Link>
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
-          <Link href="#showcase" className="text-sm font-medium hover:text-primary transition-colors">Showcase</Link>
-          <Link href="#generator" className="text-sm font-medium hover:text-primary transition-colors">Lore Lab</Link>
-          <Link href="#about" className="text-sm font-medium hover:text-primary transition-colors">Our Story</Link>
-          <Link href="#visit" className="text-sm font-medium hover:text-primary transition-colors">Visit Us</Link>
+          <Link href="/browse" className="text-sm font-medium hover:text-primary transition-colors">Crates</Link>
+          <Link href="/story-lab" className="text-sm font-medium hover:text-primary transition-colors">Lore Lab</Link>
+          <Link href="/roots" className="text-sm font-medium hover:text-primary transition-colors">Our Story</Link>
+          <Link href="/visit" className="text-sm font-medium hover:text-primary transition-colors">Visit Us</Link>
         </nav>
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
           </Button>
-          <Button size="sm" className="hidden sm:flex bg-primary hover:bg-primary/90 text-white font-bold">
-            Find Us
-          </Button>
+          <Link href="/visit">
+            <Button size="sm" className="hidden sm:flex bg-primary hover:bg-primary/90 text-white font-bold">
+              Find Us
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

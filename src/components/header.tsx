@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,7 +19,7 @@ export function Header() {
           <Link href="/" className="flex items-center group">
             <img 
               src="https://i.ibb.co/p6kVgS58/Untitled.png" 
-              alt="Newton's Rarefinds Logo" 
+              alt="Newton's Collectables Logo" 
               className="h-16 md:h-20 w-auto max-w-full object-contain transition-transform group-hover:scale-105"
             />
           </Link>
