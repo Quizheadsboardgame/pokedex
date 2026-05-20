@@ -6,6 +6,7 @@ import { FirebaseProvider } from './provider';
 import { FirebaseApp } from 'firebase/app';
 import { Firestore } from 'firebase/firestore';
 import { Auth } from 'firebase/auth';
+import { FirebaseErrorListener } from './FirebaseErrorListener';
 
 export function FirebaseClientProvider({ children }: { children: React.ReactNode }) {
   const [services, setServices] = useState<{
@@ -20,7 +21,7 @@ export function FirebaseClientProvider({ children }: { children: React.ReactNode
   }, []);
 
   if (!services) {
-    return null; // Or a loading spinner if preferred
+    return null;
   }
 
   return (
@@ -29,6 +30,7 @@ export function FirebaseClientProvider({ children }: { children: React.ReactNode
       firestore={services.firestore}
       auth={services.auth}
     >
+      <FirebaseErrorListener />
       {children}
     </FirebaseProvider>
   );

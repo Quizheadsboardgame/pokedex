@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -20,15 +19,19 @@ import {
   Lock,
   Unlock,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  CheckCircle2,
+  XCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { toast } from "@/hooks/use-toast";
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 interface TradeCard {
   id: string;
@@ -101,48 +104,70 @@ export default function PokedexApp() {
     }
   };
 
-  const saveNewCard = async () => {
+  const saveNewCard = () => {
     if (!db || !newCardName || !newCardPrice || !newCardImage) return;
     setIsSaving(true);
-    try {
-      const cardsRef = collection(db, 'new-cards');
-      await addDoc(cardsRef, {
-        name: newCardName,
-        price: newCardPrice,
-        imageUrl: newCardImage,
-        createdAt: serverTimestamp(),
+    
+    const cardsRef = collection(db, 'new-cards');
+    const data = {
+      name: newCardName,
+      price: newCardPrice,
+      imageUrl: newCardImage,
+      sold: false,
+      createdAt: serverTimestamp(),
+    };
+
+    // Non-blocking mutation pattern
+    addDoc(cardsRef, data)
+      .then(() => {
+        setNewCardName("");
+        setNewCardPrice("");
+        setNewCardImage(null);
+        setMode('new-cards');
+        setIsSaving(false);
+        toast({
+          title: "Database Updated",
+          description: `${data.name} added to inventory.`,
+        });
+      })
+      .catch(async (serverError) => {
+        setIsSaving(false);
+        const permissionError = new FirestorePermissionError({
+          path: cardsRef.path,
+          operation: 'create',
+          requestResourceData: data,
+        });
+        errorEmitter.emit('permission-error', permissionError);
       });
-      setNewCardName("");
-      setNewCardPrice("");
-      setNewCardImage(null);
-      setMode('new-cards');
-      toast({
-        title: "Database Updated",
-        description: `${newCardName} added to inventory.`,
-      });
-    } catch (e) {
-      console.error("Error saving card:", e);
-      toast({
-        variant: "destructive",
-        title: "Save Failed",
-        description: "Check permissions or signal strength.",
-      });
-    } finally {
-      setIsSaving(false);
-    }
   };
 
-  const deleteCard = async (id: string) => {
+  const toggleSoldStatus = (id: string, currentStatus: boolean) => {
     if (!db) return;
-    try {
-      await deleteDoc(doc(db, 'new-cards', id));
-      toast({
-        title: "Entry Removed",
-        description: "Card deleted from live inventory.",
+    const cardRef = doc(db, 'new-cards', id);
+    const newStatus = !currentStatus;
+
+    updateDoc(cardRef, { sold: newStatus })
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: cardRef.path,
+          operation: 'update',
+          requestResourceData: { sold: newStatus },
+        });
+        errorEmitter.emit('permission-error', permissionError);
       });
-    } catch (e) {
-      console.error("Error deleting card:", e);
-    }
+  };
+
+  const deleteCard = (id: string) => {
+    if (!db) return;
+    const cardRef = doc(db, 'new-cards', id);
+    deleteDoc(cardRef)
+      .catch(async (serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: cardRef.path,
+          operation: 'delete',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+      });
   };
 
   const handleAdminLogin = () => {
@@ -231,31 +256,60 @@ export default function PokedexApp() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-6">
-                      {remoteCards?.map((card) => (
-                        <div key={card.id} className="bg-black/60 border-2 border-white/5 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 group hover:border-primary/50 transition-all overflow-hidden relative">
+                    <div className="grid grid-cols-1 gap-6 pb-12">
+                      {remoteCards?.map((card: any) => (
+                        <div key={card.id} className={cn(
+                          "bg-black/60 border-2 border-white/5 rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 group hover:border-primary/50 transition-all overflow-hidden relative",
+                          card.sold && "opacity-60 border-slate-700"
+                        )}>
                            <div className="w-full md:w-40 h-56 md:h-40 relative rounded-2xl overflow-hidden border-4 border-slate-700/50 shrink-0">
-                              <img src={card.imageUrl} alt={card.name} className="object-cover w-full h-full" />
+                              <img src={card.imageUrl} alt={card.name} className={cn("object-cover w-full h-full", card.sold && "grayscale")} />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                              <Badge className="absolute bottom-2 left-2 bg-primary text-[10px] uppercase font-black tracking-widest">£{card.price}</Badge>
+                              <Badge className={cn(
+                                "absolute bottom-2 left-2 text-[10px] uppercase font-black tracking-widest",
+                                card.sold ? "bg-slate-500" : "bg-primary"
+                              )}>
+                                £{card.price}
+                              </Badge>
+                              {card.sold && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                                  <Badge variant="destructive" className="bg-destructive text-white border-2 border-white font-black italic uppercase text-lg rotate-12 px-4">SOLD</Badge>
+                                </div>
+                              )}
                            </div>
 
                            <div className="space-y-3 flex-1">
                               <div className="flex items-center justify-between">
-                                <h3 className="text-2xl font-black italic uppercase tracking-tight text-white">{card.name}</h3>
+                                <h3 className={cn("text-2xl font-black italic uppercase tracking-tight text-white", card.sold && "line-through text-white/40")}>
+                                  {card.name}
+                                </h3>
                                 {editMode && (
-                                  <Button 
-                                    variant="ghost" 
-                                    size="icon" 
-                                    onClick={() => deleteCard(card.id)}
-                                    className="text-white/30 hover:text-destructive"
-                                  >
-                                    <Trash2 size={16} />
-                                  </Button>
+                                  <div className="flex items-center gap-2">
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      onClick={() => toggleSoldStatus(card.id, !!card.sold)}
+                                      className={cn(
+                                        "h-8 px-2 font-black uppercase italic text-[8px] border-2",
+                                        card.sold ? "text-green-400 border-green-400/20" : "text-amber-400 border-amber-400/20"
+                                      )}
+                                    >
+                                      {card.sold ? <CheckCircle2 size={12} className="mr-1" /> : <XCircle size={12} className="mr-1" />}
+                                      {card.sold ? "Restock" : "Mark Sold"}
+                                    </Button>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="icon" 
+                                      onClick={() => deleteCard(card.id)}
+                                      className="h-8 w-8 text-white/30 hover:text-destructive"
+                                    >
+                                      <Trash2 size={14} />
+                                    </Button>
+                                  </div>
                                 )}
                               </div>
                               <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                                <div className="h-full bg-primary/40 w-full" />
+                                <div className={cn("h-full w-full", card.sold ? "bg-slate-700" : "bg-primary/40")} />
                               </div>
                               <p className="text-[10px] font-black text-white/40 uppercase tracking-widest digital-text">Slot ID: {card.id.slice(-8).toUpperCase()}</p>
                            </div>
@@ -432,7 +486,7 @@ export default function PokedexApp() {
                         ))}
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10 pb-12">
                         <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
                           <p className="text-[10px] font-black text-green-400 uppercase tracking-widest digital-text">Cash (70%)</p>
                           <p className="text-2xl font-black text-green-400 italic">£{(totalValue * 0.7).toFixed(2)}</p>
@@ -481,7 +535,7 @@ export default function PokedexApp() {
                       </div>
                     </div>
 
-                    <div className="pt-8 border-t border-white/10">
+                    <div className="pt-8 border-t border-white/10 pb-12">
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <a href="https://instagram.com/newtons_collectables" target="_blank" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/20 transition-all">
                           <Instagram size={20} className="text-primary" />
