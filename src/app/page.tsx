@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,13 +14,12 @@ import {
   Coins, 
   RefreshCw, 
   Briefcase,
-  ChevronRight,
-  ChevronLeft,
-  Circle
+  Search,
+  Zap,
+  Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface TradeCard {
@@ -65,7 +63,7 @@ export default function PokedexApp() {
   if (!mounted) return null;
 
   return (
-    <main className="container px-4 max-w-6xl mx-auto">
+    <main className="container px-4 max-w-6xl mx-auto py-8">
       <div className="pokedex-shell">
         {/* Hardware Top Bar */}
         <div className="bg-[#c0392b] p-8 flex items-center gap-6 border-b-8 border-black/10">
@@ -87,11 +85,30 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Display Area */}
           <div className="lg:col-span-9">
-            <div className="pokedex-screen-container">
-              <div className="pokedex-screen-overlay" />
+            <div className="pokedex-screen-container screen-flicker">
+              {/* Animated Scan Line */}
+              <div className="scanner-line" />
               
+              {/* Screen Overlays */}
+              <div className="pokedex-screen-overlay" />
+              <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
+              
+              {/* Digital Status Header */}
+              <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
+                <div className="flex items-center gap-2">
+                  <Activity size={12} className="text-primary animate-pulse" />
+                  <span className="text-[9px] font-black text-primary digital-text uppercase tracking-widest">Signal: Stable</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary w-2/3 animate-pulse" />
+                  </div>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.0.4-LORE</span>
+                </div>
+              </div>
+
               {/* Internal Screen Content */}
-              <div className="relative z-10 p-6 md:p-10 flex-1 flex flex-col custom-scrollbar overflow-y-auto">
+              <div className="relative z-10 p-6 md:p-12 pt-16 flex-1 flex flex-col custom-scrollbar overflow-y-auto">
                 {mode === 'find-us' ? (
                   <div className="animate-in fade-in slide-in-from-right-10 duration-500 flex-1 space-y-10">
                     <div className="text-center space-y-4">
@@ -124,7 +141,10 @@ export default function PokedexApp() {
                     </div>
 
                     <div className="pt-8 border-t border-white/10">
-                      <h3 className="text-xl font-black uppercase italic text-primary mb-6">Social Transmission</h3>
+                      <h3 className="text-xl font-black uppercase italic text-primary mb-6 flex items-center gap-2">
+                        <Search size={20} />
+                        Social Transmission
+                      </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <a href="https://instagram.com/newtons_collectables" target="_blank" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/20 transition-all">
                           <Instagram size={20} className="text-primary" />
@@ -225,9 +245,6 @@ export default function PokedexApp() {
                   </div>
                 )}
               </div>
-              
-              {/* Screen Static / Scan Line */}
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-white/20 scanline-anim z-20" />
             </div>
           </div>
 

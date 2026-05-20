@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,17 +41,14 @@
   @apply relative mx-auto max-w-5xl bg-primary border-[12px] border-black/20 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_-10px_20px_rgba(0,0,0,0.3)] overflow-hidden;
 }
 
-.pokedex-hinge {
-  @apply absolute left-0 top-0 bottom-0 w-8 bg-black/10 border-r border-black/5 z-20;
-}
-
 .pokedex-screen-container {
   @apply relative bg-[#2d3436] border-[10px] border-[#636e72] rounded-3xl shadow-[inset_0_10px_30px_rgba(0,0,0,0.8)] overflow-hidden min-h-[600px] flex flex-col;
 }
 
 .pokedex-screen-overlay {
-  @apply absolute inset-0 pointer-events-none z-10 opacity-30;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  @apply absolute inset-0 pointer-events-none z-20 opacity-40;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
   background-size: 100% 4px, 4px 100%;
 }
 
@@ -65,7 +61,7 @@
 }
 
 .pokedex-button-hardware {
-  @apply rounded-full shadow-[0_6px_0_0_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none transition-all cursor-pointer border-2 border-black/10;
+  @apply rounded-xl shadow-[0_6px_0_0_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none transition-all cursor-pointer border-2 border-black/10;
 }
 
 .digital-text {
@@ -83,20 +79,38 @@
   border-radius: 10px;
 }
 
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+@keyframes scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(600px); opacity: 0; }
 }
 
-.scanline-anim {
-  animation: scanline 8s linear infinite;
+.scanner-line {
+  @apply absolute left-0 w-full h-1 bg-primary/60 shadow-[0_0_15px_rgba(255,0,0,0.8)] z-30 pointer-events-none;
+  animation: scan 4s linear infinite;
 }
 
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+@keyframes flicker {
+  0% { opacity: 0.95; }
+  5% { opacity: 0.85; }
+  10% { opacity: 0.95; }
+  15% { opacity: 0.9; }
+  25% { opacity: 0.95; }
+  30% { opacity: 1; }
+  100% { opacity: 0.95; }
 }
 
-.animate-status-blink {
-  animation: flash 1s ease-in-out infinite;
+.screen-flicker {
+  animation: flicker 0.1s infinite;
+}
+
+@keyframes data-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-20px); }
+}
+
+.digital-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 20px 20px;
 }
