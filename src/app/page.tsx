@@ -1,70 +1,55 @@
 import { MapPin, Clock, Mail, Instagram, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PokeScanner } from "@/components/poke-scanner";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="bg-slate-50 min-h-screen py-12 md:py-20">
       <section className="container px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="pokedex-frame p-8 md:p-12 space-y-12">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-              <div className="flex-1 space-y-6">
+            <div className="space-y-8">
+              <div className="flex flex-col items-center text-center space-y-6">
                 <div className="flex items-center gap-4 mb-2">
                   <div className="pokedex-camera scale-75" />
-                  <Badge className="bg-secondary text-white font-black uppercase italic px-4 py-1">Scanner Active</Badge>
+                  <Badge className="bg-secondary text-white font-black uppercase italic px-4 py-1">Transmission Active</Badge>
                 </div>
                 <h2 className="text-5xl md:text-7xl font-black uppercase italic text-foreground tracking-tighter leading-[0.85]">
                   Where to <span className="text-primary">Find Us</span>
                 </h2>
-                
-                <div className="grid grid-cols-1 gap-6 pt-4">
-                  <div className="space-y-4 pokedex-screen p-6 relative group overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
-                      <MapPin size={14} className="animate-bounce" />
-                      Saturdays
-                    </div>
-                    <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Outside Timpsons <br /> Market Square <br /> IP33 1BT</p>
-                  </div>
-
-                  <div className="space-y-4 pokedex-screen p-6 group overflow-hidden">
-                    <div className="absolute inset-0 bg-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
-                      <Clock size={14} />
-                      Wednesdays
-                    </div>
-                    <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM</p>
-                  </div>
-                </div>
+                <p className="text-xl text-muted-foreground mt-4 font-medium italic">
+                  "Locating Stall #42 in the Bury St Edmunds Market Grid..."
+                </p>
               </div>
-
-              <div className="w-full md:w-96 space-y-6">
-                <div className="pokedex-screen p-1 aspect-square shadow-2xl relative group">
-                  <PokeScanner className="w-full h-full rounded-xl" interval={2000} />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div className="space-y-4 pokedex-screen p-6 relative group overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
+                    <MapPin size={14} className="animate-bounce" />
+                    Saturdays
+                  </div>
+                  <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Outside Timpsons <br /> Market Square <br /> IP33 1BT</p>
                 </div>
-                
-                {/* Weather Dependent Notice */}
-                <div className="relative h-32 w-full rounded-2xl overflow-hidden border-4 border-primary shadow-lg rotate-1">
-                  <Image 
-                    src="https://i.ibb.co/4n0BQHqp/fd008cb5-fa9d-4964-80e1-780ba2f3a90c.jpg" 
-                    alt="Weather Dependent" 
-                    fill 
-                    className="object-cover"
-                  />
+
+                <div className="space-y-4 pokedex-screen p-6 group overflow-hidden">
+                  <div className="absolute inset-0 bg-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="flex items-center gap-3 text-accent font-black uppercase tracking-widest text-[10px] digital-text">
+                    <Clock size={14} />
+                    Wednesdays
+                  </div>
+                  <p className="text-2xl text-white font-black uppercase italic leading-tight relative z-10">Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM</p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-6 pt-8 border-t border-slate-200">
-              <h3 className="text-3xl font-black uppercase italic text-primary">Contact Us</h3>
+              <h3 className="text-3xl font-black uppercase italic text-primary text-center">Contact Us</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-5 bg-white rounded-3xl border-4 border-slate-200 hover:border-primary transition-all group shadow-sm">
                   <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                     <Instagram size={20} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[8px] font-black uppercase text-slate-400">Instagram</p>
                     <p className="font-bold text-sm truncate">newtons_collectables</p>
                   </div>
@@ -74,7 +59,7 @@ export default function Home() {
                   <div className="h-10 w-10 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
                     <Mail size={20} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[8px] font-black uppercase text-slate-400">Email</p>
                     <p className="font-bold text-sm truncate">Hello@tradeintcg.com</p>
                   </div>
@@ -84,7 +69,7 @@ export default function Home() {
                   <div className="h-10 w-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
                     <Phone size={20} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[8px] font-black uppercase text-slate-400">Mobile</p>
                     <p className="font-bold text-sm truncate">07340407375</p>
                   </div>
