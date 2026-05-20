@@ -1,6 +1,6 @@
-
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/sheet";
 
 export function Header() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <header className="w-full z-50 py-4 relative bg-primary shadow-lg border-b-8 border-black/10">
       <div className="container px-4 flex items-center h-20 md:h-32">
@@ -49,11 +55,15 @@ export function Header() {
         {/* Logo - Full Width Centered */}
         <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
           <Link href="/" className="w-full max-w-5xl pointer-events-auto flex justify-center">
-            <img 
-              src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-              alt="Newton's Collectables Logo" 
-              className="w-full h-auto max-h-16 md:max-h-28 object-contain"
-            />
+            {mounted ? (
+              <img 
+                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                alt="Newton's Collectables Logo" 
+                className="w-full h-auto max-h-16 md:max-h-28 object-contain"
+              />
+            ) : (
+              <div className="w-full h-16 md:h-28" /> // Placeholder to avoid layout shift
+            )}
           </Link>
         </div>
       </div>

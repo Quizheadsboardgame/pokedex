@@ -14,18 +14,20 @@ interface TradeCard {
 
 export default function TradeInPage() {
   const [cards, setCards] = useState<TradeCard[]>([
-    { id: "1", name: "", value: 0 }
+    { id: "initial-1", name: "", value: 0 }
   ]);
 
   const addCard = () => {
-    setCards([...cards, { id: Math.random().toString(36).substr(2, 9), name: "", value: 0 }]);
+    // Using a combination of timestamp and random for a stable ID post-mount
+    const newId = `card-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+    setCards([...cards, { id: newId, name: "", value: 0 }]);
   };
 
   const removeCard = (id: string) => {
     if (cards.length > 1) {
       setCards(cards.filter(c => c.id !== id));
     } else {
-      setCards([{ id: "1", name: "", value: 0 }]);
+      setCards([{ id: "initial-1", name: "", value: 0 }]);
     }
   };
 
