@@ -8,16 +8,13 @@ import {
   Plus, 
   Trash2, 
   Activity,
-  ChevronUp,
-  ChevronDown,
   BookOpen,
   ExternalLink,
   TrendingUp,
   Search,
   Instagram,
   Mail,
-  Phone,
-  Store
+  Phone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -122,7 +119,7 @@ export default function PokedexApp() {
                 {mode === 'pokedex' && (
                   <div className="flex-1 flex flex-col h-full bg-slate-900 relative">
                     <div className="absolute top-0 left-0 right-0 bg-primary h-8 z-30 flex items-center px-4 justify-between border-b-4 border-black/10">
-                      <span className="text-[10px] font-black text-white uppercase italic tracking-widest">Pokedex Digital Archive</span>
+                      <span className="text-10px] font-black text-white uppercase italic tracking-widest">Pokedex Digital Archive</span>
                       <div className="flex gap-4 items-center">
                         <a 
                           href="https://pokedex.org/" 
@@ -395,24 +392,6 @@ export default function PokedexApp() {
                     <MapPin size={16} /> Find Us
                   </button>
                 </div>
-              </div>
-
-              <div className="relative mx-auto w-32 h-32 flex items-center justify-center">
-                <div className="absolute w-24 h-8 bg-slate-800 rounded-md shadow-lg" />
-                <div className="absolute h-24 w-8 bg-slate-800 rounded-md shadow-lg" />
-                <div className="h-6 w-6 rounded-full bg-slate-900 z-10" />
-                <button 
-                  onClick={() => setMode('pokedex')}
-                  className="absolute top-0 w-8 h-8 rounded-t-md hover:bg-slate-700 transition-colors flex items-center justify-center"
-                >
-                  <ChevronUp size={14} className="text-white/20" />
-                </button>
-                <button 
-                  onClick={() => setMode('trade-in')}
-                  className="absolute bottom-0 w-8 h-8 rounded-b-md hover:bg-slate-700 transition-colors flex items-center justify-center"
-                >
-                   <ChevronDown size={14} className="text-white/20" />
-                </button>
               </div>
             </div>
 
