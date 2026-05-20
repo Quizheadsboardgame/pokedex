@@ -82,8 +82,14 @@ export default function VisitPage() {
                   />
                </div>
             </div>
-            <div className="absolute -top-8 -right-8 h-32 w-32 bg-accent rounded-full border-[6px] border-primary shadow-2xl flex items-center justify-center font-black text-primary text-sm text-center p-4 transform rotate-12 z-20 uppercase italic leading-none">
-              WEATHER DEPENDENT
+            {/* User-provided Weather Dependent image */}
+            <div className="absolute -top-10 -right-10 h-36 w-36 overflow-hidden rounded-full border-[6px] border-primary shadow-2xl z-20 transform rotate-12">
+              <Image 
+                src="https://i.ibb.co/4n0BQHqp/fd008cb5-fa9d-4964-80e1-780ba2f3a90c.jpg"
+                alt="Weather Dependent Notice"
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="absolute bottom-4 right-4 pokedex-button bg-blue-500 scale-150 shadow-xl" />
           </div>
