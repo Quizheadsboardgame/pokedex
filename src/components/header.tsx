@@ -15,7 +15,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-primary border-b-[6px] border-black/10 shadow-lg">
       <div className="container relative flex h-24 items-center px-4">
-        {/* Logo Section - Full Length */}
+        {/* Logo Section */}
         <div className="flex-1 flex items-center justify-start overflow-hidden">
           <Link href="/" className="flex items-center group">
             <img 
@@ -32,7 +32,7 @@ export function Header() {
           <div className="h-4 w-12 bg-white/10 rounded-full" />
         </div>
 
-        {/* Navigation Dropdown - Positioned absolute to sit "over" logo */}
+        {/* Navigation Dropdown */}
         <div className="absolute right-4 z-10">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
