@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { 
   MapPin, 
   Clock, 
@@ -12,8 +12,7 @@ import {
   Trash2, 
   ShieldAlert, 
   Search,
-  Activity,
-  Power
+  Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,8 +30,6 @@ type Mode = 'find-us' | 'trade-in';
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
-  const [isIdle, setIsIdle] = useState(false);
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   
   const [cards, setCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
@@ -41,26 +38,6 @@ export default function PokedexApp() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Idle timer logic
-  const resetIdleTimer = () => {
-    if (isIdle) setIsIdle(false);
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    
-    // Only run idle timer for trade-in mode
-    if (mode === 'trade-in') {
-      idleTimerRef.current = setTimeout(() => {
-        setIsIdle(true);
-      }, 5000);
-    }
-  };
-
-  useEffect(() => {
-    resetIdleTimer();
-    return () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    };
-  }, [mode, cards]);
 
   const addCard = () => {
     const newId = `card-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
@@ -106,12 +83,7 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Main Display Area */}
           <div className="lg:col-span-9">
-            <div 
-              className="pokedex-screen-container screen-flicker group"
-              onMouseMove={resetIdleTimer}
-              onClick={resetIdleTimer}
-              onKeyDown={resetIdleTimer}
-            >
+            <div className="pokedex-screen-container screen-flicker group">
               {/* Animated Scan Line */}
               <div className="scanner-line" />
               
@@ -122,24 +94,21 @@ export default function PokedexApp() {
               {/* Digital Status Header */}
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className={cn("text-primary animate-pulse", isIdle && "text-slate-600")} />
-                  <span className={cn("text-[9px] font-black digital-text uppercase tracking-widest", isIdle ? "text-slate-600" : "text-primary")}>
-                    {isIdle ? "Mode: Sleep" : "Signal: Stable"}
+                  <Activity size={12} className="text-primary animate-pulse" />
+                  <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
+                    Signal: Stable
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-1 w-12 bg-white/10 rounded-full overflow-hidden">
-                    <div className={cn("h-full w-2/3 animate-pulse", isIdle ? "bg-slate-700" : "bg-primary")} />
+                    <div className="h-full w-2/3 animate-pulse bg-primary" />
                   </div>
-                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.0.4-LORE</span>
+                  <span className="text-[9px] font-black text-white/50 digital-text uppercase tracking-widest">v2.0.4-LIVE</span>
                 </div>
               </div>
 
               {/* Internal Screen Content */}
-              <div className={cn(
-                "relative z-10 p-6 md:p-12 pt-16 flex-1 flex flex-col custom-scrollbar overflow-y-auto transition-all duration-1000",
-                isIdle && mode === 'trade-in' ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"
-              )}>
+              <div className="relative z-10 p-6 md:p-12 pt-16 flex-1 flex flex-col custom-scrollbar overflow-y-auto transition-all duration-1000">
                 {mode === 'find-us' ? (
                   <div className="animate-in fade-in slide-in-from-right-10 duration-500 flex-1 space-y-10">
                     <div className="text-center space-y-4">
@@ -276,15 +245,6 @@ export default function PokedexApp() {
                   </div>
                 )}
               </div>
-
-              {/* Sleep Mode Overlay */}
-              {isIdle && mode === 'trade-in' && (
-                <div className="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-700 pointer-events-none">
-                  <Power className="h-12 w-12 text-primary animate-pulse mb-4" />
-                  <p className="text-primary digital-text font-black uppercase tracking-[0.5em] text-xs animate-pulse">Power Save Mode</p>
-                  <p className="text-white/20 digital-text uppercase tracking-widest text-[8px] mt-2">Interaction Required to Resume</p>
-                </div>
-              )}
             </div>
           </div>
 
