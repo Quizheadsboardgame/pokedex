@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,11 +13,19 @@ import {
   Search,
   Instagram,
   Mail,
-  Phone
+  Phone,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface TradeCard {
   id: string;
@@ -25,6 +34,14 @@ interface TradeCard {
 }
 
 type Mode = 'pokedex' | 'price-check' | 'card-find' | 'trade-in' | 'find-us';
+
+const MODULES = [
+  { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
+  { id: 'card-find', label: 'Card Find', icon: Search },
+  { id: 'price-check', label: 'Price Check', icon: TrendingUp },
+  { id: 'trade-in', label: 'Trade-In', icon: Calculator },
+  { id: 'find-us', label: 'Find Us', icon: MapPin },
+];
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
@@ -225,19 +242,33 @@ export default function PokedexApp() {
         <div className="w-full md:w-64 bg-[#c0392b] p-4 md:p-8 flex flex-col justify-start md:justify-between border-t-8 md:border-t-0 md:border-l-8 border-black/10 shrink-0">
           <div className="space-y-4">
             <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center mb-4">Select Module</p>
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
-              {[
-                { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
-                { id: 'card-find', label: 'Card Find', icon: Search },
-                { id: 'price-check', label: 'Price Check', icon: TrendingUp },
-                { id: 'trade-in', label: 'Trade-In', icon: Calculator },
-                { id: 'find-us', label: 'Find Us', icon: MapPin },
-              ].map((item) => (
+            
+            {/* Mobile Selection Menu */}
+            <div className="md:hidden">
+              <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
+                <SelectTrigger className="w-full bg-slate-700 border-4 border-black/20 text-white font-black uppercase italic h-12 rounded-xl">
+                  <SelectValue placeholder="Module" />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-4 border-black/20 text-white">
+                  {MODULES.map((item) => (
+                    <SelectItem key={item.id} value={item.id} className="font-black uppercase italic text-xs hover:bg-accent hover:text-accent-foreground">
+                      <div className="flex items-center gap-2">
+                        <item.icon size={12} /> {item.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Desktop Hardware Buttons */}
+            <div className="hidden md:grid md:grid-cols-1 gap-3">
+              {MODULES.map((item) => (
                 <button 
                   key={item.id}
                   onClick={() => setMode(item.id as Mode)}
                   className={cn(
-                    "pokedex-button-hardware h-12 md:h-14 w-full flex items-center justify-center gap-2 font-black uppercase italic text-[10px] transition-all",
+                    "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-2 font-black uppercase italic text-[10px] transition-all",
                     mode === item.id ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white'
                   )}
                 >
