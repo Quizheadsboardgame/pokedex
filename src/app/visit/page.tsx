@@ -7,7 +7,7 @@ export default function VisitPage() {
   return (
     <div className="bg-slate-50 min-h-screen py-20">
       <section className="container px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="max-w-4xl mx-auto">
           <div className="pokedex-frame p-8 md:p-12 space-y-12">
             <div>
               <div className="flex items-center gap-4 mb-8">
@@ -69,31 +69,17 @@ export default function VisitPage() {
                 </a>
               </div>
             </div>
-          </div>
-
-          <div className="relative sticky top-32">
-            <div className="pokedex-frame p-2 bg-primary">
-               <div className="aspect-square relative rounded-2xl overflow-hidden border-4 border-black/10 bg-white">
-                  <Image 
-                    src="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" 
-                    alt="Newton's Collectables Logo" 
-                    fill 
-                    className="object-contain p-12"
-                  />
+            
+            <div className="flex justify-between items-center pt-8 border-t border-slate-100">
+               <div className="flex gap-2">
+                 <div className="h-4 w-4 rounded-full bg-red-500 shadow-inner" />
+                 <div className="h-4 w-4 rounded-full bg-yellow-400 shadow-inner" />
+                 <div className="h-4 w-4 rounded-full bg-green-500 shadow-inner" />
+               </div>
+               <div className="h-4 w-32 bg-slate-200 rounded-full overflow-hidden">
+                 <div className="h-full bg-primary w-2/3" />
                </div>
             </div>
-            
-            {/* Weather Dependent Notice */}
-            <div className="absolute -top-12 -right-12 h-44 w-44 overflow-hidden rounded-full border-[8px] border-primary shadow-2xl z-20 transform rotate-12 bg-white">
-              <Image 
-                src="https://i.ibb.co/4n0BQHqp/fd008cb5-fa9d-4964-80e1-780ba2f3a90c.jpg"
-                alt="Weather Dependent Notice"
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            <div className="absolute bottom-6 right-6 pokedex-button bg-blue-500 scale-150 shadow-xl" />
           </div>
         </div>
       </section>
