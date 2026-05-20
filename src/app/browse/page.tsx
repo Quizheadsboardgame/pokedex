@@ -175,27 +175,6 @@ export default function TradeInPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="pt-6">
-                  <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-black h-14 rounded-xl shadow-[0_6px_0_0_rgba(180,140,0,1)] active:translate-y-1 active:shadow-none transition-all uppercase italic">
-                    Print/Save Manifest
-                  </Button>
-                </div>
-              </div>
-
-              <div className="p-6 border-4 border-slate-200 rounded-3xl bg-white space-y-4">
-                <h4 className="font-black uppercase italic text-primary text-sm">Why Trade?</h4>
-                <ul className="space-y-3">
-                  <li className="text-xs font-bold text-slate-500 flex gap-2">
-                    <span className="text-primary">01.</span> High Payout Rates
-                  </li>
-                  <li className="text-xs font-bold text-slate-500 flex gap-2">
-                    <span className="text-primary">02.</span> Instant Store Credit
-                  </li>
-                  <li className="text-xs font-bold text-slate-500 flex gap-2">
-                    <span className="text-primary">03.</span> Expert Condition Review
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
