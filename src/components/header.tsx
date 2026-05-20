@@ -50,7 +50,7 @@ export function Header() {
             >
               <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">
                 <Link href="/browse" className="w-full font-black uppercase italic p-4 text-xl text-primary block hover:bg-primary/5">
-                  Crates
+                  Trade In Cards
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="rounded-2xl focus:bg-primary/10 cursor-pointer mb-2 outline-none p-0 overflow-hidden">

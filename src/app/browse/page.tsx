@@ -46,7 +46,7 @@ export default function BrowsePage() {
       <section className="container px-4">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-primary text-white font-black uppercase italic border-2 border-white">Inventory Analysis</Badge>
-          <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-foreground">The Market Vault</h2>
+          <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-foreground">Trade In Cards</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mt-4 font-medium italic">
             "Scanning 10,000+ collectibles... Data retrieved for Stall #42."
           </p>

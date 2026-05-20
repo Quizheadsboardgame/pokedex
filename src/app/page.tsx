@@ -41,7 +41,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/browse">
                     <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-black h-16 px-10 text-xl rounded-2xl shadow-[0_8px_0_0_rgba(180,0,0,1)] active:translate-y-1 active:shadow-none transition-all uppercase italic">
-                      Explore Crates
+                      Trade In Cards
                       <ChevronRight className="ml-2 h-6 w-6" />
                     </Button>
                   </Link>
