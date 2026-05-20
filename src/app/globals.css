@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,12 +90,39 @@
   mix-blend-mode: overlay;
 }
 
+@keyframes lens-glow {
+  0%, 100% { 
+    box-shadow: inset 0 8px 15px rgba(0,0,0,0.5), 0 0 20px rgba(59,130,246,0.3); 
+    filter: brightness(1);
+  }
+  50% { 
+    box-shadow: inset 0 8px 15px rgba(0,0,0,0.5), 0 0 60px rgba(59,130,246,0.8); 
+    filter: brightness(1.5);
+  }
+}
+
 .pokedex-camera-lens {
   @apply h-20 w-20 rounded-full border-8 border-slate-300 bg-blue-500 shadow-[inset_0_8px_15px_rgba(0,0,0,0.5),0_0_30px_rgba(59,130,246,0.6)] relative overflow-hidden;
+  animation: lens-glow 4s infinite ease-in-out;
 }
 
 .pokedex-camera-lens::after {
   @apply content-[''] absolute top-2 left-4 w-6 h-3 bg-white/40 rounded-full blur-[1px] -rotate-45;
+}
+
+@keyframes light-beam {
+  0%, 100% { 
+    filter: brightness(1);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+  50% { 
+    filter: brightness(2.5);
+    box-shadow: 0 0 25px currentColor, inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+}
+
+.animate-light-beam {
+  animation: light-beam 2s infinite ease-in-out;
 }
 
 .pokedex-button-hardware {

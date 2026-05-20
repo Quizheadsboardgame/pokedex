@@ -1,13 +1,8 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
 import { 
   MapPin, 
-  Clock, 
-  Mail, 
-  Instagram, 
-  Phone, 
   Calculator, 
   Plus, 
   Trash2, 
@@ -16,7 +11,10 @@ import {
   ChevronDown,
   BookOpen,
   ExternalLink,
-  TrendingUp
+  TrendingUp,
+  Coins,
+  RefreshCw,
+  Briefcase
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,7 +45,6 @@ export default function PokedexApp() {
   useEffect(() => {
     if (!mounted) return;
     
-    // Trigger static for 2 seconds every 30 seconds
     const interval = setInterval(() => {
       setIsStaticActive(true);
       setTimeout(() => setIsStaticActive(false), 2000);
@@ -80,12 +77,13 @@ export default function PokedexApp() {
   return (
     <main className="container px-4 max-w-6xl mx-auto py-4 md:py-8">
       <div className="pokedex-shell overflow-hidden">
+        {/* Pokedex Hardware Header */}
         <div className="bg-[#c0392b] p-6 md:p-8 flex items-center gap-6 border-b-8 border-black/10">
           <div className="pokedex-camera-lens shrink-0" />
           <div className="flex gap-4">
-            <div className="h-4 w-4 rounded-full bg-red-600 border-2 border-black/20 shadow-inner animate-pulse" />
-            <div className="h-4 w-4 rounded-full bg-yellow-400 border-2 border-black/20 shadow-inner" />
-            <div className="h-4 w-4 rounded-full bg-green-500 border-2 border-black/20 shadow-inner" />
+            <div className="h-5 w-5 rounded-full bg-red-600 border-2 border-black/20 shadow-inner animate-light-beam text-red-600" />
+            <div className="h-5 w-5 rounded-full bg-yellow-400 border-2 border-black/20 shadow-inner animate-light-beam text-yellow-400 [animation-delay:0.5s]" />
+            <div className="h-5 w-5 rounded-full bg-green-500 border-2 border-black/20 shadow-inner animate-light-beam text-green-500 [animation-delay:1s]" />
           </div>
           <div className="ml-auto hidden sm:block">
             <img 
@@ -107,7 +105,7 @@ export default function PokedexApp() {
               
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className={cn("text-primary transition-colors", isStaticActive ? "text-yellow-400" : "text-primary")} />
+                  <Activity size={12} className={cn("transition-colors", isStaticActive ? "text-yellow-400" : "text-primary")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
                     {isStaticActive ? "SIGNAL: INTERFERENCE" : "SIGNAL: STABLE"}
                   </span>
@@ -127,7 +125,7 @@ export default function PokedexApp() {
                           href="https://pokedex.org/" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
                         >
                           <ExternalLink size={10} /> Open Standalone
                         </a>
@@ -152,7 +150,7 @@ export default function PokedexApp() {
                           href="https://www.pricecharting.com/category/pokemon-cards" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase"
+                          className="text-[9px] font-bold text-white/70 hover:text-white flex items-center gap-1 uppercase pointer-events-auto"
                         >
                           <ExternalLink size={10} /> Open PriceCharting
                         </a>
@@ -264,7 +262,7 @@ export default function PokedexApp() {
 
                       <div className="p-8 bg-black/40 border-2 border-white/5 rounded-3xl space-y-4 relative overflow-hidden">
                         <div className="flex items-center gap-3 text-accent digital-text text-xs font-black uppercase tracking-widest">
-                          <Clock size={16} /> Wednesdays
+                          <Activity size={16} /> Wednesdays
                         </div>
                         <p className="text-2xl text-white font-black italic uppercase leading-tight">
                           Market Square <br /> Bury St Edmunds <br /> 8:30AM – 4:00PM
@@ -272,21 +270,8 @@ export default function PokedexApp() {
                       </div>
                     </div>
 
-                    <div className="pt-8 border-t border-white/10 pb-12">
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <a href="https://instagram.com/newtons_collectables" target="_blank" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/20 transition-all">
-                          <Instagram size={20} className="text-primary" />
-                          <span className="text-[10px] font-bold uppercase italic digital-text">Instagram</span>
-                        </a>
-                        <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-secondary/20 transition-all">
-                          <Mail size={20} className="text-secondary" />
-                          <span className="text-[10px] font-bold uppercase italic digital-text">Email</span>
-                        </a>
-                        <a href="tel:07340407375" className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-accent/20 transition-all">
-                          <Phone size={20} className="text-accent" />
-                          <span className="text-[10px] font-bold uppercase italic digital-text">WhatsApp</span>
-                        </a>
-                      </div>
+                    <div className="pt-8 border-t border-white/10 pb-12 text-center text-white/30 digital-text text-[10px] uppercase tracking-widest italic">
+                      Signal End
                     </div>
                   </div>
                 )}
