@@ -16,8 +16,7 @@ import {
   ChevronDown,
   BookOpen,
   ExternalLink,
-  TrendingUp,
-  Search
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +34,7 @@ type Mode = 'find-us' | 'trade-in' | 'pokedex' | 'price-check';
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('pokedex');
   const [mounted, setMounted] = useState(false);
+  const [isStaticActive, setIsStaticActive] = useState(false);
   
   const [tradeCards, setTradeCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
@@ -43,6 +43,18 @@ export default function PokedexApp() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
+    // Trigger static for 2 seconds every 30 seconds
+    const interval = setInterval(() => {
+      setIsStaticActive(true);
+      setTimeout(() => setIsStaticActive(false), 2000);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [mounted]);
 
   const addTradeCard = () => {
     const newId = `card-${Date.now()}`;
@@ -87,14 +99,17 @@ export default function PokedexApp() {
         <div className="p-4 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-9">
             <div className="pokedex-screen-container group h-full flex flex-col min-h-[600px] relative bg-[#2d3436]">
+              {/* Static Glitch Overlay */}
+              {isStaticActive && <div className="pokedex-static-glitch z-[100]" />}
+              
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
               
               <div className="absolute top-4 left-6 right-6 z-30 flex justify-between items-center pointer-events-none">
                 <div className="flex items-center gap-2">
-                  <Activity size={12} className="text-primary" />
+                  <Activity size={12} className={cn("text-primary transition-colors", isStaticActive ? "text-yellow-400" : "text-primary")} />
                   <span className="text-[9px] font-black digital-text uppercase tracking-widest text-primary">
-                    SIGNAL: STABLE
+                    {isStaticActive ? "SIGNAL: INTERFERENCE" : "SIGNAL: STABLE"}
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
@@ -120,7 +135,7 @@ export default function PokedexApp() {
                     </div>
                     <iframe 
                       src="https://pokedex.org/" 
-                      className="flex-1 w-full border-none pt-8"
+                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
                       title="Pokemon Database"
                       allow="fullscreen"
                       loading="lazy"
@@ -143,10 +158,9 @@ export default function PokedexApp() {
                         </a>
                       </div>
                     </div>
-                    {/* PriceCharting often allows iframing, but we provide the external link as fallback */}
                     <iframe 
                       src="https://www.pricecharting.com/category/pokemon-cards" 
-                      className="flex-1 w-full border-none pt-8"
+                      className={cn("flex-1 w-full border-none pt-8 transition-opacity duration-300", isStaticActive ? "opacity-40" : "opacity-100")}
                       title="Price Check"
                       allow="fullscreen"
                       loading="lazy"

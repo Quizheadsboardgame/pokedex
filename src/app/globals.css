@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,6 +53,44 @@
   background-size: 100% 4px, 4px 100%;
 }
 
+@keyframes glitch-flicker {
+  0% { opacity: 0.1; transform: scale(1); }
+  5% { opacity: 0.2; transform: scale(1.02) skewX(5deg); }
+  10% { opacity: 0.1; transform: scale(0.98); }
+  15% { opacity: 0.3; transform: scale(1.1) skewX(-5deg); }
+  20% { opacity: 0.1; }
+  25% { opacity: 0.4; transform: translateY(-5px); }
+  30% { opacity: 0.1; }
+  100% { opacity: 0.1; }
+}
+
+.pokedex-static-glitch {
+  @apply absolute inset-0 pointer-events-none overflow-hidden;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pokedex-static-glitch::before {
+  content: "";
+  @apply absolute inset-0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  animation: glitch-flicker 0.1s infinite;
+}
+
+.pokedex-static-glitch::after {
+  content: "";
+  @apply absolute inset-0;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/5/5a/Canal_Plus_Static.gif');
+  background-size: cover;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+}
+
 .pokedex-camera-lens {
   @apply h-20 w-20 rounded-full border-8 border-slate-300 bg-blue-500 shadow-[inset_0_8px_15px_rgba(0,0,0,0.5),0_0_30px_rgba(59,130,246,0.6)] relative overflow-hidden;
 }
@@ -103,11 +142,6 @@
 
 .screen-flicker {
   animation: flicker 0.1s infinite;
-}
-
-@keyframes data-drift {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-20px); }
 }
 
 .digital-grid {
