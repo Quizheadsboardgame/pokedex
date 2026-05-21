@@ -13,7 +13,8 @@ import {
   MessageCircle,
   Plus,
   Trash2,
-  Menu
+  Menu,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -97,13 +98,32 @@ export default function PokedexApp() {
           {/* Top Hardware Banner */}
           <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg">
             
-            {/* Left: Menu Trigger */}
-            <div className="flex items-center gap-3 md:gap-4 flex-1">
+            {/* Left: Buttons and Animations */}
+            <div className="flex items-center gap-2 md:gap-4 flex-1">
+              <div className="flex gap-2">
+                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-red-600 border-2 border-black/30 shadow-inner animate-light-beam" />
+                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-yellow-400 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
+                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-green-500 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
+              </div>
+              <div className="hidden lg:block h-2 w-24 bg-black/20 rounded-full" />
+            </div>
+
+            {/* Center: Logo */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+              <img 
+                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                alt="Newton's Collectables" 
+                className="h-10 md:h-16 lg:h-20 w-auto object-contain drop-shadow-2xl"
+              />
+            </div>
+
+            {/* Right: Menu and Camera Details */}
+            <div className="flex items-center gap-3 md:gap-4 flex-1 justify-end">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-10 md:h-14 px-3 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
                   <div className="flex items-center gap-2">
-                    <Menu className="size-5 md:size-8" />
                     <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
+                    <Menu className="size-5 md:size-8" />
                   </div>
                 </SelectTrigger>
                 <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden min-w-[200px]">
@@ -116,25 +136,6 @@ export default function PokedexApp() {
                   ))}
                 </SelectContent>
               </Select>
-              
-              <div className="hidden lg:flex gap-1">
-                <div className="h-3 w-3 rounded-full bg-red-600 border-2 border-black/30 shadow-inner animate-light-beam" />
-                <div className="h-3 w-3 rounded-full bg-yellow-400 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
-                <div className="h-3 w-3 rounded-full bg-green-500 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
-              </div>
-            </div>
-
-            {/* Center: Logo */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-              <img 
-                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-                alt="Newton's Collectables" 
-                className="h-9 md:h-16 lg:h-20 w-auto object-contain drop-shadow-2xl"
-              />
-            </div>
-
-            {/* Right: Camera Details (Balance) */}
-            <div className="flex items-center gap-2 md:gap-4 flex-1 justify-end">
               <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
             </div>
           </div>
@@ -217,7 +218,7 @@ export default function PokedexApp() {
                             <div className="w-16 md:w-28">
                               <Input type="number" placeholder="£" value={card.value || ''} onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-11 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-xs md:text-sm" />
                             </div>
-                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(id)} className="h-10 w-10 md:h-11 md:w-11 text-slate-500 hover:text-destructive hover:bg-destructive/10">
+                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(card.id)} className="h-10 w-10 md:h-11 md:w-11 text-slate-500 hover:text-destructive hover:bg-destructive/10">
                               <Trash2 className="size-4" />
                             </Button>
                           </div>
