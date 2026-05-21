@@ -15,7 +15,6 @@ import {
   Plus,
   Trash2,
   Menu,
-  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,15 +106,6 @@ export default function PokedexApp() {
                 <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-yellow-400 border border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
                 <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-green-500 border border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
               </div>
-            </div>
-
-            {/* Center: Logo */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-              <img 
-                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-                alt="Newton's Collectables" 
-                className="h-10 md:h-16 lg:h-20 w-auto object-contain drop-shadow-2xl"
-              />
             </div>
 
             {/* Right: Menu */}
@@ -291,7 +281,7 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right Sidebar Hardware Details */}
+        {/* Right Sidebar Hardware Details (Footer Area) */}
         <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-6 lg:p-8 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-2">
@@ -312,6 +302,15 @@ export default function PokedexApp() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Central Logo on Footer */}
+          <div className="flex flex-col items-center justify-center py-4">
+            <img 
+              src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+              alt="Newton's Collectables" 
+              className="h-12 md:h-20 lg:h-24 w-auto object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+            />
           </div>
 
           <div className="hidden md:flex flex-col items-center gap-6 lg:gap-8 mt-12">
