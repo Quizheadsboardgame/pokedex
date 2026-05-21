@@ -234,8 +234,15 @@ export default function PokedexApp() {
 
                 {mode === 'find-us' && (
                   <div className="p-4 md:p-8 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6 md:space-y-8 bg-[#1a1c1d]">
-                    <div className="text-center">
+                    <div className="text-center space-y-4">
                       <h2 className="text-2xl md:text-5xl font-black italic uppercase text-white drop-shadow-md">Find <span className="text-[#e74c3c]">Us</span></h2>
+                      <div className="flex justify-center">
+                        <img 
+                          src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                          alt="Newton's Collectables" 
+                          className="h-12 md:h-16 lg:h-20 w-auto object-contain drop-shadow-xl"
+                        />
+                      </div>
                     </div>
                     
                     <div className="max-w-4xl mx-auto space-y-6">
