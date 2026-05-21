@@ -207,16 +207,24 @@ export default function PokedexApp() {
                     <div className="text-center">
                       <h2 className="text-3xl md:text-5xl font-black italic uppercase text-white">Find <span className="text-primary">Us</span></h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-black/40 border-2 border-white/5 rounded-2xl">
-                        <span className="text-accent digital-text text-[9px] font-black uppercase tracking-widest">Saturdays</span>
-                        <p className="text-lg text-white font-black italic uppercase leading-tight mt-1">Outside Timpsons <br /> Market Square <br /> IP33 1BT</p>
+                    <div className="p-6 bg-black/40 border-2 border-white/5 rounded-2xl space-y-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Saturdays</span>
+                          <div className="h-px flex-1 bg-accent/20" />
+                        </div>
+                        <p className="text-xl text-white font-black italic uppercase leading-tight">Outside Timpsons, Market Square, IP33 1BT</p>
                       </div>
-                      <div className="p-4 bg-black/40 border-2 border-white/5 rounded-2xl">
-                        <span className="text-accent digital-text text-[9px] font-black uppercase tracking-widest">Wednesdays</span>
-                        <p className="text-lg text-white font-black italic uppercase leading-tight mt-1">Market Square <br /> 8:30AM – 4:00PM</p>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Wednesdays</span>
+                          <div className="h-px flex-1 bg-accent/20" />
+                        </div>
+                        <p className="text-xl text-white font-black italic uppercase leading-tight">Market Square, 8:30AM – 4:00PM</p>
                       </div>
                     </div>
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-black/40 rounded-xl border-2 border-white/5 hover:border-primary transition-all">
                         <Instagram size={16} className="text-primary" />
