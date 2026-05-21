@@ -13,7 +13,7 @@ import {
   Search,
   Instagram,
   Mail,
-  Phone,
+  MessageCircle,
   ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -208,20 +208,22 @@ export default function PokedexApp() {
                       <h2 className="text-3xl md:text-5xl font-black italic uppercase text-white">Find <span className="text-primary">Us</span></h2>
                     </div>
                     <div className="p-6 bg-black/40 border-2 border-white/5 rounded-2xl space-y-6">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Saturdays</span>
-                          <div className="h-px flex-1 bg-accent/20" />
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Saturdays (8:30AM – 4:00PM)</span>
+                            <div className="h-px flex-1 bg-accent/20" />
+                          </div>
+                          <p className="text-xl text-white font-black italic uppercase leading-tight">Outside Timpsons, Market Square, IP33 1BT</p>
                         </div>
-                        <p className="text-xl text-white font-black italic uppercase leading-tight">Outside Timpsons, Market Square, IP33 1BT</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Wednesdays</span>
-                          <div className="h-px flex-1 bg-accent/20" />
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-accent digital-text text-[10px] font-black uppercase tracking-widest">Wednesdays (8:30AM – 4:00PM)</span>
+                            <div className="h-px flex-1 bg-accent/20" />
+                          </div>
+                          <p className="text-xl text-white font-black italic uppercase leading-tight">Market Square, Bury St Edmunds</p>
                         </div>
-                        <p className="text-xl text-white font-black italic uppercase leading-tight">Market Square, 8:30AM – 4:00PM</p>
                       </div>
                     </div>
                     
@@ -234,9 +236,9 @@ export default function PokedexApp() {
                         <Mail size={16} className="text-secondary" />
                         <span className="text-[9px] font-bold text-white uppercase italic truncate">Email</span>
                       </a>
-                      <a href="tel:07340407375" className="flex items-center gap-3 p-3 bg-black/40 rounded-xl border-2 border-white/5 hover:border-accent transition-all">
-                        <Phone size={16} className="text-accent" />
-                        <span className="text-[9px] font-bold text-white uppercase italic truncate">Call Us</span>
+                      <a href="https://wa.me/447340407375" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-black/40 rounded-xl border-2 border-white/5 hover:border-accent transition-all">
+                        <MessageCircle size={16} className="text-accent" />
+                        <span className="text-[9px] font-bold text-white uppercase italic truncate">WhatsApp</span>
                       </a>
                     </div>
                   </div>
