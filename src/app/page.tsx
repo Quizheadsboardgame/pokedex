@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -96,16 +97,16 @@ export default function PokedexApp() {
         <div className="flex-1 flex flex-col relative min-h-[500px] md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226]">
           
           {/* Top Hardware Banner */}
-          <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg">
+          <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg bg-[#e74c3c]">
             
-            {/* Left: Buttons and Animations */}
-            <div className="flex items-center gap-2 md:gap-4 flex-1">
+            {/* Left: Blue Button and Status Lights */}
+            <div className="flex items-center gap-3 md:gap-5 flex-1">
+              <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
               <div className="flex gap-2">
-                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-red-600 border-2 border-black/30 shadow-inner animate-light-beam" />
-                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-yellow-400 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
-                <div className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-green-500 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
+                <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-red-600 border border-black/30 shadow-inner animate-light-beam" />
+                <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-yellow-400 border border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
+                <div className="h-3 w-3 md:h-4 md:w-4 rounded-full bg-green-500 border border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
               </div>
-              <div className="hidden lg:block h-2 w-24 bg-black/20 rounded-full" />
             </div>
 
             {/* Center: Logo */}
@@ -117,7 +118,7 @@ export default function PokedexApp() {
               />
             </div>
 
-            {/* Right: Menu and Camera Details */}
+            {/* Right: Menu */}
             <div className="flex items-center gap-3 md:gap-4 flex-1 justify-end">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-10 md:h-14 px-3 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
@@ -136,12 +137,11 @@ export default function PokedexApp() {
                   ))}
                 </SelectContent>
               </Select>
-              <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
             </div>
           </div>
 
           {/* Inner Screen Container */}
-          <div className="flex-1 p-2 md:p-6 lg:p-8 flex flex-col min-h-0">
+          <div className="flex-1 p-2 md:p-4 lg:p-6 flex flex-col min-h-0">
             <div className="pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden group">
               
               {/* Shine Layer */}
