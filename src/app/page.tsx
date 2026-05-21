@@ -88,11 +88,11 @@ export default function PokedexApp() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen w-full flex flex-col bg-[#c0392b] overflow-x-hidden">
-      <div className="flex-1 flex flex-col md:flex-row min-h-screen relative pokedex-hardware-shine">
+    <main className="min-h-svh w-full flex flex-col bg-[#c0392b] overflow-x-hidden">
+      <div className="flex-1 flex flex-col md:flex-row min-h-svh relative pokedex-hardware-shine">
         
         {/* Main Pokedex Interface */}
-        <div className="flex-1 flex flex-col relative min-h-svh md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226]">
+        <div className="flex-1 flex flex-col relative min-h-[500px] md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226]">
           
           {/* Top Hardware Banner */}
           <div className="p-3 md:p-6 flex items-center gap-3 md:gap-4 border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg">
@@ -112,7 +112,7 @@ export default function PokedexApp() {
           </div>
 
           {/* Inner Screen Container */}
-          <div className="flex-1 p-2 md:p-8 flex flex-col min-h-[450px]">
+          <div className="flex-1 p-2 md:p-6 lg:p-8 flex flex-col min-h-0">
             <div className="pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden group">
               
               {/* Shine Layer */}
@@ -131,7 +131,7 @@ export default function PokedexApp() {
                         Archive v2.1
                       </span>
                       <a href="https://pokedex.org/" target="_blank" rel="noopener noreferrer" className="text-[8px] md:text-[9px] font-bold text-white/80 flex items-center gap-1 uppercase bg-black/20 px-2 py-1 rounded-md hover:bg-black/40 transition-colors">
-                        <ExternalLink size={8} className="md:size-10" /> Full Site
+                        <ExternalLink size={10} /> Full Site
                       </a>
                     </div>
                     <iframe src="https://pokedex.org/" className={cn("flex-1 w-full border-none pt-8 md:pt-10 bg-slate-900", isStaticActive && "opacity-40")} />
@@ -146,7 +146,7 @@ export default function PokedexApp() {
                         Market Stats
                       </span>
                       <a href="https://www.pricecharting.com/category/pokemon-cards" target="_blank" rel="noopener noreferrer" className="text-[8px] md:text-[9px] font-bold text-white/80 flex items-center gap-1 uppercase bg-black/20 px-2 py-1 rounded-md hover:bg-black/40 transition-colors">
-                        <TrendingUp size={8} className="md:size-10" /> Full Site
+                        <TrendingUp size={10} /> Full Site
                       </a>
                     </div>
                     <iframe src="https://www.pricecharting.com/category/pokemon-cards" className={cn("flex-1 w-full border-none pt-8 md:pt-10 bg-slate-900", isStaticActive && "opacity-40")} />
@@ -161,7 +161,7 @@ export default function PokedexApp() {
                         Advanced Find
                       </span>
                       <a href="https://pkmncards.com/?s=charizard" target="_blank" rel="noopener noreferrer" className="text-[8px] md:text-[9px] font-bold text-white/80 flex items-center gap-1 uppercase bg-black/20 px-2 py-1 rounded-md hover:bg-black/40 transition-colors">
-                        <ExternalLink size={8} className="md:size-10" /> Full Site
+                        <ExternalLink size={10} /> Full Site
                       </a>
                     </div>
                     <iframe src="https://pkmncards.com/?s=charizard" className={cn("flex-1 w-full border-none pt-8 md:pt-10 bg-slate-900", isStaticActive && "opacity-40")} />
@@ -169,44 +169,44 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'trade-in' && (
-                  <div className="p-4 md:p-10 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full bg-[#1a1c1d]">
+                  <div className="p-4 md:p-8 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full bg-[#1a1c1d]">
                     <div className="text-center mb-6 md:mb-8">
-                      <h2 className="text-3xl md:text-6xl font-black italic uppercase text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">Trade-<span className="text-[#e74c3c]">In</span></h2>
+                      <h2 className="text-2xl md:text-5xl font-black italic uppercase text-white drop-shadow-md">Trade-<span className="text-[#e74c3c]">In</span></h2>
                     </div>
-                    <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto">
+                    <div className="space-y-6 max-w-4xl mx-auto">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[#e74c3c] font-black uppercase italic tracking-widest text-[10px] md:text-sm flex items-center gap-2 drop-shadow-sm"><Calculator className="size-4 md:size-5"/> Calculator Console</span>
-                        <Button variant="outline" onClick={addTradeCard} className="bg-[#e74c3c]/10 border-[#e74c3c] border-2 md:border-4 text-[#e74c3c] font-black uppercase italic rounded-xl h-10 md:h-12 px-4 md:px-6 shadow-lg hover:bg-[#e74c3c] hover:text-white transition-all text-xs md:text-sm">
-                          <Plus className="h-4 w-4 md:h-5 md:w-5 mr-1 md:mr-2" /> Add
+                        <span className="text-[#e74c3c] font-black uppercase italic tracking-widest text-[10px] md:text-xs flex items-center gap-2 drop-shadow-sm"><Calculator className="size-4 md:size-5"/> Calculator Console</span>
+                        <Button variant="outline" onClick={addTradeCard} className="bg-[#e74c3c]/10 border-[#e74c3c] border-2 md:border-4 text-[#e74c3c] font-black uppercase italic rounded-xl h-9 md:h-11 px-4 md:px-5 shadow-lg hover:bg-[#e74c3c] hover:text-white transition-all text-[10px] md:text-sm">
+                          <Plus className="h-4 w-4 mr-1" /> Add
                         </Button>
                       </div>
-                      <div className="space-y-3 md:space-y-4">
+                      <div className="space-y-3">
                         {tradeCards.map((card) => (
                           <div key={card.id} className="flex gap-2 md:gap-3 items-end group animate-in slide-in-from-left-4 duration-300">
                             <div className="flex-1">
-                              <Input placeholder="Card Name..." value={card.name} onChange={(e) => updateTradeCard(card.id, 'name', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-12 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-sm md:text-base" />
+                              <Input placeholder="Card Name..." value={card.name} onChange={(e) => updateTradeCard(card.id, 'name', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-11 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-xs md:text-sm" />
                             </div>
-                            <div className="w-20 md:w-32">
-                              <Input type="number" placeholder="£" value={card.value || ''} onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-12 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-sm md:text-base" />
+                            <div className="w-16 md:w-28">
+                              <Input type="number" placeholder="£" value={card.value || ''} onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-11 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-xs md:text-sm" />
                             </div>
-                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(card.id)} className="h-10 w-10 md:h-12 md:w-12 text-slate-500 hover:text-destructive hover:bg-destructive/10">
-                              <Trash2 className="size-4 md:size-5" />
+                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(card.id)} className="h-10 w-10 md:h-11 md:w-11 text-slate-500 hover:text-destructive hover:bg-destructive/10">
+                              <Trash2 className="size-4" />
                             </Button>
                           </div>
                         ))}
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 pt-6 md:pt-8 border-t border-white/5">
-                        <div className="p-3 md:p-4 bg-green-500/10 border border-green-500/20 rounded-xl md:rounded-2xl shadow-inner group hover:bg-green-500/20 transition-all text-center sm:text-left">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 pt-6 border-t border-white/5">
+                        <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-xl shadow-inner text-center sm:text-left">
                           <p className="text-[8px] md:text-[10px] font-black text-green-400 uppercase tracking-widest digital-text">Cash (70%)</p>
-                          <p className="text-xl md:text-3xl font-black text-green-400">£{(totalValue * 0.7).toFixed(2)}</p>
+                          <p className="text-lg md:text-2xl font-black text-green-400">£{(totalValue * 0.7).toFixed(2)}</p>
                         </div>
-                        <div className="p-3 md:p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl md:rounded-2xl shadow-inner group hover:bg-blue-500/20 transition-all text-center sm:text-left">
+                        <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl shadow-inner text-center sm:text-left">
                           <p className="text-[8px] md:text-[10px] font-black text-blue-400 uppercase tracking-widest digital-text">Trade (80%)</p>
-                          <p className="text-xl md:text-3xl font-black text-blue-400">£{(totalValue * 0.8).toFixed(2)}</p>
+                          <p className="text-lg md:text-2xl font-black text-blue-400">£{(totalValue * 0.8).toFixed(2)}</p>
                         </div>
-                        <div className="p-3 md:p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl md:rounded-2xl shadow-inner group hover:bg-purple-500/20 transition-all text-center sm:text-left">
+                        <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl shadow-inner text-center sm:text-left">
                           <p className="text-[8px] md:text-[10px] font-black text-purple-400 uppercase tracking-widest digital-text">Consign (85%)</p>
-                          <p className="text-xl md:text-3xl font-black text-purple-400">£{(totalValue * 0.85).toFixed(2)}</p>
+                          <p className="text-lg md:text-2xl font-black text-purple-400">£{(totalValue * 0.85).toFixed(2)}</p>
                         </div>
                       </div>
                     </div>
@@ -214,45 +214,46 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'find-us' && (
-                  <div className="p-4 md:p-10 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-8 md:space-y-10 bg-[#1a1c1d]">
+                  <div className="p-4 md:p-8 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6 md:space-y-8 bg-[#1a1c1d]">
                     <div className="text-center">
-                      <h2 className="text-3xl md:text-6xl font-black italic uppercase text-white drop-shadow-md">Find <span className="text-[#e74c3c]">Us</span></h2>
+                      <h2 className="text-2xl md:text-5xl font-black italic uppercase text-white drop-shadow-md">Find <span className="text-[#e74c3c]">Us</span></h2>
                     </div>
-                    <div className="p-4 md:p-8 bg-black/40 border-2 border-white/5 rounded-2xl md:rounded-3xl space-y-6 md:space-y-10 shadow-inner relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-                      <div className="space-y-6 md:space-y-10 relative z-10">
-                        <div className="space-y-4">
+                    
+                    <div className="max-w-4xl mx-auto space-y-6">
+                      <div className="p-4 md:p-6 bg-black/40 border-2 border-white/5 rounded-xl md:rounded-2xl space-y-4 shadow-inner relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                        <div className="relative z-10 space-y-4">
                           <div className="flex items-center gap-2">
-                            <span className="text-accent digital-text text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]">Schedule Archive</span>
+                            <span className="text-accent digital-text text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">Schedule Archive</span>
                             <div className="h-px flex-1 bg-accent/20" />
                           </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                            <div className="space-y-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="space-y-1">
                               <p className="text-[#e74c3c] digital-text text-[8px] md:text-[10px] font-black uppercase tracking-widest">Saturdays (8:30AM – 4:00PM)</p>
-                              <p className="text-lg md:text-2xl text-white font-black italic uppercase leading-tight">Outside Timpsons, Market Square, IP33 1BT</p>
+                              <p className="text-base md:text-xl text-white font-black italic uppercase leading-tight">Outside Timpsons, Market Square, IP33 1BT</p>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-1">
                               <p className="text-[#e74c3c] digital-text text-[8px] md:text-[10px] font-black uppercase tracking-widest">Wednesdays (8:30AM – 4:00PM)</p>
-                              <p className="text-lg md:text-2xl text-white font-black italic uppercase leading-tight">Market Square, Bury St Edmunds</p>
+                              <p className="text-base md:text-xl text-white font-black italic uppercase leading-tight">Market Square, Bury St Edmunds</p>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 pb-4">
-                      <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-black/40 rounded-xl md:rounded-2xl border-2 border-white/5 hover:border-[#e74c3c] hover:bg-[#e74c3c]/5 transition-all group shadow-lg">
-                        <Instagram size={20} className="text-[#e74c3c] md:size-24" />
-                        <span className="text-[8px] md:text-[10px] font-black text-white uppercase italic tracking-widest">Instagram</span>
-                      </a>
-                      <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-black/40 rounded-xl md:rounded-2xl border-2 border-white/5 hover:border-blue-400 hover:bg-blue-400/5 transition-all group shadow-lg">
-                        <Mail size={20} className="text-blue-400 md:size-24" />
-                        <span className="text-[8px] md:text-[10px] font-black text-white uppercase italic tracking-widest">Email</span>
-                      </a>
-                      <a href="https://wa.me/447340407375" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-black/40 rounded-xl md:rounded-2xl border-2 border-white/5 hover:border-green-400 hover:bg-green-400/5 transition-all group shadow-lg">
-                        <MessageCircle size={20} className="text-green-400 md:size-24" />
-                        <span className="text-[8px] md:text-[10px] font-black text-white uppercase italic tracking-widest">WhatsApp</span>
-                      </a>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3">
+                        <a href="https://instagram.com/newtons_collectables" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 md:p-4 bg-black/40 rounded-xl border-2 border-white/5 hover:border-[#e74c3c] hover:bg-[#e74c3c]/5 transition-all group shadow-lg">
+                          <Instagram size={18} className="text-[#e74c3c]" />
+                          <span className="text-[9px] md:text-[10px] font-black text-white uppercase italic tracking-widest">Instagram</span>
+                        </a>
+                        <a href="mailto:Hello@tradeintcg.com" className="flex items-center gap-2 p-3 md:p-4 bg-black/40 rounded-xl border-2 border-white/5 hover:border-blue-400 hover:bg-blue-400/5 transition-all group shadow-lg">
+                          <Mail size={18} className="text-blue-400" />
+                          <span className="text-[9px] md:text-[10px] font-black text-white uppercase italic tracking-widest">Email</span>
+                        </a>
+                        <a href="https://wa.me/447340407375" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 p-3 md:p-4 bg-black/40 rounded-xl border-2 border-white/5 hover:border-green-400 hover:bg-green-400/5 transition-all group shadow-lg">
+                          <MessageCircle size={18} className="text-green-400" />
+                          <span className="text-[9px] md:text-[10px] font-black text-white uppercase italic tracking-widest">WhatsApp</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -262,20 +263,20 @@ export default function PokedexApp() {
         </div>
 
         {/* Right Sidebar Hardware Controls */}
-        <div className="w-full md:w-80 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-10 flex flex-col justify-start md:justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
-          <div className="space-y-4 md:space-y-6">
+        <div className="w-full md:w-72 lg:w-80 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-6 lg:p-10 flex flex-col justify-start md:justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
+          <div className="space-y-4">
             <div className="space-y-2">
-              <p className="text-[8px] md:text-[10px] font-black text-white/40 uppercase italic tracking-[0.3em] md:tracking-[0.5em] text-center mb-2 md:mb-4">Module Selector</p>
+              <p className="text-[8px] md:text-[10px] font-black text-white/40 uppercase italic tracking-[0.3em] text-center mb-2">Module Selector</p>
               <div className="w-full relative">
                 <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
-                  <SelectTrigger className="w-full bg-[#1a1c1d] border-2 md:border-4 border-black/20 text-white font-black uppercase italic h-14 md:h-16 rounded-xl md:rounded-2xl shadow-xl focus:ring-accent transition-all hover:scale-[1.01] md:hover:scale-[1.02] text-xs md:text-base">
+                  <SelectTrigger className="w-full bg-[#1a1c1d] border-2 md:border-4 border-black/20 text-white font-black uppercase italic h-12 md:h-14 lg:h-16 rounded-xl md:rounded-2xl shadow-xl focus:ring-accent transition-all hover:scale-[1.01] text-xs md:text-sm lg:text-base">
                     <SelectValue placeholder="Select Module" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden">
                     {MODULES.map((item) => (
                       <SelectItem key={item.id} value={item.id} className="font-black uppercase italic text-xs md:text-sm hover:bg-accent hover:text-accent-foreground py-3 md:py-4 transition-colors">
                         <div className="flex items-center gap-2 md:gap-3">
-                          <item.icon className="size-4 md:size-5 text-[#e74c3c]" /> {item.label}
+                          <item.icon className="size-4 text-[#e74c3c]" /> {item.label}
                         </div>
                       </SelectItem>
                     ))}
@@ -286,26 +287,26 @@ export default function PokedexApp() {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-2 md:gap-3 pt-4 md:pt-6">
-               <div className="h-3 md:h-4 bg-black/20 rounded-full" />
-               <div className="h-3 md:h-4 bg-black/20 rounded-full" />
-               <div className="h-3 md:h-4 bg-black/20 rounded-full w-2/3" />
-               <div className="h-3 md:h-4 bg-black/20 rounded-full w-1/2" />
+            <div className="grid grid-cols-2 gap-2 pt-4">
+               <div className="h-3 bg-black/20 rounded-full" />
+               <div className="h-3 bg-black/20 rounded-full" />
+               <div className="h-3 bg-black/20 rounded-full w-2/3" />
+               <div className="h-3 bg-black/20 rounded-full w-1/2" />
             </div>
           </div>
 
-          <div className="hidden md:flex flex-col items-center gap-8 mt-12">
-            <div className="flex gap-6">
-              <div className="h-16 w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-6 border-black/30 shadow-2xl relative overflow-hidden group">
+          <div className="hidden md:flex flex-col items-center gap-6 lg:gap-8 mt-12">
+            <div className="flex gap-4 lg:gap-6">
+              <div className="h-12 w-12 lg:h-16 lg:w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-4 lg:border-6 border-black/30 shadow-2xl relative overflow-hidden group">
                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <div className="h-16 w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-6 border-black/30 shadow-2xl relative overflow-hidden group">
+              <div className="h-12 w-12 lg:h-16 lg:w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-4 lg:border-6 border-black/30 shadow-2xl relative overflow-hidden group">
                  <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </div>
             
             <div className="text-center space-y-1">
-              <p className="text-[10px] font-black text-white/30 uppercase italic tracking-widest digital-text">Archival Handheld</p>
+              <p className="text-[8px] lg:text-[10px] font-black text-white/30 uppercase italic tracking-widest digital-text">Archival Handheld</p>
               <p className="text-[8px] font-black text-accent/20 uppercase tracking-[0.8em] digital-text">PRO SERIES 3.0</p>
             </div>
           </div>
