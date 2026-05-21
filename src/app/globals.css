@@ -37,7 +37,40 @@
 }
 
 .pokedex-screen-container {
-  @apply relative rounded-xl md:rounded-3xl shadow-[inset_0_10px_30px_rgba(0,0,0,0.8)] overflow-hidden;
+  @apply relative rounded-xl md:rounded-3xl shadow-[inset_0_10px_40px_rgba(0,0,0,0.9)] overflow-hidden border-4 border-black/40;
+}
+
+.pokedex-glass-shine {
+  @apply absolute inset-0 pointer-events-none z-30 overflow-hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0) 21%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.pokedex-glass-shine::after {
+  content: "";
+  @apply absolute top-0 left-[-100%] w-[50%] h-full opacity-30 skew-x-[-25deg];
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: sweep 8s infinite linear;
+}
+
+@keyframes sweep {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+.pokedex-hardware-shine {
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
 }
 
 @keyframes glitch-flicker {
