@@ -13,7 +13,7 @@ import {
   MessageCircle,
   Plus,
   Trash2,
-  ChevronDown
+  Menu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,15 +35,15 @@ interface TradeCard {
 type Mode = 'pokedex' | 'price-check' | 'card-find' | 'trade-in' | 'find-us';
 
 const MODULES = [
+  { id: 'find-us', label: 'Find Us', icon: MapPin },
   { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
   { id: 'card-find', label: 'Card Find', icon: Search },
   { id: 'price-check', label: 'Price Check', icon: TrendingUp },
   { id: 'trade-in', label: 'Trade-In', icon: Calculator },
-  { id: 'find-us', label: 'Find Us', icon: MapPin },
 ];
 
 export default function PokedexApp() {
-  const [mode, setMode] = useState<Mode>('pokedex');
+  const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
   const [isStaticActive, setIsStaticActive] = useState(false);
   
@@ -95,19 +95,47 @@ export default function PokedexApp() {
         <div className="flex-1 flex flex-col relative min-h-[500px] md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226]">
           
           {/* Top Hardware Banner */}
-          <div className="p-3 md:p-6 flex items-center gap-3 md:gap-4 border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg">
-            <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
-            <div className="flex gap-1 md:gap-2">
-              <div className="h-3 w-3 md:h-5 md:w-5 rounded-full bg-red-600 border-2 border-black/30 shadow-inner animate-light-beam" />
-              <div className="h-3 w-3 md:h-5 md:w-5 rounded-full bg-yellow-400 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
-              <div className="h-3 w-3 md:h-5 md:w-5 rounded-full bg-green-500 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
+          <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg">
+            
+            {/* Left: Menu Trigger */}
+            <div className="flex items-center gap-3 md:gap-4 flex-1">
+              <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
+                <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-10 md:h-14 px-3 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
+                  <div className="flex items-center gap-2">
+                    <Menu className="size-5 md:size-8" />
+                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden min-w-[200px]">
+                  {MODULES.map((item) => (
+                    <SelectItem key={item.id} value={item.id} className="font-black uppercase italic text-xs md:text-sm hover:bg-accent hover:text-accent-foreground py-3 md:py-4 transition-colors">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <item.icon className="size-4 text-[#e74c3c]" /> {item.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              <div className="hidden lg:flex gap-1">
+                <div className="h-3 w-3 rounded-full bg-red-600 border-2 border-black/30 shadow-inner animate-light-beam" />
+                <div className="h-3 w-3 rounded-full bg-yellow-400 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
+                <div className="h-3 w-3 rounded-full bg-green-500 border-2 border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
+              </div>
             </div>
-            <div className="ml-auto flex items-center gap-2 md:gap-4">
+
+            {/* Center: Logo */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
               <img 
                 src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
                 alt="Newton's Collectables" 
-                className="h-8 md:h-14 w-auto object-contain drop-shadow-md"
+                className="h-9 md:h-16 lg:h-20 w-auto object-contain drop-shadow-2xl"
               />
+            </div>
+
+            {/* Right: Camera Details (Balance) */}
+            <div className="flex items-center gap-2 md:gap-4 flex-1 justify-end">
+              <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
             </div>
           </div>
 
@@ -189,7 +217,7 @@ export default function PokedexApp() {
                             <div className="w-16 md:w-28">
                               <Input type="number" placeholder="£" value={card.value || ''} onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)} className="bg-black/40 border border-white/10 text-white h-10 md:h-11 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors text-xs md:text-sm" />
                             </div>
-                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(card.id)} className="h-10 w-10 md:h-11 md:w-11 text-slate-500 hover:text-destructive hover:bg-destructive/10">
+                            <Button variant="ghost" size="icon" onClick={() => removeTradeCard(id)} className="h-10 w-10 md:h-11 md:w-11 text-slate-500 hover:text-destructive hover:bg-destructive/10">
                               <Trash2 className="size-4" />
                             </Button>
                           </div>
@@ -262,52 +290,38 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right Sidebar Hardware Controls */}
-        <div className="w-full md:w-72 lg:w-80 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-6 lg:p-10 flex flex-col justify-start md:justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-[8px] md:text-[10px] font-black text-white/40 uppercase italic tracking-[0.3em] text-center mb-2">Module Selector</p>
-              <div className="w-full relative">
-                <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
-                  <SelectTrigger className="w-full bg-[#1a1c1d] border-2 md:border-4 border-black/20 text-white font-black uppercase italic h-12 md:h-14 lg:h-16 rounded-xl md:rounded-2xl shadow-xl focus:ring-accent transition-all hover:scale-[1.01] text-xs md:text-sm lg:text-base">
-                    <SelectValue placeholder="Select Module" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden">
-                    {MODULES.map((item) => (
-                      <SelectItem key={item.id} value={item.id} className="font-black uppercase italic text-xs md:text-sm hover:bg-accent hover:text-accent-foreground py-3 md:py-4 transition-colors">
-                        <div className="flex items-center gap-2 md:gap-3">
-                          <item.icon className="size-4 text-[#e74c3c]" /> {item.label}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {/* Visual Glow */}
-                <div className="absolute -inset-1 bg-accent/20 blur-xl rounded-2xl -z-10 animate-pulse" />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-2 pt-4">
+        {/* Right Sidebar Hardware Details */}
+        <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-6 lg:p-8 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-2">
                <div className="h-3 bg-black/20 rounded-full" />
                <div className="h-3 bg-black/20 rounded-full" />
                <div className="h-3 bg-black/20 rounded-full w-2/3" />
                <div className="h-3 bg-black/20 rounded-full w-1/2" />
             </div>
+
+            <div className="p-4 bg-black/40 rounded-2xl border-2 border-white/5 shadow-inner hidden md:block">
+              <div className="space-y-3">
+                <div className="h-2 bg-accent/20 rounded-full overflow-hidden">
+                  <div className="h-full bg-accent w-3/4 animate-pulse" />
+                </div>
+                <div className="flex justify-between">
+                  <div className="h-8 w-8 bg-[#2d3436] rounded-lg border-2 border-black/20 shadow-lg" />
+                  <div className="h-8 w-8 bg-[#2d3436] rounded-lg border-2 border-black/20 shadow-lg" />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="hidden md:flex flex-col items-center gap-6 lg:gap-8 mt-12">
-            <div className="flex gap-4 lg:gap-6">
-              <div className="h-12 w-12 lg:h-16 lg:w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-4 lg:border-6 border-black/30 shadow-2xl relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <div className="h-12 w-12 lg:h-16 lg:w-16 bg-[#2d3436] rounded-full pokedex-button-hardware border-4 lg:border-6 border-black/30 shadow-2xl relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-            </div>
-            
             <div className="text-center space-y-1">
               <p className="text-[8px] lg:text-[10px] font-black text-white/30 uppercase italic tracking-widest digital-text">Archival Handheld</p>
               <p className="text-[8px] font-black text-accent/20 uppercase tracking-[0.8em] digital-text">PRO SERIES 3.0</p>
+            </div>
+            
+            <div className="h-24 w-12 bg-black/20 rounded-full relative overflow-hidden flex items-center justify-center p-2">
+               <div className="h-full w-1 bg-white/5 rounded-full" />
+               <div className="absolute top-4 h-6 w-6 bg-accent/20 rounded-full blur-md" />
             </div>
           </div>
 
