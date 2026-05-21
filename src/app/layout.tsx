@@ -24,7 +24,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="icon" href="https://i.ibb.co/cSGJN4Cm/IMG-2551.png" />
       </head>
-      <body className="antialiased h-full w-full bg-[#121212] overflow-hidden">
+      <body className="antialiased h-full w-full bg-[#121212] overflow-x-hidden">
         <FirebaseClientProvider>
           {children}
           <Toaster />
