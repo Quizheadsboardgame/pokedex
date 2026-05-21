@@ -243,8 +243,8 @@ export default function PokedexApp() {
           <div className="space-y-4">
             <p className="text-[10px] font-black text-white/50 uppercase italic tracking-widest text-center mb-4">Select Module</p>
             
-            {/* Mobile Selection Menu */}
-            <div className="md:hidden">
+            {/* Unified Selection Dropdown */}
+            <div className="w-full">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-full bg-slate-700 border-4 border-black/20 text-white font-black uppercase italic h-12 rounded-xl">
                   <SelectValue placeholder="Module" />
@@ -260,22 +260,6 @@ export default function PokedexApp() {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Desktop Hardware Buttons */}
-            <div className="hidden md:grid md:grid-cols-1 gap-3">
-              {MODULES.map((item) => (
-                <button 
-                  key={item.id}
-                  onClick={() => setMode(item.id as Mode)}
-                  className={cn(
-                    "pokedex-button-hardware h-14 w-full flex items-center justify-center gap-2 font-black uppercase italic text-[10px] transition-all",
-                    mode === item.id ? 'bg-accent text-accent-foreground scale-105' : 'bg-slate-700 text-white'
-                  )}
-                >
-                  <item.icon size={14} /> {item.label}
-                </button>
-              ))}
-            </div>
           </div>
 
           <div className="hidden md:flex flex-col items-center gap-4 mt-8">
@@ -283,7 +267,7 @@ export default function PokedexApp() {
               <div className="h-10 w-10 bg-slate-800 rounded-full pokedex-button-hardware border-4 border-black/20" />
               <div className="h-10 w-10 bg-slate-800 rounded-full pokedex-button-hardware border-4 border-black/20" />
             </div>
-            <p className="text-[8px] font-black text-white/30 uppercase italic tracking-widest">Archive v2.0</p>
+            <p className="text-[8px] font-black text-white/30 uppercase italic tracking-widest">Archive v2.1</p>
           </div>
         </div>
       </div>
