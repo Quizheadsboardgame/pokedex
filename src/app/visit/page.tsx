@@ -1,4 +1,6 @@
 
+"use client";
+
 import { MapPin, Clock, Mail, Instagram, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { PokeScanner } from "@/components/poke-scanner";

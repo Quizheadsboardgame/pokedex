@@ -98,29 +98,12 @@ export default function PokedexApp() {
           
           {/* Header Banner */}
           <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg bg-[#e74c3c]">
-            <div className="flex items-center gap-2 md:gap-5">
-              <div className="pokedex-camera-lens shrink-0 !h-8 !w-8 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
-              <div className="flex gap-1 md:gap-2">
-                <div className="h-2 w-2 md:h-4 md:w-4 rounded-full bg-red-600 border border-black/30 shadow-inner animate-light-beam" />
-                <div className="h-2 w-2 md:h-4 md:w-4 rounded-full bg-yellow-400 border border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
-                <div className="h-2 w-2 md:h-4 md:w-4 rounded-full bg-green-500 border border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
-              </div>
-            </div>
-
-            <div className="flex-1 flex justify-center">
-              <img 
-                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-                alt="Newton's Collectables" 
-                className="h-8 md:h-12 lg:h-16 w-auto object-contain drop-shadow-xl"
-              />
-            </div>
-
-            <div className="flex items-center gap-3 md:gap-4 justify-end">
+            <div className="flex items-center gap-3 md:gap-4">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-9 md:h-14 px-2 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
                   <div className="flex items-center gap-2">
-                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">System</span>
                     <Menu className="size-4 md:size-8" />
+                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
                   </div>
                 </SelectTrigger>
                 <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden min-w-[180px]">
@@ -133,6 +116,18 @@ export default function PokedexApp() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="flex-1 flex justify-center px-4">
+              <img 
+                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                alt="Newton's Collectables" 
+                className="h-8 md:h-12 lg:h-16 w-auto object-contain drop-shadow-xl"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 md:gap-5 justify-end">
+              <div className="pokedex-camera-lens shrink-0 !h-8 !w-8 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
             </div>
           </div>
 
