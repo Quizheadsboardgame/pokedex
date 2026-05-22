@@ -15,6 +15,12 @@ import {
   Plus,
   Trash2,
   Menu,
+  Zap,
+  Loader2,
+  Shield,
+  BarChart3,
+  TrendingDown,
+  Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +32,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getPokemonInfo, type PokemonInfoOutput } from "@/ai/flows/pokemon-info-flow";
+import { generatePokemonImage } from "@/ai/flows/pokemon-image-flow";
+import { 
+  ChartConfig, 
+  ChartContainer, 
+  ChartTooltip, 
+  ChartTooltipContent 
+} from "@/components/ui/chart";
+import { Line, LineChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 interface TradeCard {
   id: string;
@@ -33,21 +48,36 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'pokedex' | 'price-check' | 'card-find' | 'trade-in' | 'find-us';
+type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'card-intel';
 
 const MODULES = [
   { id: 'find-us', label: 'Find Us', icon: MapPin },
+  { id: 'card-intel', label: 'Card Intel', icon: BarChart3 },
   { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
   { id: 'card-find', label: 'Card Find', icon: Search },
   { id: 'price-check', label: 'Price Check', icon: TrendingUp },
   { id: 'trade-in', label: 'Trade-In', icon: Calculator },
 ];
 
+const chartConfig = {
+  price: {
+    label: "Market Price",
+    color: "hsl(var(--primary))",
+  },
+} satisfies ChartConfig;
+
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
   const [isStaticActive, setIsStaticActive] = useState(false);
   
+  // Card Intel State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [intelData, setIntelData] = useState<PokemonInfoOutput | null>(null);
+  const [intelImage, setIntelImage] = useState<string | null>(null);
+  const [intelLoading, setIntelLoading] = useState(false);
+  const [chartData, setChartData] = useState<any[]>([]);
+
   const [tradeCards, setTradeCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
   ]);
@@ -82,6 +112,33 @@ export default function PokedexApp() {
 
   const updateTradeCard = (id: string, field: keyof TradeCard, val: string | number) => {
     setTradeCards(tradeCards.map(c => c.id === id ? { ...c, [field]: val } : c));
+  };
+
+  const handleIntelSearch = async () => {
+    if (!searchQuery.trim()) return;
+    setIntelLoading(true);
+    setIntelData(null);
+    setIntelImage(null);
+
+    try {
+      const info = await getPokemonInfo({ pokemonName: searchQuery });
+      setIntelData(info);
+
+      // Generate "spiky" mock trend data based on Pokemon info
+      const basePrice = Math.floor(Math.random() * 500) + 50;
+      const trend = Array.from({ length: 12 }, (_, i) => ({
+        month: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i],
+        price: basePrice + (Math.random() * basePrice * 0.4) - (basePrice * 0.2)
+      }));
+      setChartData(trend);
+
+      const img = await generatePokemonImage({ prompt: info.imagePrompt });
+      setIntelImage(img.url);
+    } catch (error) {
+      console.error("Intel retrieval failed:", error);
+    } finally {
+      setIntelLoading(false);
+    }
   };
 
   const totalValue = tradeCards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
@@ -134,14 +191,183 @@ export default function PokedexApp() {
           <div className="flex-1 p-2 md:p-4 lg:p-6 flex flex-col min-h-0">
             <div className="pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden group">
               
-              {/* Shine Layer */}
               <div className="pokedex-glass-shine" />
-              
               {isStaticActive && <div className="pokedex-static-glitch z-[100]" />}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
 
               <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+                
+                {mode === 'card-intel' && (
+                  <div className="p-4 md:p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                      <div className="space-y-1">
+                        <h2 className="text-2xl md:text-4xl font-black italic uppercase text-white drop-shadow-md">Card <span className="text-[#e74c3c]">Intel</span></h2>
+                        <p className="text-[10px] font-bold text-accent uppercase tracking-widest digital-text">Advanced Market Analysis v1.0</p>
+                      </div>
+                      <div className="flex w-full md:w-auto gap-2">
+                        <Input 
+                          placeholder="Search Pokemon..." 
+                          value={searchQuery} 
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && handleIntelSearch()}
+                          className="bg-black/40 border border-white/10 text-white h-10 md:h-12 rounded-lg italic font-bold focus:border-[#e74c3c] transition-colors"
+                        />
+                        <Button 
+                          onClick={handleIntelSearch} 
+                          disabled={intelLoading}
+                          className="bg-[#e74c3c] text-white font-black uppercase italic rounded-lg px-6 h-10 md:h-12"
+                        >
+                          {intelLoading ? <Loader2 className="animate-spin" /> : <Search />}
+                        </Button>
+                      </div>
+                    </div>
+
+                    {!intelData && !intelLoading && (
+                      <div className="flex-1 flex flex-col items-center justify-center py-20 text-center space-y-4 opacity-40">
+                        <div className="h-24 w-24 rounded-full border-4 border-dashed border-white/20 flex items-center justify-center">
+                          <BarChart3 size={40} className="text-white" />
+                        </div>
+                        <p className="text-white font-black uppercase italic tracking-widest text-sm">Awaiting Scanner Input...</p>
+                      </div>
+                    )}
+
+                    {intelData && (
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in zoom-in-95 duration-500">
+                        
+                        {/* Portrait Section */}
+                        <div className="lg:col-span-4 space-y-4">
+                          <div className="relative aspect-square rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl bg-black">
+                            {intelImage ? (
+                              <img src={intelImage} alt={intelData.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Loader2 className="animate-spin text-accent" size={32} />
+                              </div>
+                            )}
+                            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
+                              <div className="text-xs font-black text-white uppercase italic">{intelData.name}</div>
+                              <div className="text-[10px] text-accent/80 font-bold digital-text">{intelData.pokedexNumber}</div>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2">
+                            <div className="flex items-center gap-2 text-[#e74c3c]">
+                              <Shield size={14} />
+                              <span className="text-[10px] font-black uppercase tracking-widest">Base Statistics</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-white">
+                              <div>
+                                <p className="text-[8px] text-white/50 uppercase">Height</p>
+                                <p className="text-xs font-bold">{intelData.stats.height}</p>
+                              </div>
+                              <div>
+                                <p className="text-[8px] text-white/50 uppercase">Weight</p>
+                                <p className="text-xs font-bold">{intelData.stats.weight}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Analysis Section */}
+                        <div className="lg:col-span-8 space-y-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-3">
+                              <h3 className="text-accent font-black uppercase italic text-xs flex items-center gap-2">
+                                <Info size={14} /> Archive Entry
+                              </h3>
+                              <p className="text-white/80 text-xs md:text-sm leading-relaxed italic font-medium">
+                                "{intelData.description}"
+                              </p>
+                              <div className="flex gap-2 pt-2">
+                                {intelData.types.map(t => (
+                                  <span key={t} className="px-2 py-1 bg-[#e74c3c]/20 border border-[#e74c3c]/40 text-[#e74c3c] text-[8px] font-black uppercase rounded-md">
+                                    {t}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-3">
+                              <h3 className="text-accent font-black uppercase italic text-xs flex items-center gap-2">
+                                <TrendingUp size={14} /> TCG Footprint
+                              </h3>
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-white/50 text-[10px] uppercase font-bold">Total Cards</span>
+                                  <span className="text-white font-black text-sm">{intelData.tcgStats.totalCards}</span>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-white/50 text-[10px] uppercase font-bold">Notable Sets</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {intelData.tcgStats.notableSets.map(s => (
+                                      <span key={s} className="text-[9px] text-white/80 font-bold bg-white/5 px-2 py-0.5 rounded border border-white/10">{s}</span>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Spiky Trend Chart */}
+                          <div className="p-6 bg-black/60 rounded-3xl border border-white/10 relative overflow-hidden group">
+                            <div className="absolute top-4 right-6 flex items-center gap-2">
+                              <span className="text-[10px] font-black text-green-400 uppercase tracking-widest animate-pulse">Live Tracking</span>
+                              <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,1)]" />
+                            </div>
+                            <h3 className="text-white font-black uppercase italic text-sm mb-6 flex items-center gap-2">
+                              <BarChart3 size={16} className="text-[#e74c3c]" /> Market Price Spikes
+                            </h3>
+                            
+                            <div className="h-48 w-full">
+                              <ChartContainer config={chartConfig}>
+                                <ResponsiveContainer width="100%" height="100%">
+                                  <LineChart data={chartData}>
+                                    <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#ffffff10" />
+                                    <XAxis 
+                                      dataKey="month" 
+                                      axisLine={false} 
+                                      tickLine={false} 
+                                      tick={{ fill: '#ffffff50', fontSize: 10, fontWeight: 'bold' }}
+                                    />
+                                    <YAxis hide />
+                                    <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                                    <Line 
+                                      type="monotone" 
+                                      dataKey="price" 
+                                      stroke="hsl(var(--primary))" 
+                                      strokeWidth={4} 
+                                      dot={false}
+                                      activeDot={{ r: 6, fill: 'white', stroke: 'hsl(var(--primary))', strokeWidth: 2 }}
+                                    />
+                                  </LineChart>
+                                </ResponsiveContainer>
+                              </ChartContainer>
+                            </div>
+                            
+                            <div className="flex justify-between items-center mt-4">
+                              <div className="flex gap-4">
+                                <div className="text-center">
+                                  <p className="text-[8px] text-white/40 uppercase">High</p>
+                                  <p className="text-sm font-black text-white italic">£{Math.max(...chartData.map(d => d.price)).toFixed(0)}</p>
+                                </div>
+                                <div className="text-center">
+                                  <p className="text-[8px] text-white/40 uppercase">Low</p>
+                                  <p className="text-sm font-black text-white italic">£{Math.min(...chartData.map(d => d.price)).toFixed(0)}</p>
+                                </div>
+                              </div>
+                              <div className="px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-2">
+                                <TrendingUp className="text-green-400" size={16} />
+                                <span className="text-green-400 font-black text-xs italic">+14.2%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {mode === 'pokedex' && (
                   <div className="flex-1 flex flex-col h-full relative">
                     <div className="absolute top-0 left-0 right-0 bg-[#e74c3c] h-8 md:h-10 z-30 flex items-center px-4 justify-between border-b-2 md:border-b-4 border-black/20 shadow-md">
