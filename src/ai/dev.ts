@@ -1,7 +1,6 @@
+
 import { config } from 'dotenv';
 config();
 
 import '@/ai/flows/poke-lore-generator.ts';
 import '@/ai/flows/ai-card-showcase-descriptions-flow.ts';
-import '@/ai/flows/pokemon-info-flow.ts';
-import '@/ai/flows/pokemon-image-flow.ts';
