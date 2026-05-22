@@ -6,7 +6,6 @@ import {
   MapPin, 
   Calculator, 
   BookOpen,
-  ExternalLink,
   TrendingUp,
   Search,
   Instagram,
@@ -15,7 +14,10 @@ import {
   Plus,
   Trash2,
   Menu,
-  Zap
+  Zap,
+  Star,
+  ExternalLink,
+  ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,7 +36,7 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in';
+type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'loyalty';
 
 const MODULES = [
   { id: 'find-us', label: 'Find Us', icon: MapPin },
@@ -92,7 +94,7 @@ export default function PokedexApp() {
   const handleChargeStart = () => {
     chargeTimerRef.current = setTimeout(() => {
       setIsLit(true);
-      window.open("https://v0-pokedex-website-lake.vercel.app/", "_blank");
+      setMode('loyalty');
     }, 5000);
   };
 
@@ -115,12 +117,25 @@ export default function PokedexApp() {
           {/* Header Banner */}
           <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg bg-[#e74c3c]">
             <div className="flex items-center gap-3 md:gap-4">
+               <div className="flex gap-1.5 md:gap-3">
+                 <div className="h-2 w-2 md:h-4 md:h-4 rounded-full bg-red-600 border border-black/20 animate-light-beam" />
+                 <div className="h-2 w-2 md:h-4 md:h-4 rounded-full bg-yellow-400 border border-black/20 animate-pulse delay-150" />
+                 <div className="h-2 w-2 md:h-4 md:h-4 rounded-full bg-green-500 border border-black/20 animate-pulse delay-300" />
+               </div>
+            </div>
+
+            <div className="flex-1 flex justify-center px-4">
+              <img 
+                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                alt="Newton's Collectables" 
+                className="h-8 md:h-12 lg:h-16 w-auto object-contain drop-shadow-xl"
+              />
+            </div>
+
+            <div className="flex items-center gap-2 md:gap-4 justify-end">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
-                <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-9 md:h-14 px-2 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
-                  <div className="flex items-center gap-2">
-                    <Menu className="size-4 md:size-8" />
-                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
-                  </div>
+                <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-8 md:h-12 px-2 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
+                  <Menu className="size-4 md:size-6" />
                 </SelectTrigger>
                 <SelectContent className="bg-[#2d3436] border-2 md:border-4 border-black/40 text-white rounded-xl shadow-2xl overflow-hidden min-w-[180px]">
                   {MODULES.map((item) => (
@@ -133,23 +148,14 @@ export default function PokedexApp() {
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="flex-1 flex justify-center px-4">
-              <img 
-                src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-                alt="Newton's Collectables" 
-                className="h-8 md:h-12 lg:h-16 w-auto object-contain drop-shadow-xl"
-              />
-            </div>
-
-            <div className="flex items-center gap-2 md:gap-5 justify-end">
-              <div className="pokedex-camera-lens shrink-0 !h-8 !w-8 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
-            </div>
           </div>
 
           {/* Digital Screen Area */}
           <div className="flex-1 p-2 md:p-4 lg:p-6 flex flex-col min-h-0 overflow-hidden">
-            <div className="pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden">
+            <div className={cn(
+              "pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden transition-all duration-500",
+              isLit && "ring-8 ring-accent/50"
+            )}>
               <div className="pokedex-glass-shine" />
               {isStaticActive && <div className="pokedex-static-glitch z-[100]" />}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
@@ -166,6 +172,40 @@ export default function PokedexApp() {
 
                 {mode === 'card-find' && (
                   <iframe src="https://pkmncards.com/?s=charizard" className="flex-1 w-full h-full border-none" />
+                )}
+
+                {mode === 'loyalty' && (
+                  <div className="p-4 md:p-10 flex-1 flex flex-col items-center justify-center space-y-8 bg-[#1a1c1d] animate-in zoom-in-95 duration-300">
+                    <div className="relative">
+                      <div className="absolute -inset-4 bg-accent/20 blur-xl rounded-full animate-pulse" />
+                      <ShieldCheck className="size-20 md:size-32 text-accent relative z-10" />
+                    </div>
+                    
+                    <div className="text-center space-y-4 max-w-md">
+                      <h2 className="text-3xl md:text-5xl font-black italic uppercase text-white leading-none">
+                        Loyalty <span className="text-accent">Unlocked</span>
+                      </h2>
+                      <p className="text-xs md:text-sm font-bold text-accent/70 uppercase tracking-widest digital-text">
+                        Bury St Edmunds Elite Trainer Program
+                      </p>
+                      <div className="pt-6">
+                        <Button 
+                          asChild
+                          className="w-full bg-accent text-accent-foreground font-black uppercase italic rounded-2xl h-16 text-lg hover:scale-105 transition-transform"
+                        >
+                          <a href="https://v0-pokedex-website-lake.vercel.app/" target="_blank">
+                            Access Portal <ExternalLink className="ml-2" />
+                          </a>
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="w-full flex justify-between items-center opacity-30 pt-10">
+                      <div className="h-px flex-1 bg-white/20" />
+                      <span className="mx-4 text-[8px] font-mono text-white tracking-[0.5em]">AUTH: GRANTED</span>
+                      <div className="h-px flex-1 bg-white/20" />
+                    </div>
+                  </div>
                 )}
 
                 {mode === 'trade-in' && (
@@ -213,19 +253,17 @@ export default function PokedexApp() {
                 {mode === 'find-us' && (
                   <div className="p-4 md:p-10 flex-1 overflow-y-auto custom-scrollbar h-full space-y-8 bg-[#1a1c1d]">
                     <div className="text-center space-y-4">
-                      <h2 className="text-4xl md:text-7xl font-black italic uppercase text-white drop-shadow-md">Find <span className="text-[#e74c3c]">Us</span></h2>
+                      <img 
+                        src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                        alt="Newton's Collectables" 
+                        className="h-16 md:h-24 mx-auto object-contain drop-shadow-xl mb-4"
+                      />
+                      <h2 className="text-4xl md:text-7xl font-black italic uppercase text-white drop-shadow-md leading-none">Find <span className="text-[#e74c3c]">Us</span></h2>
                       <p className="text-xs font-bold text-accent uppercase tracking-widest digital-text">Bury St Edmunds Market</p>
                     </div>
                     
                     <div className="max-w-3xl mx-auto space-y-6">
                       <div className="p-6 bg-black/40 border-4 border-white/5 rounded-3xl space-y-6 text-center">
-                        <div className="mb-4">
-                          <img 
-                            src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
-                            alt="Newton's Collectables" 
-                            className="h-16 md:h-24 mx-auto object-contain drop-shadow-xl"
-                          />
-                        </div>
                         <div className="flex items-center gap-3">
                           <span className="text-accent digital-text text-xs font-black uppercase tracking-[0.4em]">Schedule</span>
                           <div className="h-px flex-1 bg-accent/20" />
@@ -239,7 +277,7 @@ export default function PokedexApp() {
                       </div>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <a href="#" className="flex items-center gap-3 p-4 bg-black/40 rounded-2xl border-2 border-white/5 hover:border-[#e74c3c] transition-all group">
+                        <a href="https://instagram.com/newtons_collectables" target="_blank" className="flex items-center gap-3 p-4 bg-black/40 rounded-2xl border-2 border-white/5 hover:border-[#e74c3c] transition-all group">
                           <Instagram size={24} className="text-[#e74c3c]" />
                           <span className="text-[10px] font-black text-white uppercase italic">Instagram</span>
                         </a>
@@ -260,7 +298,7 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right Hardware Panel */}
+        {/* Right/Bottom Hardware Panel (Footer) */}
         <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl overflow-hidden">
           <div className="space-y-4 hidden md:block">
             <div className="grid grid-cols-2 gap-2">
@@ -274,17 +312,25 @@ export default function PokedexApp() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center py-4">
+          <div className="flex flex-col items-center justify-center py-6 gap-6">
+             <div className="flex-1 flex justify-center w-full">
+                <img 
+                  src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                  alt="Newton's Collectables" 
+                  className="h-12 md:h-16 w-auto object-contain drop-shadow-2xl grayscale brightness-150 opacity-40"
+                />
+             </div>
+             
              <div 
                onPointerDown={handleChargeStart}
                onPointerUp={handleChargeEnd}
                onPointerLeave={handleChargeEnd}
                className={cn(
-                 "pokedex-button-hardware w-16 h-16 flex items-center justify-center text-white mb-2 transition-all duration-300",
-                 isLit ? "bg-accent shadow-[0_0_30px_rgba(255,191,0,0.8)]" : "bg-slate-800"
+                 "pokedex-button-hardware w-16 h-16 flex items-center justify-center text-white transition-all duration-300",
+                 isLit ? "bg-accent shadow-[0_0_40px_rgba(255,191,0,1)] scale-110" : "bg-slate-800"
                )}
              >
-               <Zap size={32} className={cn(isLit ? "text-accent-foreground" : "text-white")} />
+               <Zap size={32} className={cn(isLit ? "text-accent-foreground animate-pulse" : "text-white")} />
              </div>
           </div>
 
