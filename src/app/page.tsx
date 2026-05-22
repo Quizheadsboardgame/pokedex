@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
   MapPin, 
   Calculator, 
@@ -48,6 +48,8 @@ export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
   const [isStaticActive, setIsStaticActive] = useState(false);
+  const [isLit, setIsLit] = useState(false);
+  const chargeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [tradeCards, setTradeCards] = useState<TradeCard[]>([
     { id: "initial-1", name: "", value: 0 }
@@ -86,6 +88,20 @@ export default function PokedexApp() {
   };
 
   const totalValue = tradeCards.reduce((acc, curr) => acc + (Number(curr.value) || 0), 0);
+
+  const handleChargeStart = () => {
+    chargeTimerRef.current = setTimeout(() => {
+      setIsLit(true);
+      window.open("https://v0-pokedex-website-lake.vercel.app/", "_blank");
+    }, 5000);
+  };
+
+  const handleChargeEnd = () => {
+    if (chargeTimerRef.current) {
+      clearTimeout(chargeTimerRef.current);
+    }
+    setIsLit(false);
+  };
 
   if (!mounted) return null;
 
@@ -202,7 +218,14 @@ export default function PokedexApp() {
                     </div>
                     
                     <div className="max-w-3xl mx-auto space-y-6">
-                      <div className="p-6 bg-black/40 border-4 border-white/5 rounded-3xl space-y-6">
+                      <div className="p-6 bg-black/40 border-4 border-white/5 rounded-3xl space-y-6 text-center">
+                        <div className="mb-4">
+                          <img 
+                            src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
+                            alt="Newton's Collectables" 
+                            className="h-16 md:h-24 mx-auto object-contain drop-shadow-xl"
+                          />
+                        </div>
                         <div className="flex items-center gap-3">
                           <span className="text-accent digital-text text-xs font-black uppercase tracking-[0.4em]">Schedule</span>
                           <div className="h-px flex-1 bg-accent/20" />
@@ -252,10 +275,17 @@ export default function PokedexApp() {
           </div>
 
           <div className="flex flex-col items-center justify-center py-4">
-             <div className="pokedex-button-hardware w-16 h-16 bg-slate-800 flex items-center justify-center text-white mb-2">
-               <Zap size={32} />
+             <div 
+               onPointerDown={handleChargeStart}
+               onPointerUp={handleChargeEnd}
+               onPointerLeave={handleChargeEnd}
+               className={cn(
+                 "pokedex-button-hardware w-16 h-16 flex items-center justify-center text-white mb-2 transition-all duration-300",
+                 isLit ? "bg-accent shadow-[0_0_30px_rgba(255,191,0,0.8)]" : "bg-slate-800"
+               )}
+             >
+               <Zap size={32} className={cn(isLit ? "text-accent-foreground" : "text-white")} />
              </div>
-             <p className="text-[8px] font-black text-white/50 uppercase italic tracking-widest">Flash Charge</p>
           </div>
 
           <div className="text-center md:mt-auto py-2">
