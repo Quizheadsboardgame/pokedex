@@ -140,13 +140,13 @@ export default function PokedexApp() {
       setIntelImage(img.url);
     } catch (error: any) {
       console.error("Intel retrieval failed:", error);
-      const isApiKeyError = error.message?.includes("API key") || error.message?.includes("INVALID_ARGUMENT");
+      const isApiKeyError = error.message?.includes("API key") || error.message?.includes("INVALID_ARGUMENT") || error.message?.includes("400");
       toast({
         variant: "destructive",
         title: "Scanner Error",
         description: isApiKeyError 
-          ? "Pokedex Global Link Offline. Please configure a valid GOOGLE_GENAI_API_KEY in the environment."
-          : "Could not retrieve card intelligence data from the archive.",
+          ? "Pokedex Global Link Offline. Please configure a valid GOOGLE_GENAI_API_KEY."
+          : "Could not retrieve card intelligence data.",
       });
     } finally {
       setIntelLoading(false);
@@ -173,6 +173,10 @@ export default function PokedexApp() {
                 <div className="h-2 w-2 md:h-4 md:w-4 rounded-full bg-yellow-400 border border-black/30 shadow-inner animate-light-beam [animation-delay:0.5s]" />
                 <div className="h-2 w-2 md:h-4 md:w-4 rounded-full bg-green-500 border border-black/30 shadow-inner animate-light-beam [animation-delay:1s]" />
               </div>
+            </div>
+
+            <div className="flex-1 flex justify-center">
+              {/* Logo removed from banner per request */}
             </div>
 
             <div className="flex items-center gap-3 md:gap-4 justify-end">
@@ -406,7 +410,7 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right Hardware Panel (Footer) */}
+        {/* Right Hardware Panel (Footer on Mobile) */}
         <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl overflow-hidden">
           <div className="space-y-4 hidden md:block">
             <div className="grid grid-cols-2 gap-2">
