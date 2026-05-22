@@ -140,12 +140,13 @@ export default function PokedexApp() {
       setIntelImage(img.url);
     } catch (error: any) {
       console.error("Intel retrieval failed:", error);
+      const isApiKeyError = error.message?.includes("API key") || error.message?.includes("INVALID_ARGUMENT");
       toast({
         variant: "destructive",
         title: "Scanner Error",
-        description: error.message.includes("API key") 
-          ? "AI API Key is invalid or missing. Please check your configuration."
-          : "Could not retrieve card intelligence data.",
+        description: isApiKeyError 
+          ? "Pokedex Global Link Offline. Please configure a valid GOOGLE_GENAI_API_KEY in the environment."
+          : "Could not retrieve card intelligence data from the archive.",
       });
     } finally {
       setIntelLoading(false);
@@ -160,7 +161,7 @@ export default function PokedexApp() {
     <main className="min-h-svh w-full flex flex-col bg-[#c0392b] overflow-hidden">
       <div className="flex-1 flex flex-col md:flex-row min-h-svh relative pokedex-hardware-shine overflow-hidden">
         
-        {/* Left/Main Side */}
+        {/* Main Pokedex Panel */}
         <div className="flex-1 flex flex-col relative min-h-0 md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226] overflow-hidden">
           
           {/* Header Banner */}
@@ -178,7 +179,7 @@ export default function PokedexApp() {
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-9 md:h-14 px-2 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
                   <div className="flex items-center gap-2">
-                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
+                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">System</span>
                     <Menu className="size-4 md:size-8" />
                   </div>
                 </SelectTrigger>
@@ -213,7 +214,7 @@ export default function PokedexApp() {
                         PokeTrace [SECURE ID: {TRACE_API_KEY.substring(0, 10)}...]
                       </span>
                       <a href="https://pokeprice.io" target="_blank" rel="noopener noreferrer" className="text-[8px] md:text-[9px] font-bold text-white/80 flex items-center gap-1 uppercase bg-black/20 px-2 py-1 rounded-md hover:bg-black/40 transition-colors">
-                        <ExternalLink size={10} /> Live Site
+                        <ExternalLink size={10} /> Live Data
                       </a>
                     </div>
                     <iframe src="https://pokeprice.io" className={cn("flex-1 w-full h-full border-none pt-8 md:pt-10 bg-[#1a1c1d]", isStaticActive && "opacity-40")} />
@@ -221,15 +222,15 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'card-intel' && (
-                  <div className="p-4 md:p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6">
+                  <div className="p-4 md:p-6 lg:p-8 pt-10 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                       <div className="space-y-1 text-center md:text-left">
                         <h2 className="text-2xl md:text-4xl font-black italic uppercase text-white drop-shadow-md">Card <span className="text-[#e74c3c]">Intel</span></h2>
-                        <p className="text-[10px] font-bold text-accent uppercase tracking-widest digital-text">Trace Status: Connected</p>
+                        <p className="text-[10px] font-bold text-accent uppercase tracking-widest digital-text">Trace Status: {TRACE_API_KEY.substring(0, 5)}... Authorized</p>
                       </div>
                       <div className="flex w-full md:w-auto gap-2">
                         <Input 
-                          placeholder="Pokemon..." 
+                          placeholder="Identify Pokemon..." 
                           value={searchQuery} 
                           onChange={(e) => setSearchQuery(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && handleIntelSearch()}
@@ -246,7 +247,7 @@ export default function PokedexApp() {
                     </div>
 
                     {intelData && (
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in zoom-in-95 duration-500">
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in zoom-in-95 duration-500 pb-8">
                         <div className="lg:col-span-4 space-y-4">
                           <div className="relative aspect-square rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl bg-black">
                             {intelImage ? (
@@ -262,7 +263,7 @@ export default function PokedexApp() {
                         <div className="lg:col-span-8 space-y-6">
                           <div className="p-4 bg-black/40 rounded-2xl border border-white/5 space-y-2">
                             <h3 className="text-accent font-black uppercase italic text-[10px] flex items-center gap-2">
-                              <Info size={14} /> Archive Entry
+                              <Info size={14} /> Intelligence Summary
                             </h3>
                             <p className="text-white/80 text-xs leading-relaxed italic font-medium">
                               "{intelData.description}"
@@ -315,21 +316,22 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'trade-in' && (
-                  <div className="p-4 md:p-8 pt-12 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full bg-[#1a1c1d]">
+                  <div className="p-4 md:p-6 lg:p-8 pt-10 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full bg-[#1a1c1d]">
                     <div className="text-center mb-6">
                       <h2 className="text-2xl md:text-5xl font-black italic uppercase text-white">Trade-<span className="text-[#e74c3c]">In</span></h2>
+                      <p className="text-[8px] font-bold text-accent uppercase tracking-widest digital-text">Value Assessment Module</p>
                     </div>
                     <div className="space-y-6 max-w-4xl mx-auto">
                       <div className="flex items-center justify-between">
-                        <span className="text-[#e74c3c] font-black uppercase italic tracking-widest text-[10px]">Calculator</span>
+                        <span className="text-[#e74c3c] font-black uppercase italic tracking-widest text-[10px]">Registry Input</span>
                         <Button variant="outline" onClick={addTradeCard} className="bg-[#e74c3c]/10 border-[#e74c3c] border-2 text-[#e74c3c] font-black uppercase italic rounded-xl h-8 text-[10px]">
-                          <Plus className="h-3 w-3 mr-1" /> Add
+                          <Plus className="h-3 w-3 mr-1" /> Add Card
                         </Button>
                       </div>
                       <div className="space-y-3">
                         {tradeCards.map((card) => (
                           <div key={card.id} className="flex gap-2 items-center">
-                            <Input placeholder="Card Name..." value={card.name} onChange={(e) => updateTradeCard(card.id, 'name', e.target.value)} className="bg-black/40 border-white/10 text-white h-9 rounded-lg text-xs" />
+                            <Input placeholder="Card Details..." value={card.name} onChange={(e) => updateTradeCard(card.id, 'name', e.target.value)} className="bg-black/40 border-white/10 text-white h-9 rounded-lg text-xs" />
                             <Input type="number" placeholder="£" value={card.value || ''} onChange={(e) => updateTradeCard(card.id, 'value', e.target.value)} className="bg-black/40 border-white/10 text-white h-9 w-16 md:w-24 rounded-lg text-xs" />
                             <Button variant="ghost" size="icon" onClick={() => removeTradeCard(card.id)} className="text-slate-500 h-9 w-9 shrink-0">
                               <Trash2 size={14} />
@@ -356,7 +358,7 @@ export default function PokedexApp() {
                 )}
 
                 {mode === 'find-us' && (
-                  <div className="p-4 md:p-8 pt-10 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6 bg-[#1a1c1d]">
+                  <div className="p-4 md:p-6 lg:p-8 pt-10 md:pt-14 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6 bg-[#1a1c1d]">
                     <div className="text-center space-y-3">
                       <h2 className="text-2xl md:text-5xl font-black italic uppercase text-white drop-shadow-md">Find <span className="text-[#e74c3c]">Us</span></h2>
                       <div className="flex justify-center">
@@ -404,12 +406,17 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right/Footer Panel */}
+        {/* Right Hardware Panel (Footer) */}
         <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl overflow-hidden">
           <div className="space-y-4 hidden md:block">
             <div className="grid grid-cols-2 gap-2">
                <div className="h-2 bg-black/20 rounded-full" />
                <div className="h-2 bg-black/20 rounded-full" />
+            </div>
+            <div className="h-24 w-full bg-black/10 rounded-2xl flex flex-col items-center justify-center gap-2 border border-white/5">
+              <div className="h-1 w-2/3 bg-white/10 rounded-full" />
+              <div className="h-1 w-2/3 bg-white/10 rounded-full" />
+              <div className="h-1 w-2/3 bg-white/10 rounded-full" />
             </div>
           </div>
 
@@ -422,7 +429,7 @@ export default function PokedexApp() {
           </div>
 
           <div className="text-center md:mt-auto py-2">
-            <p className="text-[8px] font-black text-white/30 uppercase italic tracking-widest digital-text">PRO SERIES 3.0</p>
+            <p className="text-[8px] font-black text-white/30 uppercase italic tracking-widest digital-text">PRO SERIES 3.5</p>
           </div>
         </div>
       </div>
