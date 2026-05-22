@@ -18,7 +18,8 @@ import {
   Loader2,
   Shield,
   BarChart3,
-  Info
+  Info,
+  Activity
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,10 +48,11 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'card-intel';
+type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'card-intel' | 'poketrace';
 
 const MODULES = [
   { id: 'find-us', label: 'Find Us', icon: MapPin },
+  { id: 'poketrace', label: 'PokeTrace', icon: Activity },
   { id: 'card-intel', label: 'Card Intel', icon: BarChart3 },
   { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
   { id: 'card-find', label: 'Card Find', icon: Search },
@@ -64,6 +66,8 @@ const chartConfig = {
     color: "hsl(var(--primary))",
   },
 } satisfies ChartConfig;
+
+const TRACE_API_KEY = "pc_5a87a643933ff6e3c6a5769e05ea8059d440566b48442c11";
 
 export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
@@ -171,7 +175,7 @@ export default function PokedexApp() {
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-10 md:h-14 px-3 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
                   <div className="flex items-center gap-2">
-                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">Menu</span>
+                    <span className="hidden sm:inline font-black uppercase italic tracking-widest text-xs md:text-sm">System Menu</span>
                     <Menu className="size-5 md:size-8" />
                   </div>
                 </SelectTrigger>
@@ -196,12 +200,28 @@ export default function PokedexApp() {
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
 
               <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
+                
+                {mode === 'poketrace' && (
+                  <div className="flex-1 flex flex-col h-full relative">
+                    <div className="absolute top-0 left-0 right-0 bg-[#e74c3c] h-8 md:h-10 z-30 flex items-center px-4 justify-between border-b-2 md:border-b-4 border-black/20 shadow-md">
+                      <span className="text-[8px] md:text-[10px] font-black text-white uppercase italic tracking-widest flex items-center gap-2">
+                        <Activity size={12} className="text-white animate-pulse" />
+                        PokeTrace [SECURE ID: pc_5a87...2c11]
+                      </span>
+                      <a href="https://pokeprice.io" target="_blank" rel="noopener noreferrer" className="text-[8px] md:text-[9px] font-bold text-white/80 flex items-center gap-1 uppercase bg-black/20 px-2 py-1 rounded-md hover:bg-black/40 transition-colors">
+                        <ExternalLink size={10} /> Live Site
+                      </a>
+                    </div>
+                    <iframe src="https://pokeprice.io" className={cn("flex-1 w-full border-none pt-8 md:pt-10 bg-[#1a1c1d]", isStaticActive && "opacity-40")} />
+                  </div>
+                )}
+
                 {mode === 'card-intel' && (
                   <div className="p-4 md:p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                       <div className="space-y-1">
                         <h2 className="text-2xl md:text-4xl font-black italic uppercase text-white drop-shadow-md">Card <span className="text-[#e74c3c]">Intel</span></h2>
-                        <p className="text-[10px] font-bold text-accent uppercase tracking-widest digital-text">Advanced Market Analysis v1.0</p>
+                        <p className="text-[10px] font-bold text-accent uppercase tracking-widest digital-text">Trace Status: Connected [Authorized]</p>
                       </div>
                       <div className="flex w-full md:w-auto gap-2">
                         <Input 
