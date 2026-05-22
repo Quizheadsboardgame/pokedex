@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,7 +18,6 @@ import {
   Loader2,
   Shield,
   BarChart3,
-  TrendingDown,
   Info
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,6 +39,7 @@ import {
   ChartTooltipContent 
 } from "@/components/ui/chart";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { useToast } from "@/hooks/use-toast";
 
 interface TradeCard {
   id: string;
@@ -70,6 +69,7 @@ export default function PokedexApp() {
   const [mode, setMode] = useState<Mode>('find-us');
   const [mounted, setMounted] = useState(false);
   const [isStaticActive, setIsStaticActive] = useState(false);
+  const { toast } = useToast();
   
   // Card Intel State
   const [searchQuery, setSearchQuery] = useState("");
@@ -124,7 +124,6 @@ export default function PokedexApp() {
       const info = await getPokemonInfo({ pokemonName: searchQuery });
       setIntelData(info);
 
-      // Generate "spiky" mock trend data based on Pokemon info
       const basePrice = Math.floor(Math.random() * 500) + 50;
       const trend = Array.from({ length: 12 }, (_, i) => ({
         month: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i],
@@ -134,8 +133,15 @@ export default function PokedexApp() {
 
       const img = await generatePokemonImage({ prompt: info.imagePrompt });
       setIntelImage(img.url);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Intel retrieval failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Scanner Error",
+        description: error.message.includes("API key") 
+          ? "AI API Key is invalid or missing. Please check your configuration."
+          : "Could not retrieve card intelligence data.",
+      });
     } finally {
       setIntelLoading(false);
     }
@@ -149,13 +155,9 @@ export default function PokedexApp() {
     <main className="min-h-svh w-full flex flex-col bg-[#c0392b] overflow-x-hidden">
       <div className="flex-1 flex flex-col md:flex-row min-h-svh relative pokedex-hardware-shine">
         
-        {/* Main Pokedex Interface */}
         <div className="flex-1 flex flex-col relative min-h-[500px] md:h-screen bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226]">
           
-          {/* Top Hardware Banner */}
           <div className="p-3 md:p-6 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg bg-[#e74c3c]">
-            
-            {/* Left: Blue Button and Status Lights */}
             <div className="flex items-center gap-3 md:gap-5 flex-1">
               <div className="pokedex-camera-lens shrink-0 !h-10 !w-10 md:!h-16 md:!w-16 border-2 md:border-6 border-slate-300 shadow-xl" />
               <div className="flex gap-2">
@@ -165,7 +167,6 @@ export default function PokedexApp() {
               </div>
             </div>
 
-            {/* Right: Menu */}
             <div className="flex items-center gap-3 md:gap-4 flex-1 justify-end">
               <Select value={mode} onValueChange={(val) => setMode(val as Mode)}>
                 <SelectTrigger className="w-auto bg-black/20 border-2 border-white/20 text-white rounded-lg md:rounded-xl h-10 md:h-14 px-3 md:px-4 hover:bg-black/40 transition-all focus:ring-accent">
@@ -187,17 +188,14 @@ export default function PokedexApp() {
             </div>
           </div>
 
-          {/* Inner Screen Container */}
           <div className="flex-1 p-2 md:p-4 lg:p-6 flex flex-col min-h-0">
             <div className="pokedex-screen-container flex-1 w-full bg-[#1a1c1d] flex flex-col relative shadow-2xl overflow-hidden group">
-              
               <div className="pokedex-glass-shine" />
               {isStaticActive && <div className="pokedex-static-glitch z-[100]" />}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%)] bg-[length:100%_4px] pointer-events-none z-20 opacity-20" />
               <div className="absolute inset-0 digital-grid opacity-10 pointer-events-none z-10" />
 
               <div className="flex-1 flex flex-col relative z-10 overflow-hidden">
-                
                 {mode === 'card-intel' && (
                   <div className="p-4 md:p-6 lg:p-8 flex-1 overflow-y-auto custom-scrollbar h-full space-y-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -234,8 +232,6 @@ export default function PokedexApp() {
 
                     {intelData && (
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in zoom-in-95 duration-500">
-                        
-                        {/* Portrait Section */}
                         <div className="lg:col-span-4 space-y-4">
                           <div className="relative aspect-square rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl bg-black">
                             {intelImage ? (
@@ -269,7 +265,6 @@ export default function PokedexApp() {
                           </div>
                         </div>
 
-                        {/* Analysis Section */}
                         <div className="lg:col-span-8 space-y-6">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="p-6 bg-black/40 rounded-2xl border border-white/5 space-y-3">
@@ -309,7 +304,6 @@ export default function PokedexApp() {
                             </div>
                           </div>
 
-                          {/* Spiky Trend Chart */}
                           <div className="p-6 bg-black/60 rounded-3xl border border-white/10 relative overflow-hidden group">
                             <div className="absolute top-4 right-6 flex items-center gap-2">
                               <span className="text-[10px] font-black text-green-400 uppercase tracking-widest animate-pulse">Live Tracking</span>
@@ -514,7 +508,6 @@ export default function PokedexApp() {
           </div>
         </div>
 
-        {/* Right Sidebar Hardware Details (Footer Area) */}
         <div className="w-full md:w-48 lg:w-56 bg-gradient-to-br from-[#c0392b] to-[#8e1d14] p-4 md:p-6 lg:p-8 flex flex-col justify-between border-t-4 md:border-t-0 md:border-l-8 border-black/20 shrink-0 relative z-30 shadow-2xl">
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-2">
@@ -537,7 +530,6 @@ export default function PokedexApp() {
             </div>
           </div>
 
-          {/* Central Logo on Footer */}
           <div className="flex flex-col items-center justify-center py-4">
             <img 
               src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" 
@@ -558,7 +550,6 @@ export default function PokedexApp() {
             </div>
           </div>
 
-          {/* Mobile Specific Bottom Hardware Detail */}
           <div className="md:hidden flex flex-col items-center pt-4">
              <div className="h-1 w-24 bg-black/20 rounded-full mb-2" />
              <p className="text-[8px] font-black text-white/20 uppercase tracking-[0.4em] digital-text">PRO SERIES 3.0</p>
