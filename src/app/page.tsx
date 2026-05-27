@@ -17,9 +17,7 @@ import {
   Zap,
   ExternalLink,
   ShieldCheck,
-  Briefcase,
-  Share2,
-  Rotate3d
+  Briefcase
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,11 +37,10 @@ interface TradeCard {
   value: number;
 }
 
-type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'loyalty' | 'business-card';
+type Mode = 'find-us' | 'pokedex' | 'card-find' | 'price-check' | 'trade-in' | 'loyalty';
 
 const MODULES = [
   { id: 'find-us', label: 'Find Us', icon: MapPin },
-  { id: 'business-card', label: 'Digital Card', icon: Share2 },
   { id: 'pokedex', label: 'PokéDex', icon: BookOpen },
   { id: 'card-find', label: 'Card Find', icon: Search },
   { id: 'price-check', label: 'Price Check', icon: TrendingUp },
@@ -55,7 +52,6 @@ export default function PokedexApp() {
   const [mounted, setMounted] = useState(false);
   const [isStaticActive, setIsStaticActive] = useState(false);
   const [isLit, setIsLit] = useState(false);
-  const [isCardFlipped, setIsCardFlipped] = useState(false);
   const chargeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [tradeCards, setTradeCards] = useState<TradeCard[]>([
@@ -119,7 +115,7 @@ export default function PokedexApp() {
         {/* Main Pokedex Panel */}
         <div className="flex-1 flex flex-col relative min-h-0 md:h-full bg-gradient-to-br from-[#e74c3c] via-[#c0392b] to-[#a93226] overflow-hidden">
           
-          {/* Header Banner */}
+          {/* Header Banner - Minimalist, touch friendly */}
           <div className="p-2 md:p-5 flex items-center justify-between border-b-4 md:border-b-8 border-black/20 shrink-0 relative z-20 shadow-lg bg-[#e74c3c]">
             {/* Far Left: Lens & Lights */}
             <div className="flex items-center gap-2 md:gap-4">
@@ -240,69 +236,6 @@ export default function PokedexApp() {
                           <p className="text-2xl md:text-6xl font-black text-purple-400 italic">£{(totalValue * 0.85).toFixed(2)}</p>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
-
-                {mode === 'business-card' && (
-                  <div className="p-4 md:p-12 flex-1 flex flex-col items-center justify-center bg-[#1a1c1d] overflow-hidden gap-6">
-                    {/* Interactive Flip Card Preview */}
-                    <div 
-                      className="group perspective-1000 w-full max-w-xl aspect-[1.75/1] cursor-pointer"
-                      onClick={() => setIsCardFlipped(!isCardFlipped)}
-                    >
-                      <div className={cn(
-                        "relative w-full h-full transition-all duration-700 preserve-3d",
-                        isCardFlipped ? "rotate-y-180" : ""
-                      )}>
-                        {/* FRONT PREVIEW */}
-                        <div className="absolute inset-0 backface-hidden w-full h-full bg-white rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xl border-[6px] md:border-[12px] border-[#e74c3c]">
-                          <div className="absolute top-0 right-0 w-1/3 h-full bg-[#e74c3c] skew-x-[-15deg] translate-x-1/4" />
-                          <div className="relative z-10 h-full p-4 md:p-8 flex flex-col justify-between">
-                            <div className="flex justify-between items-start">
-                              <div className="space-y-1">
-                                <h3 className="text-xl md:text-4xl font-black uppercase italic text-[#1a1a1a] leading-none">Newton's</h3>
-                                <h3 className="text-lg md:text-3xl font-black uppercase italic text-[#e74c3c] leading-none">Collectables</h3>
-                                <div className="h-1 md:h-2 w-20 bg-accent mt-2" />
-                              </div>
-                              <img src="https://i.ibb.co/20z0HgH3/Untitled-12-February-2026-at-13-11-20-1.png" alt="Logo" className="h-12 md:h-20 object-contain" />
-                            </div>
-                            <div className="flex justify-between items-end">
-                              <div className="text-[8px] md:text-xs font-black text-[#1a1a1a] uppercase italic">Bury St Edmunds Market</div>
-                              <div className="flex items-center gap-1 text-[8px] md:text-xs font-black text-slate-400 uppercase tracking-widest"><Rotate3d size={10} /> Tap to Flip</div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* BACK PREVIEW */}
-                        <div className="absolute inset-0 backface-hidden rotate-y-180 w-full h-full bg-[#2d3436] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-2xl border-[6px] md:border-[12px] border-[#e74c3c]/30">
-                          <div className="relative z-10 h-full p-4 md:p-8 flex flex-col justify-between text-white">
-                            <div className="text-accent text-[8px] font-black uppercase tracking-widest digital-text">REGISTRY SYSTEM</div>
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <MapPin size={12} className="text-[#e74c3c]" />
-                                <span className="text-[10px] md:text-sm font-black italic">Market Square, IP33 1BT</span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Instagram size={12} className="text-[#e74c3c]" />
-                                <span className="text-[10px] md:text-sm font-black italic">@newtons_collectables</span>
-                              </div>
-                            </div>
-                            <div className="flex justify-between items-end">
-                              <div className="text-[10px] md:text-sm font-black italic">tradeintcg.com</div>
-                              <div className="text-[8px] md:text-xs font-black text-accent uppercase italic">Elite Status</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-4 w-full max-w-md">
-                       <Button asChild className="flex-1 bg-[#e74c3c] text-white font-black uppercase italic h-12 md:h-16 rounded-xl text-sm md:text-lg hover:scale-105 transition-transform">
-                         <Link href="/card" target="_blank">Open Pro Card <ExternalLink className="ml-2 h-4 w-4" /></Link>
-                       </Button>
-                       <div className="text-center md:text-left flex items-center justify-center text-white/40 text-[10px] font-black uppercase tracking-[0.2em] digital-text">
-                         Capture HQ Asset for Sharing
-                       </div>
                     </div>
                   </div>
                 )}
